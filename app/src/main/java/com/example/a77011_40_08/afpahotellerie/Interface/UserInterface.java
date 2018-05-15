@@ -22,6 +22,11 @@ public interface UserInterface {
             @Field("login") String login,
             @Field("password") String password);
 
-
-
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addUser.php")
+    Call<User> account(
+            @Field("name") String name,
+            @Field("firstname") String firstname,
+               @Field("login") String login,
+             @Field("password") String password);
 }

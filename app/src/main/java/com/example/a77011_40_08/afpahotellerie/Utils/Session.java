@@ -8,6 +8,7 @@ import com.example.a77011_40_08.afpahotellerie.Models.User;
 
 public class Session {
 
+ 
     private static User myUser;
 
     private static Boolean connectionChecked = false;
@@ -27,4 +28,6 @@ public class Session {
     public static void setMyUser(User myUser) {
         Session.myUser = myUser;
     }
+
+
 }

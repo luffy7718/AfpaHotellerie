@@ -59,11 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         txtLoginPwd = findViewById(R.id.txtLogin_pwd);
 
         lblLoginForgotten = findViewById(R.id.lblLogin_forgotten);
-        lblLoginRegister = findViewById(R.id.lblLogin_register);
+       // lblLoginRegister = findViewById(R.id.lblLogin_register);
         lblLoginForgotten.setPaintFlags(lblLoginForgotten.getPaintFlags() | Paint
                 .UNDERLINE_TEXT_FLAG);
-        lblLoginRegister.setPaintFlags(lblLoginRegister.getPaintFlags() | Paint
-                .UNDERLINE_TEXT_FLAG);
+/*        lblLoginRegister.setPaintFlags(lblLoginRegister.getPaintFlags() | Paint
+                .UNDERLINE_TEXT_FLAG);*/
 
         Button btnLoginValidate = findViewById(R.id.btnLogin_validate);
         Button btnLoginBack = findViewById(R.id.btnLogin_back);
@@ -77,13 +77,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        lblLoginRegister.setOnClickListener(new View.OnClickListener() {
+      /*  lblLoginRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, RegisterActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         btnLoginValidate.setOnClickListener(new View.OnClickListener() {
             @Override
