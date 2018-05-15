@@ -96,6 +96,10 @@ public class HomeActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id == R.id.action_login)
+        {
+            Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+            startActivityForResult(intent, 2);// Activity is started with requestCode 2
         }
 
         return super.onOptionsItemSelected(item);
