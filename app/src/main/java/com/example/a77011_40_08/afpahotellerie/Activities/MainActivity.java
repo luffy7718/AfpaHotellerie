@@ -15,11 +15,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context=this;
+       goToHome();
+    }
+    private void goToHome() {
         Intent intent = null;
-            intent = new Intent(getApplicationContext(), HomeActivity.class);
+        if (Build.VERSION.SDK_INT >= 23) {
+            intent = new Intent(getApplicationContext(), PermissionActivity.class);
+        } else {
+            intent = new Intent(getApplicationContext(), LoginActivity.class);
+        }
 
+
+        if (intent != null) {
             startActivity(intent);
             finish();
-
+        }
     }
 }
