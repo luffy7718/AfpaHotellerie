@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_login"
         android:icon="@drawable/ic_action_login"
-        android:title="deconnexion"
+        android:title="Reconnexion"
         app:showAsAction="always" />
 
     <item

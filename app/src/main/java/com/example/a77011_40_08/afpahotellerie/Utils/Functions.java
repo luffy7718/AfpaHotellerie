@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -248,5 +249,16 @@ public class Functions {
 
     public static int dpToPixels(int dp){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, Resources.getSystem().getDisplayMetrics());
+    }
+
+    public static String getAuth(){
+
+        String htpasswd = null;
+        try {
+            htpasswd = Base64.encodeToString(("gpr40Hotellerie:@=2018G40").getBytes("UTF-8"), Base64.NO_WRAP);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "Basic "+htpasswd;
     }
 }

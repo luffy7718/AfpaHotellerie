@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.os.Build;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,18 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.example.a77011_40_08.afpahotellerie.Interface.UserInterface;
+import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.Models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
 import com.google.gson.Gson;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,14 +40,15 @@ public class LoginActivity extends AppCompatActivity {
     TextView lblLoginRegister;
     Context context;
     int requestType = 0;
-    UserInterface userInterface;
+    SWInterface swInterface;
+    Push push;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = this;
-        userInterface = RetrofitApi.getInterface();
+        swInterface = RetrofitApi.getInterface();
 
         intent = new Intent();
 
@@ -59,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         txtLoginPwd = findViewById(R.id.txtLogin_pwd);
 
         lblLoginForgotten = findViewById(R.id.lblLogin_forgotten);
-       // lblLoginRegister = findViewById(R.id.lblLogin_register);
+        // lblLoginRegister = findViewById(R.id.lblLogin_register);
         lblLoginForgotten.setPaintFlags(lblLoginForgotten.getPaintFlags() | Paint
                 .UNDERLINE_TEXT_FLAG);
 /*        lblLoginRegister.setPaintFlags(lblLoginRegister.getPaintFlags() | Paint
@@ -94,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!login.isEmpty() && !password.isEmpty()) {
                     vswLogin.showNext();
                     lblLoginCurrentAction.setText("Connexion ...");
+
                     callLogin(login, password);
 
                    /* AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE +
@@ -198,27 +197,37 @@ public class LoginActivity extends AppCompatActivity {
         try {
 
 
-            Call<Push> call = userInterface.login(login, password);
+            Call<Push> call = swInterface.login(Functions.getAuth(), login, password);
 
             call.enqueue(new Callback<Push>() {
                 @Override
                 public void onResponse(Call<Push> call, Response<Push> response) {
                     if (response.isSuccessful()) {
+                        Log.e("TAG ", response.body().toString());
                         Push push = response.body();
-                        Gson gson = new Gson();
-                        User user = gson.fromJson(push.getData(), User.class);
-                        Session.setMyUser(user);
-                        Session.setConnectionChecked(true);
-                        goToHome();
-                        setResult(Constants._CODE_LOGIN, intent);
+                        if(push.getStatus()==1) {
+                            Gson gson = new Gson();
+                            User user = gson.fromJson(push.getData(), User.class);
+                            Session.setMyUser(user);
+                            Session.setConnectionChecked(true);
+                            goToHome();
+                            setResult(Constants._CODE_LOGIN, intent);
 
-                        Log.e(Constants._TAG_LOG, "User " + user.getFirstname());
+                            Log.e(Constants._TAG_LOG, "User " + user.getFirstname());
 
-                        //textView.setText(push.getName());
-                        Log.e("TAG ", "[status:" + push.getStatus() + ", data:" + push.getData()
-                                + "]");
+                            //textView.setText(push.getName());
+                            Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
+                                    + ", data:" + push.getData()
+                                    + "]");
+                        } else
+                        {
+                            Log.e("push.getdata = ",push.getData());
+
+                        }
                         //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
                         // .show();
+                    } else {
+                        //todo:gérer les code erreur de retour
                     }
 
                 }
@@ -243,8 +252,6 @@ public class LoginActivity extends AppCompatActivity {
         finish();
 
     }
-
-
 
 
 }

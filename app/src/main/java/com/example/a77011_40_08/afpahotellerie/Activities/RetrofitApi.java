@@ -2,7 +2,7 @@ package com.example.a77011_40_08.afpahotellerie.Activities;
 
 
 
-import com.example.a77011_40_08.afpahotellerie.Interface.UserInterface;
+import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 
 import retrofit2.Retrofit;
@@ -11,14 +11,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitApi {
 
-    // http://square.github.io/retrofit/
 
-    private static UserInterface userInterface;
+    private static SWInterface userInterface;
 
 
-    public static UserInterface getInterface() {
+    public static SWInterface getInterface() {
         if (userInterface == null) {
-            synchronized (UserInterface.class) {
+            synchronized (SWInterface.class) {
                 getInstance();
             }
         }
@@ -33,7 +32,7 @@ public class RetrofitApi {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        userInterface = retrofit.create(UserInterface.class);
+        userInterface = retrofit.create(SWInterface.class);
 
 
     }

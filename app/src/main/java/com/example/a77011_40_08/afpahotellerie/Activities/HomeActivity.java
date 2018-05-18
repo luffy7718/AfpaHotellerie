@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.ListRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
@@ -110,10 +111,12 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_home){
+            clearFragments();
+            changeFragment(Constants._FRAG_HOME,null);
+        }
+      else   if (id == R.id.nav_chambre) {
+            changeFragment(Constants.FRAG_LIST_ROOMS,null);
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -129,13 +132,25 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    private void clearFragments(){
+        int end = fragmentManager.getBackStackEntryCount();
+        for (int i = 0; i<=end;i++){
+            //Log.e(Constants._TAG_LOG,i+"/"+end);
+            fragmentManager.popBackStackImmediate();
+        }
+        //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
+    }
     public void changeFragment(int code, Bundle params){
         Fragment frag = null;
         switch (code){
             case Constants._FRAG_HOME:
                 frag = new HomeFragment();
                 break;
+            case Constants.FRAG_LIST_ROOMS:
+                frag = new ListRoomsFragment();
+                break;
+
+
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
                 break;

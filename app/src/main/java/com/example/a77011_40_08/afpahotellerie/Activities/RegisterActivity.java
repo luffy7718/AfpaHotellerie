@@ -11,13 +11,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.example.a77011_40_08.afpahotellerie.Interface.UserInterface;
-import com.example.a77011_40_08.afpahotellerie.Models.Push;
+import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
-import com.example.a77011_40_08.afpahotellerie.Utils.Session;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     String firstname;
     String login;
     String password;
-    UserInterface userInterface;
+    SWInterface userInterface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

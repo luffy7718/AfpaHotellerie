@@ -2,12 +2,12 @@ package com.example.a77011_40_08.afpahotellerie.Models;
 
 import android.content.Context;
 
-public class booking {
+public class Booking {
     private int idBooking;
     private  Room room;
 
 
-    public booking() {
+    public Booking() {
 
     }
 
@@ -28,7 +28,7 @@ public class booking {
         this.room = room;
     }
 
-    public boolean checkin(Room r,Guest guest) {
+    /*public boolean checkin(Room r,Guest guest) {
         if (r.getGuest() == null) {
             r.setGuest(guest);
             this.room = r;
