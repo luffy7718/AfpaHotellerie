@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import com.example.a77011_40_08.afpahotellerie.Models.Floors;
 import com.example.a77011_40_08.afpahotellerie.Models.Jobs;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
+import com.example.a77011_40_08.afpahotellerie.Models.RoomsTypes;
 
 /**
  * Created by 77011-40-05 on 15/03/2018.
@@ -15,6 +16,8 @@ public class App extends Application {
     private  static Jobs jobs;
     private  static RoomStatuts roomStatuts;
     private  static Floors floors;
+    private static RoomsTypes roomsTypes;
+
 
     // Called when the application is starting, before any other application objects have been created.
     // Overriding this method is totally optional!
@@ -61,5 +64,13 @@ public class App extends Application {
 
     public static void setFloors(Floors floors) {
         App.floors = floors;
+    }
+
+    public static RoomsTypes getRoomsTypes() {
+        return roomsTypes;
+    }
+
+    public static void setRoomsTypes(RoomsTypes roomsTypes) {
+        App.roomsTypes = roomsTypes;
     }
 }

@@ -47,7 +47,11 @@ public interface SWInterface {
             @Header("Authorization") String authorization
     );
     @POST("/afpa_hotellerie/getFloors.php")
-    Observable<Push>getFloors(
+    Observable<Push>Floors(
+            @Header("Authorization") String authorization
+    );
+    @POST("/afpa_hotellerie/getRoomsTypes.php")
+    Observable<Push>RoomsTypes(
             @Header("Authorization") String authorization
     );
 
@@ -57,5 +61,19 @@ public interface SWInterface {
     Call<Push> getAssignedRooms(
             @Header("Authorization") String authorization,
             @Field("idStaff") int idStaff);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/getFurnituresTroublesByIdRoom.php")
+    Call<Push> getFurnituresTroublesByIdRoom(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom);
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addRoomsHistory.php")
+    Call<Push> addRoomsHistory(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom,
+            @Field("idStaff") int idStaff,
+            @Field("date") String date,
+            @Field("idRoomStatus") int idRoomStatus);
 
 }

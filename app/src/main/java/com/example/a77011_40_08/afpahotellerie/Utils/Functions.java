@@ -25,6 +25,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -260,5 +263,12 @@ public class Functions {
             e.printStackTrace();
         }
         return "Basic "+htpasswd;
+    }
+    public static String today()
+    {
+        Date today;
+        today=new Date();
+        SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        return format.format(today);
     }
 }

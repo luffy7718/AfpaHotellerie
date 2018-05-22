@@ -12,7 +12,10 @@
             android:id="@+id/nav_chambre"
             android:icon="@drawable/ic_stat_chambre"
             android:title="Liste des chambres" />
-
+        <item
+            android:id="@+id/nav_affectation"
+            android:icon="@drawable/ic_action_assignment"
+            android:title="Affectations" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_action_name"

@@ -8,6 +8,7 @@ public class Room {
     private int idFloor;
     private int idRoomStatus;
     private  String date;
+    private  int idRoomType;
 
     public Room(int n, int idr, int idf) {
         this.number=n;
@@ -53,5 +54,13 @@ public class Room {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getIdRoomType() {
+        return idRoomType;
+    }
+
+    public void setIdRoomType(int idRoomType) {
+        this.idRoomType = idRoomType;
     }
 }

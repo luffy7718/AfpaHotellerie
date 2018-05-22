@@ -16,6 +16,7 @@ import com.example.a77011_40_08.afpahotellerie.Activities.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.Adapters.ListRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
+import com.example.a77011_40_08.afpahotellerie.Models.Room;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.Models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
@@ -24,6 +25,9 @@ import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
 import com.google.gson.Gson;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +41,7 @@ public class ListRoomsFragment extends Fragment {
     Rooms myRooms;
     ListRoomsAdapter listRoomsAdapter;
     SWInterface swInterface;
+
 
     public ListRoomsFragment() {
         // Required empty public constructor
@@ -69,8 +74,8 @@ public class ListRoomsFragment extends Fragment {
         myRooms=new Rooms();
         listRoomsAdapter=new ListRoomsAdapter(myRooms, getActivity());
         rvwListRooms.setAdapter(listRoomsAdapter);
-
         getAssignedRooms();
+
         return view;
     }
 
@@ -104,5 +109,7 @@ public class ListRoomsFragment extends Fragment {
             }
         });
     }
+
+
 
 }

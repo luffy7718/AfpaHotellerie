@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a77011_40_08.afpahotellerie.Fragments.ListRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Holders.ListRoomsHolder;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
@@ -45,12 +46,13 @@ public class ListRoomsAdapter extends RecyclerView.Adapter<ListRoomsHolder> {
     @Override
     public void onBindViewHolder(ListRoomsHolder holder, int position) {
         Room room = rooms.get(position);
-        holder.setRooms(room,activity);
+        holder.setRooms(room,position,activity,this);
     }
 
     @Override
     public int getItemCount() {
         return rooms.size();
     }
+
 
 }

@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.ListRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
@@ -118,8 +119,8 @@ public class HomeActivity extends AppCompatActivity
       else   if (id == R.id.nav_chambre) {
             changeFragment(Constants.FRAG_LIST_ROOMS,null);
 
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_affectation) {
+            changeFragment(Constants.FRAG_ASSIGNMENT,null);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -148,6 +149,9 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case Constants.FRAG_LIST_ROOMS:
                 frag = new ListRoomsFragment();
+                break;
+            case Constants.FRAG_ASSIGNMENT:
+                frag = new AssignmentFragment();
                 break;
 
 

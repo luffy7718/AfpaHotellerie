@@ -19,6 +19,7 @@ import com.example.a77011_40_08.afpahotellerie.Models.Jobs;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
+import com.example.a77011_40_08.afpahotellerie.Models.RoomsTypes;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.Models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     RoomStatuts roomStatuts;
     Floors floors;
     App app;
+    RoomsTypes roomsTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
                     Observable<Push> RoomsStatusObservable
                             = s.RoomsStatus(Functions.getAuth()).subscribeOn(Schedulers.io());
-                    Observable<Push> getFloorsObservable
-                            = s.getFloors(Functions.getAuth()).subscribeOn(Schedulers.io());
-
+                    Observable<Push> FloorsObservable
+                            = s.Floors(Functions.getAuth()).subscribeOn(Schedulers.io());
+                    Observable<Push> RoomsTypesObservable
+                            = s.RoomsTypes(Functions.getAuth()).subscribeOn(Schedulers.io());
                     return Observable.concatArray(jobObservable, RoomsStatusObservable,
-                            getFloorsObservable);
+                            FloorsObservable,RoomsTypesObservable);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleResults,
                 this::handleError);
 
@@ -119,15 +122,19 @@ public class MainActivity extends AppCompatActivity {
 
             } else if (push.getType().equals("rooms_status")) {
                 roomStatuts=gson.fromJson(push.getData(),RoomStatuts.class);
-                Log.e(Constants._TAG_LOG,"STATUS 0:"+roomStatuts.get(0).getAbbreviation());
                 app.setRoomStatuts(roomStatuts);
             } else if (push.getType().equals("floors")) {
                 floors=gson.fromJson(push.getData(),Floors.class);
                 app.setFloors(floors);
+            }else if (push.getType().equals("rooms_types")) {
+                roomsTypes = gson.fromJson(push.getData(), RoomsTypes.class);
+                app.setRoomsTypes(roomsTypes);
             }
 
-            if(jobs != null && roomStatuts!=null && floors!=null)
+            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | Floors:"+String.valueOf(floors!=null)+" | RoomsTypes:"+String.valueOf(roomsTypes!=null));
+            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
             {
+                Log.e(Constants._TAG_LOG,"APP loaded");
                 goToLogin();
             }
 
