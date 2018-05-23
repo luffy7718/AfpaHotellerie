@@ -92,32 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!login.isEmpty() && !password.isEmpty()) {
                     vswLogin.showNext();
                     lblLoginCurrentAction.setText("Connexion ...");
-
                     callLogin(login, password);
-
-                   /* AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE +
-                   "login.php", new AsyncCallWS.OnCallBackAsyncTask() {
-                        @Override
-                        public void onResultCallBack(String result) {
-                           else{
-                                Log.e(Constants._TAG_LOG,"login: "+result);
-                                Gson gson = new Gson();
-                                Users users = gson.fromJson(result,Users.class);
-                                User user = users.get(0);
-                                Session.setMyUser(user);
-                                Session.setConnectionChecked(true);
-                                intent.putExtra("RETURN","VALIDATE");
-                                String[] data = new String[]{user.getName(),user.getFirstname()};
-                                intent.putExtra("DATA",data);
-                                setResult(Constants._CODE_LOGIN,intent);
-                                finish();//finishing activity
-                            }
-                            vswLogin.showPrevious();
-                        }
-                    });
-                    asyncCallWS.addParam("login",login);
-                    asyncCallWS.addParam("password",password);
-                    asyncCallWS.execute();*/
                 }
             }
         });
@@ -128,26 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                 finish();//finishing activity
             }
         });
-    }
-
-    private void loginRequestResult(String result) {
-        //Log.e("[DEBUG]",result);
-        Gson gson = new Gson();
-        Users users = gson.fromJson(result, Users.class);
-        User user = users.get(0);
-        Session.setMyUser(user);
-        Session.setConnectionChecked(true);
-        intent.putExtra("RETURN", "VALIDATE");
-        String[] data = new String[]{user.getName(), user.getFirstname()};
-        intent.putExtra("DATA", data);
-        setResult(Constants._CODE_LOGIN, intent);
-        finish();//finishing activity*/
-    }
-
-    private void passwordRequestResult(String result) {
-        Log.e("[DEBUG]", result);
-        Toast.makeText(context, "MDP: " + result, Toast.LENGTH_LONG).show();
-        vswLogin.showPrevious();
     }
 
     private void showPasswordForgottenDialog() {

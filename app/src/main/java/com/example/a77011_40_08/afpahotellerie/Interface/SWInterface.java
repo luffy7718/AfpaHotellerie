@@ -19,6 +19,10 @@ import retrofit2.http.POST;
 
 public interface SWInterface {
 
+    @POST("/afpa_hotellerie/getDBVersion.php")
+    Call<Integer> getDBVersion(
+            @Header("Authorization") String authorization
+    );
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/login.php")

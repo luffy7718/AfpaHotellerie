@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +33,11 @@ import com.google.gson.Gson;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.operators.flowable.FlowableUnsubscribeOn;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         app = (App) getApplication();
         swInterface = RetrofitApi.getInterface();
-        getData();
-       goToLogin();
+        checkVersion();
     }
 
     private void goToLogin() {
@@ -65,26 +69,78 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(getApplicationContext(), LoginActivity.class);
         }
 
+        startActivity(intent);
+        finish();
 
-        if (intent != null) {
-            startActivity(intent);
-            finish();
+
+    }
+
+    private void checkVersion() {
+        Call<Integer> call = swInterface.getDBVersion(Functions.getAuth());
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
+                if (response.isSuccessful()) {
+                    int currentVersion = response.body();
+                    getData(currentVersion);
+                }else{
+                    Log.e(Constants._TAG_LOG,"checkVersion: "+response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Log.e(Constants._TAG_LOG,"Erreur: checkVersion |"+t.getMessage());
+            }
+        });
+    }
+
+    private void getData(int dbVersion) {
+        String save = Functions.getPreferenceString(this, "localVersion");
+        if (!save.equals("")) {
+            int localVersion = Integer.parseInt(save);
+            Log.e(Constants._TAG_LOG, "DBVersion: " + dbVersion + " | LocalVersion: " + localVersion);
+            if (localVersion == dbVersion) {
+                getDataFromSP();
+            } else {
+                Functions.addPreferenceString(this, "localVersion", "" + dbVersion);
+                getDataFromDB();
+            }
+        } else {
+            Functions.addPreferenceString(this, "localVersion", "" + dbVersion);
+            getDataFromDB();
+        }
+    }
+
+    private void getDataFromSP() {//DB:Shared Preferences
+        Log.e(Constants._TAG_LOG, "getDataFromSP");
+        String jsonJobs = Functions.getPreferenceString(this, "jobsTable");
+        String jsonRoomsStatus = Functions.getPreferenceString(this, "roomsStatusTable");
+        String jsonFloors = Functions.getPreferenceString(this, "floorsTable");
+        String jsonRoomsTypes = Functions.getPreferenceString(this, "roomsTypesTable");
+        if (jsonJobs.equals("") || jsonRoomsStatus.equals("") || jsonFloors.equals("") || jsonRoomsTypes.equals("")) {
+            Log.e(Constants._TAG_LOG, "Missing data from Shared Preferences");
+            getDataFromDB();
+        } else {
+            Gson gson = new Gson();
+            jobs = gson.fromJson(jsonJobs, Jobs.class);
+            App.setJobs(jobs);
+            roomStatuts = gson.fromJson(jsonRoomsStatus, RoomStatuts.class);
+            App.setRoomStatuts(roomStatuts);
+            floors = gson.fromJson(jsonFloors, Floors.class);
+            App.setFloors(floors);
+            roomsTypes = gson.fromJson(jsonRoomsTypes, RoomsTypes.class);
+            App.setRoomsTypes(roomsTypes);
+            Log.e(Constants._TAG_LOG, "APP loaded from SP.");
+            goToLogin();
         }
 
     }
 
 
     @SuppressLint("CheckResult")
-    private void getData() {
-        //first it creates an observable which emits retrofit service class
-        //to leave current main thread, we need to use subscribeOn which subscribes the
-        // observable on computation thread
-        //flatMap is used to apply function on the item emitted by previous observable
-        //function makes two rest service calls using the give retrofit object for defined api
-        // interface
-        //these two calls run parallel that is why subscribeOn is used on each of them
-        //since these two api call return same object, they are joined using concatArray operator
-        //finally consumer observes on android main thread
+    private void getDataFromDB() {//DB:Data Base
+        Log.e(Constants._TAG_LOG, "getDataFromDB");
         Observable.just(swInterface).subscribeOn(Schedulers.computation())
                 .flatMap(s -> {
                     Observable<Push> jobObservable
@@ -97,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     Observable<Push> RoomsTypesObservable
                             = s.RoomsTypes(Functions.getAuth()).subscribeOn(Schedulers.io());
                     return Observable.concatArray(jobObservable, RoomsStatusObservable,
-                            FloorsObservable,RoomsTypesObservable);
+                            FloorsObservable, RoomsTypesObservable);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleResults,
                 this::handleError);
 
@@ -113,35 +169,37 @@ public class MainActivity extends AppCompatActivity {
         if (object instanceof Push) {
             Push push = (Push) object;
             Log.e(Constants._TAG_LOG, push.toString());
-            Gson gson=new Gson();
+            Gson gson = new Gson();
 
-            if (push.getType().equals("jobs")) {
-
-                jobs=gson.fromJson(push.getData(),Jobs.class);
-                app.setJobs(jobs);
-
-            } else if (push.getType().equals("rooms_status")) {
-                roomStatuts=gson.fromJson(push.getData(),RoomStatuts.class);
-                app.setRoomStatuts(roomStatuts);
-            } else if (push.getType().equals("floors")) {
-                floors=gson.fromJson(push.getData(),Floors.class);
-                app.setFloors(floors);
-            }else if (push.getType().equals("rooms_types")) {
-                roomsTypes = gson.fromJson(push.getData(), RoomsTypes.class);
-                app.setRoomsTypes(roomsTypes);
+            switch (push.getType()) {
+                case "jobs":
+                    jobs = gson.fromJson(push.getData(), Jobs.class);
+                    App.setJobs(jobs);
+                    Functions.addPreferenceString(this, "jobsTable", push.getData());
+                    break;
+                case "rooms_status":
+                    roomStatuts = gson.fromJson(push.getData(), RoomStatuts.class);
+                    App.setRoomStatuts(roomStatuts);
+                    Functions.addPreferenceString(this, "roomsStatusTable", push.getData());
+                    break;
+                case "floors":
+                    floors = gson.fromJson(push.getData(), Floors.class);
+                    App.setFloors(floors);
+                    Functions.addPreferenceString(this, "floorsTable", push.getData());
+                    break;
+                case "rooms_types":
+                    roomsTypes = gson.fromJson(push.getData(), RoomsTypes.class);
+                    App.setRoomsTypes(roomsTypes);
+                    Functions.addPreferenceString(this, "roomsTypesTable", push.getData());
+                    break;
             }
 
             //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | Floors:"+String.valueOf(floors!=null)+" | RoomsTypes:"+String.valueOf(roomsTypes!=null));
-            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
-            {
-                Log.e(Constants._TAG_LOG,"APP loaded");
+            if (jobs != null && roomStatuts != null && floors != null && roomsTypes != null) {
+                Log.e(Constants._TAG_LOG, "APP loaded from DB.");
                 goToLogin();
             }
-
-
         }
-
-
     }
 
     private void handleError(Throwable t) {
