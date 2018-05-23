@@ -11,7 +11,7 @@ public class User {
     private String name;
     private String firstname;
     private String path;
-
+    private int idJob;
     public User(){
 
     }
@@ -48,5 +48,17 @@ public class User {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public void setIdStaff(int idStaff) {
+        this.idStaff = idStaff;
+    }
+
+    public int getIdJob() {
+        return idJob;
+    }
+
+    public void setIdJob(int idJob) {
+        this.idJob = idJob;
     }
 }
