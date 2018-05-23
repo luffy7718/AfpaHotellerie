@@ -5,10 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,17 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
-import com.example.a77011_40_08.afpahotellerie.Fragments.ListRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -148,7 +142,7 @@ public class HomeActivity extends AppCompatActivity
                 frag = new HomeFragment();
                 break;
             case Constants.FRAG_LIST_ROOMS:
-                frag = new ListRoomsFragment();
+                frag = new AssignedRoomsFragment();
                 break;
             case Constants.FRAG_ASSIGNMENT:
                 frag = new AssignmentFragment();

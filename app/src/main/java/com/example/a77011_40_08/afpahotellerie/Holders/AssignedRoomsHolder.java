@@ -1,35 +1,26 @@
 package com.example.a77011_40_08.afpahotellerie.Holders;
 
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 
 import com.example.a77011_40_08.afpahotellerie.Activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.Adapters.ListRoomsAdapter;
-import com.example.a77011_40_08.afpahotellerie.Fragments.ListRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.Adapters.AssignedRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
-import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.App;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
@@ -38,20 +29,16 @@ import com.example.a77011_40_08.afpahotellerie.Utils.GenericAlertDialog;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
 import com.google.gson.Gson;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static java.security.AccessController.getContext;
 
 
 /**
  * Created by 77011-40-05 on 14/03/2018.
  */
 
-public class ListRoomsHolder extends RecyclerView.ViewHolder {
+public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
     public final TextView txtNumber;
     public final TextView txtAbbréviation;
     public final ImageButton btnPlay;
@@ -61,10 +48,10 @@ public class ListRoomsHolder extends RecyclerView.ViewHolder {
     Room room;
     App app;
     int position;
-    ListRoomsAdapter parent;
+    AssignedRoomsAdapter parent;
 
 
-    public ListRoomsHolder(View view) {
+    public AssignedRoomsHolder(View view) {
         super(view);
         Context context = (Activity) view.getContext();
         swInterface = RetrofitApi.getInterface();
@@ -142,7 +129,7 @@ public class ListRoomsHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setRooms(final Room room,int position, Activity activity, ListRoomsAdapter parent) {
+    public void setRooms(final Room room,int position, Activity activity, AssignedRoomsAdapter parent) {
         this.parent = parent;
         this.room = room;
         this.position = position;

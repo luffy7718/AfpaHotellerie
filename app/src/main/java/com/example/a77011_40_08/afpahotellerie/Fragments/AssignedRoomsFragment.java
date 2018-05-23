@@ -1,7 +1,6 @@
 package com.example.a77011_40_08.afpahotellerie.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,43 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a77011_40_08.afpahotellerie.Activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.Adapters.ListRoomsAdapter;
+import com.example.a77011_40_08.afpahotellerie.Adapters.AssignedRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
-import com.example.a77011_40_08.afpahotellerie.Models.Room;
-import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.Models.Rooms;
-import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
 import com.google.gson.Gson;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ListRoomsFragment extends Fragment {
+public class AssignedRoomsFragment extends Fragment {
 
     Context context;
     RecyclerView rvwListRooms;
-    Rooms myRooms;
-    ListRoomsAdapter listRoomsAdapter;
+
+    AssignedRoomsAdapter assignedRoomsAdapter;
     SWInterface swInterface;
 
 
-    public ListRoomsFragment() {
+    public AssignedRoomsFragment() {
         // Required empty public constructor
     }
 
 
-    public static ListRoomsFragment newInstance(String param1, String param2) {
-        ListRoomsFragment fragment = new ListRoomsFragment();
+    public static AssignedRoomsFragment newInstance(String param1, String param2) {
+        AssignedRoomsFragment fragment = new AssignedRoomsFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -61,6 +54,10 @@ public class ListRoomsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
+
+        assignedRoomsAdapter =new AssignedRoomsAdapter( getActivity());
+
+        getAssignedRooms();
     }
 
     @Override
@@ -71,10 +68,8 @@ public class ListRoomsFragment extends Fragment {
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwListRooms.setLayoutManager(layoutManagerR);
         rvwListRooms.setItemAnimator(new DefaultItemAnimator());
-        myRooms=new Rooms();
-        listRoomsAdapter=new ListRoomsAdapter(myRooms, getActivity());
-        rvwListRooms.setAdapter(listRoomsAdapter);
-        getAssignedRooms();
+
+        rvwListRooms.setAdapter(assignedRoomsAdapter);
 
         return view;
     }
@@ -85,17 +80,15 @@ public class ListRoomsFragment extends Fragment {
         call.enqueue(new Callback<Push>() {
             @Override
             public void onResponse(Call<Push> call, Response<Push> response) {
+
                 if (response.isSuccessful()) {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
                         Gson gson = new Gson();
-                        myRooms = gson.fromJson(push.getData(),Rooms.class);
-                        Log.e(Constants._TAG_LOG,"LENGTH: "+myRooms.size());
-                        Log.e(Constants._TAG_LOG,"0: "+myRooms.get(0).getIdRoom()+" "+myRooms.get(0).getNumber());
-                        listRoomsAdapter=new ListRoomsAdapter(myRooms, getActivity());
-                        rvwListRooms.setAdapter(listRoomsAdapter);
-                        //listRoomsAdapter.notifyDataSetChanged();
+                        Rooms rooms = gson.fromJson(push.getData(),Rooms.class);
+                        assignedRoomsAdapter.loadRoom(rooms);
+                        assignedRoomsAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
                     }
                 }else{
