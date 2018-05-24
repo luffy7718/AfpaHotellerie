@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "523735287624",
+    "firebase_url": "https://satgeafpaformation.firebaseio.com",
+    "project_id": "satgeafpaformation",
+    "storage_bucket": "satgeafpaformation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523735287624:android:430ee69f8a9084d7",
+        "android_client_info": {
+          "package_name": "com.example.a77011_40_08.afpahotellerie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523735287624-ib4mufn4bvv85j8kdc2n6ptqtunjrv53.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.a77011_40_08.afpahotellerie",
+            "certificate_hash": "2062906b7159fba7cf4fe23dd29f5646f2f683bd"
+          }
+        },
+        {
+          "client_id": "523735287624-cmvr8lfki58our5ripeim3kthkk1b2tn.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "523735287624-cmvr8lfki58our5ripeim3kthkk1b2tn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNxWkKYa1swCLbzTVe4XlDd_GNjbIH5Pw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523735287624-cmvr8lfki58our5ripeim3kthkk1b2tn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
