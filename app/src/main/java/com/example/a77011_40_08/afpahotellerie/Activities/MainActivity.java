@@ -30,6 +30,8 @@ import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         app = (App) getApplication();
         swInterface = RetrofitApi.getInterface();
         checkVersion();
+        loadColors();
+        //getData();
+
     }
 
     private void goToLogin() {
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     Observable<Push> RoomsTypesObservable
                             = s.RoomsTypes(Functions.getAuth()).subscribeOn(Schedulers.io());
                     return Observable.concatArray(jobObservable, RoomsStatusObservable,
-                            FloorsObservable, RoomsTypesObservable);
+                            FloorsObservable,RoomsTypesObservable);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleResults,
                 this::handleError);
 
@@ -169,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         if (object instanceof Push) {
             Push push = (Push) object;
             Log.e(Constants._TAG_LOG, push.toString());
-            Gson gson = new Gson();
+            Gson gson=new Gson();
 
             switch (push.getType()) {
                 case "jobs":
@@ -195,17 +200,33 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | Floors:"+String.valueOf(floors!=null)+" | RoomsTypes:"+String.valueOf(roomsTypes!=null));
-            if (jobs != null && roomStatuts != null && floors != null && roomsTypes != null) {
-                Log.e(Constants._TAG_LOG, "APP loaded from DB.");
+            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
+            {
+                Log.e(Constants._TAG_LOG,"APP loaded");
                 goToLogin();
             }
+
+
         }
+
+
     }
 
     private void handleError(Throwable t) {
         Log.e("Observer", "" + t.toString());
         Toast.makeText(this, "ERROR IN GETTING DATA",
                 Toast.LENGTH_LONG).show();
+    }
+
+    private void loadColors(){
+        HashMap<String, Integer> colors = new HashMap<>();
+        colors.put("LP",getResources().getColor(R.color.colorStatusLP));
+        colors.put("LS",getResources().getColor(R.color.colorStatusLS));
+        colors.put("OP",getResources().getColor(R.color.colorStatusOP));
+        colors.put("OS",getResources().getColor(R.color.colorStatusOS));
+        colors.put("DA",getResources().getColor(R.color.colorStatusDA));
+
+        App.setColors(colors);
     }
 
 }

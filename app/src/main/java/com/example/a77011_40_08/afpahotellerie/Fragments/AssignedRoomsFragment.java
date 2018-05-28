@@ -83,7 +83,7 @@ public class AssignedRoomsFragment extends Fragment {
                         assignedRoomsAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
                     }
-                }else{
+                } else {
 
                 }
             }

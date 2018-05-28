@@ -1,12 +1,14 @@
 package com.example.a77011_40_08.afpahotellerie.Utils;
 
 import android.app.Application;
-import android.content.res.Configuration;
 
 import com.example.a77011_40_08.afpahotellerie.Models.Floors;
 import com.example.a77011_40_08.afpahotellerie.Models.Jobs;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomsTypes;
+import com.example.a77011_40_08.afpahotellerie.Models.Users;
+
+import java.util.HashMap;
 
 /**
  * Created by 77011-40-05 on 15/03/2018.
@@ -17,6 +19,11 @@ public class App extends Application {
     private  static RoomStatuts roomStatuts;
     private  static Floors floors;
     private static RoomsTypes roomsTypes;
+    private static Users staff;
+
+
+    //COLOR ROOM STATUS
+    private static HashMap<String,Integer> colors;
 
 
     // Called when the application is starting, before any other application objects have been created.
@@ -72,5 +79,25 @@ public class App extends Application {
 
     public static void setRoomsTypes(RoomsTypes roomsTypes) {
         App.roomsTypes = roomsTypes;
+    }
+
+    public static void loadColors(){
+
+    }
+
+    public static HashMap<String, Integer> getColors() {
+        return colors;
+    }
+
+    public static void setColors(HashMap<String, Integer> colors) {
+        App.colors = colors;
+    }
+
+    public static Users getStaff() {
+        return staff;
+    }
+
+    public static void setStaff(Users staff) {
+        App.staff = staff;
     }
 }

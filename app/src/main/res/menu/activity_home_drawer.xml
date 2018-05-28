@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_action_assignment"
             android:title="Affectations" />
         <item
+            android:id="@+id/nav_stateRooms"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:title="État des chambres" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_action_name"
             android:title="Agenda" />

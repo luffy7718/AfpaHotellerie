@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
-import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.StateRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
@@ -116,12 +118,12 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_home){
             clearFragments();
             changeFragment(Constants._FRAG_HOME,null);
-        }
-      else   if (id == R.id.nav_chambre) {
+        } else if (id == R.id.nav_chambre) {
             changeFragment(Constants.FRAG_LIST_ROOMS,null);
-
         } else if (id == R.id.nav_affectation) {
             changeFragment(Constants.FRAG_ASSIGNMENT,null);
+        } else if (id == R.id.nav_stateRooms) {
+            changeFragment(Constants.FRAG_SATEROOMS,null);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -153,6 +155,9 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case Constants.FRAG_ASSIGNMENT:
                 frag = new AssignedStaffFragment();
+                break;
+            case Constants.FRAG_SATEROOMS:
+                frag = new StateRoomsFragment();
                 break;
 
 

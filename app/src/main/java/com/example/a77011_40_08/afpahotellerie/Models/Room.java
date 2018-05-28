@@ -64,4 +64,8 @@ public class Room {
     public void setIdRoomType(int idRoomType) {
         this.idRoomType = idRoomType;
     }
+
+    public int getIdStaff() { return idStaff; }
+
+    public void setIdStaff(int idStaff) { this.idStaff = idStaff; }
 }

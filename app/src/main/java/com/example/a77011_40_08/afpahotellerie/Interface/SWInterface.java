@@ -73,6 +73,10 @@ public interface SWInterface {
     Call<Push> getStaff(
             @Header("Authorization") String authorization);
 
+    @POST("/afpa_hotellerie/getRooms.php")
+    Call<Push> getRooms(
+            @Header("Authorization") String authorization);
+
     @FormUrlEncoded
     @POST("/afpa_hotellerie/getSubordinates.php")
     Call<Push> getSubordinates(
