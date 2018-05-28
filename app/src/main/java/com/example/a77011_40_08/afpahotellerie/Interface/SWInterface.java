@@ -111,19 +111,19 @@ public interface SWInterface {
      ******************************************/
 
     @POST("/afpa_hotellerie/getJobs.php")
-    Observable<Push> jobs(
+    Observable<Push> getJobs(
             @Header("Authorization") String authorization
     );
     @POST("/afpa_hotellerie/getRoomsStatus.php")
-    Observable<Push>RoomsStatus(
+    Observable<Push> getRoomsStatus(
             @Header("Authorization") String authorization
     );
     @POST("/afpa_hotellerie/getFloors.php")
-    Observable<Push>Floors(
+    Observable<Push> getFloors(
             @Header("Authorization") String authorization
     );
     @POST("/afpa_hotellerie/getRoomsTypes.php")
-    Observable<Push>RoomsTypes(
+    Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
     );
 

@@ -16,9 +16,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.example.a77011_40_08.afpahotellerie.Activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.Adapters.AssignRoomsByStaffAdapter;
+import com.example.a77011_40_08.afpahotellerie.Adapters.RoomsAssignmentAdapter;
 import com.example.a77011_40_08.afpahotellerie.Adapters.AssignedStaffAdapter;
-import com.example.a77011_40_08.afpahotellerie.Adapters.UnaffectedRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
@@ -32,7 +31,6 @@ import com.example.a77011_40_08.afpahotellerie.Utils.GridSpacingItemDecoration;
 import com.example.a77011_40_08.afpahotellerie.Utils.Session;
 import com.google.gson.Gson;
 
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,8 +41,8 @@ public class AssignedStaffFragment extends Fragment {
     RecyclerView rvwListStaff;
     SWInterface swInterface;
     AssignedStaffAdapter assignedStaffAdapter;
-    AssignRoomsByStaffAdapter assignRoomsByStaffAdapter;
-    AssignRoomsByStaffAdapter unaffectedRoomsAdapter;
+    RoomsAssignmentAdapter roomsAssignmentAdapter;
+    RoomsAssignmentAdapter unaffectedRoomsAdapter;
     TextView txtAvailable;
     TextView txtUnaffected;
     TextView txtName;
@@ -69,8 +67,8 @@ public class AssignedStaffFragment extends Fragment {
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
         assignedStaffAdapter = new AssignedStaffAdapter(assignedStaffFragment);
-        assignRoomsByStaffAdapter = new AssignRoomsByStaffAdapter(true, getActivity());
-        unaffectedRoomsAdapter = new AssignRoomsByStaffAdapter(false, getActivity());
+        roomsAssignmentAdapter = new RoomsAssignmentAdapter(true, getActivity());
+        unaffectedRoomsAdapter = new RoomsAssignmentAdapter(false, getActivity());
         getSubordinates();
 
     }
@@ -103,7 +101,7 @@ public class AssignedStaffFragment extends Fragment {
         rvwListAssign.setItemAnimator(new DefaultItemAnimator());
         rvwListUnaffected.setItemAnimator(new DefaultItemAnimator());
         rvwListStaff.setAdapter(assignedStaffAdapter);
-        rvwListAssign.setAdapter(assignRoomsByStaffAdapter);
+        rvwListAssign.setAdapter(roomsAssignmentAdapter);
         rvwListUnaffected.setAdapter(unaffectedRoomsAdapter);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen
                 .recycler_view_item_spacing);
@@ -174,8 +172,8 @@ public class AssignedStaffFragment extends Fragment {
                     if (push.getStatus() == 1) {
                         Gson gson = new Gson();
                         Rooms rooms = gson.fromJson(push.getData(), Rooms.class);
-                        assignRoomsByStaffAdapter.loadRoom(rooms);
-                        assignRoomsByStaffAdapter.notifyDataSetChanged();
+                        roomsAssignmentAdapter.loadRoom(rooms);
+                        roomsAssignmentAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
                     }
                 } else {
@@ -236,7 +234,7 @@ public class AssignedStaffFragment extends Fragment {
         if (fromAssigned) {
             unaffectedRoomsAdapter.addRoom(room);
         } else {
-            assignRoomsByStaffAdapter.addRoom(room);
+            roomsAssignmentAdapter.addRoom(room);
         }
     }
 

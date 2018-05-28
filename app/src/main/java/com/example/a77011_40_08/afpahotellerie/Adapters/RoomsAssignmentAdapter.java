@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.a77011_40_08.afpahotellerie.Activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedStaffFragment;
-import com.example.a77011_40_08.afpahotellerie.Holders.AssignRoomsByStaffHolder;
-import com.example.a77011_40_08.afpahotellerie.Holders.AssignedRoomsHolder;
+import com.example.a77011_40_08.afpahotellerie.Holders.RoomsAssignmentHolder;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
 import com.example.a77011_40_08.afpahotellerie.Models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.R;
@@ -17,14 +16,14 @@ import com.example.a77011_40_08.afpahotellerie.R;
 import java.util.Collections;
 
 
-public class AssignRoomsByStaffAdapter extends RecyclerView.Adapter<AssignRoomsByStaffHolder> {
+public class RoomsAssignmentAdapter extends RecyclerView.Adapter<RoomsAssignmentHolder> {
 
     Rooms rooms;
     int idStaff;
     boolean isAssigned;
     Activity activity;
 
-    public AssignRoomsByStaffAdapter(boolean isAssigned, Activity activity) {
+    public RoomsAssignmentAdapter(boolean isAssigned, Activity activity) {
         this.rooms = new Rooms();
         this.isAssigned = isAssigned;
         this.activity = activity;
@@ -32,15 +31,15 @@ public class AssignRoomsByStaffAdapter extends RecyclerView.Adapter<AssignRoomsB
     }
 
     @Override
-    public AssignRoomsByStaffHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RoomsAssignmentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_assigned_rooms, parent, false);
 
-        return new AssignRoomsByStaffHolder(view);
+        return new RoomsAssignmentHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AssignRoomsByStaffHolder holder, int position) {
+    public void onBindViewHolder(RoomsAssignmentHolder holder, int position) {
         Room room = rooms.get(position);
         holder.setRooms(room, position, this, isAssigned);
     }

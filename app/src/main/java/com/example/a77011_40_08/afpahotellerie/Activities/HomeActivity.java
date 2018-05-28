@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
-import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.StateRoomsFragment;

@@ -74,14 +74,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-      /*  lblLoginRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
         btnLoginValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

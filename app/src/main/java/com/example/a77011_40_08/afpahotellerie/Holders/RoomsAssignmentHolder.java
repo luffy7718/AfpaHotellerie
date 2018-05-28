@@ -1,6 +1,5 @@
 package com.example.a77011_40_08.afpahotellerie.Holders;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,36 +8,28 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.Activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.Adapters.AssignRoomsByStaffAdapter;
-import com.example.a77011_40_08.afpahotellerie.Adapters.AssignedRoomsAdapter;
+import com.example.a77011_40_08.afpahotellerie.Adapters.RoomsAssignmentAdapter;
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
-import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
-import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
-import com.example.a77011_40_08.afpahotellerie.Models.Rooms;
-import com.example.a77011_40_08.afpahotellerie.Models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
-import com.example.a77011_40_08.afpahotellerie.Utils.App;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
-import com.example.a77011_40_08.afpahotellerie.Utils.Session;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AssignRoomsByStaffHolder extends RecyclerView.ViewHolder {
+public class RoomsAssignmentHolder extends RecyclerView.ViewHolder {
 
     int position;
-    AssignRoomsByStaffAdapter parent;
+    RoomsAssignmentAdapter parent;
     Room room;
     CardView cvaffected;
     SWInterface swInterface;
     public final TextView txtNumber;
 
-    public AssignRoomsByStaffHolder(View view) {
+    public RoomsAssignmentHolder(View view) {
         super(view);
         swInterface = RetrofitApi.getInterface();
         txtNumber = (TextView) view.findViewById(R.id.txtNumber);
@@ -59,7 +50,7 @@ public class AssignRoomsByStaffHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setRooms(final Room room, int position, AssignRoomsByStaffAdapter parent, boolean
+    public void setRooms(final Room room, int position, RoomsAssignmentAdapter parent, boolean
             isAssigned) {
         this.parent = parent;
         this.room = room;

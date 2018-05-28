@@ -4,26 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
-import com.example.a77011_40_08.afpahotellerie.Models.Floor;
 import com.example.a77011_40_08.afpahotellerie.Models.Floors;
-import com.example.a77011_40_08.afpahotellerie.Models.Job;
 import com.example.a77011_40_08.afpahotellerie.Models.Jobs;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
-import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomsTypes;
-import com.example.a77011_40_08.afpahotellerie.Models.User;
-import com.example.a77011_40_08.afpahotellerie.Models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.App;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
@@ -34,8 +26,6 @@ import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.operators.flowable.FlowableUnsubscribeOn;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -149,14 +139,14 @@ public class MainActivity extends AppCompatActivity {
         Observable.just(swInterface).subscribeOn(Schedulers.computation())
                 .flatMap(s -> {
                     Observable<Push> jobObservable
-                            = s.jobs(Functions.getAuth()).subscribeOn(Schedulers.io());
+                            = s.getJobs(Functions.getAuth()).subscribeOn(Schedulers.io());
 
                     Observable<Push> RoomsStatusObservable
-                            = s.RoomsStatus(Functions.getAuth()).subscribeOn(Schedulers.io());
+                            = s.getRoomsStatus(Functions.getAuth()).subscribeOn(Schedulers.io());
                     Observable<Push> FloorsObservable
-                            = s.Floors(Functions.getAuth()).subscribeOn(Schedulers.io());
+                            = s.getFloors(Functions.getAuth()).subscribeOn(Schedulers.io());
                     Observable<Push> RoomsTypesObservable
-                            = s.RoomsTypes(Functions.getAuth()).subscribeOn(Schedulers.io());
+                            = s.getRoomsTypes(Functions.getAuth()).subscribeOn(Schedulers.io());
                     return Observable.concatArray(jobObservable, RoomsStatusObservable,
                             FloorsObservable,RoomsTypesObservable);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribe(this::handleResults,
@@ -177,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             Gson gson=new Gson();
 
             switch (push.getType()) {
-                case "jobs":
+                case "getJobs":
                     jobs = gson.fromJson(push.getData(), Jobs.class);
                     App.setJobs(jobs);
                     Functions.addPreferenceString(this, "jobsTable", push.getData());
@@ -199,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | Floors:"+String.valueOf(floors!=null)+" | RoomsTypes:"+String.valueOf(roomsTypes!=null));
+            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(getJobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
             if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
             {
                 Log.e(Constants._TAG_LOG,"APP loaded");
