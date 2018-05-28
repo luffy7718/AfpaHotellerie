@@ -138,12 +138,8 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
         RoomStatuts rs = app.getRoomStatuts();
         String status = "XX";
         for (RoomStatut entry : rs) {
-            Log.e(Constants._TAG_LOG, "Entry: " + entry.getIdRoomStatus() + "," + entry.getName()
-                    + "," + entry.getAbbreviation());
-            Log.e(Constants._TAG_LOG, entry.getIdRoomStatus() + " = " + room.getIdRoomStatus());
             if (entry.getIdRoomStatus() == room.getIdRoomStatus()) {
                 status = entry.getAbbreviation();
-                Log.e(Constants._TAG_LOG, "Status: " + status);
             }
         }
         txtAbbréviation.setText(status);

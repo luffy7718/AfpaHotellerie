@@ -7,8 +7,9 @@ public class Room {
     private int number;
     private int idFloor;
     private int idRoomStatus;
-    private  String date;
-    private  int idRoomType;
+    private String date;
+    private int idRoomType;
+    private int idStaff;
 
     public Room(int n, int idr, int idf) {
         this.number=n;
