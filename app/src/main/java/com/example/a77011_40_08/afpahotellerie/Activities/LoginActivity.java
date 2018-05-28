@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     Context context;
     int requestType = 0;
     SWInterface swInterface;
-    Push push;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

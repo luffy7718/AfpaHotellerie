@@ -41,14 +41,6 @@ public class AssignedRoomsFragment extends Fragment {
     }
 
 
-    public static AssignedRoomsFragment newInstance(String param1, String param2) {
-        AssignedRoomsFragment fragment = new AssignedRoomsFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +49,7 @@ public class AssignedRoomsFragment extends Fragment {
 
         assignedRoomsAdapter =new AssignedRoomsAdapter( getActivity());
 
-        getAssignedRooms();
+        getRoomsToClean();
     }
 
     @Override
@@ -74,8 +66,8 @@ public class AssignedRoomsFragment extends Fragment {
         return view;
     }
 
-    private void getAssignedRooms(){
-        Call<Push> call = swInterface.getAssignedRooms(Functions.getAuth(), Session.getMyUser().getIdStaff());
+    private void getRoomsToClean(){
+        Call<Push> call = swInterface.getRoomsToClean(Functions.getAuth(), Session.getMyUser().getIdStaff());
 
         call.enqueue(new Callback<Push>() {
             @Override

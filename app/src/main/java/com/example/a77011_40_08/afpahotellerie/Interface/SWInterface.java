@@ -28,14 +28,6 @@ public interface SWInterface {
             @Field("password") String password);
 
 
-    @FormUrlEncoded
-    @POST("/afpa_hotellerie/addUser.php")
-    Call<User> account(
-            @Field("name") String name,
-            @Field("firstname") String firstname,
-               @Field("login") String login,
-             @Field("password") String password);
-
 
 
     @POST("/afpa_hotellerie/getJobs.php")
@@ -76,4 +68,34 @@ public interface SWInterface {
             @Field("date") String date,
             @Field("idRoomStatus") int idRoomStatus);
 
+
+    @POST("/afpa_hotellerie/getStaff.php")
+    Call<Push> getStaff(
+            @Header("Authorization") String authorization);
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/getSubordinates.php")
+    Call<Push> getSubordinates(
+            @Header("Authorization") String authorization,
+            @Field("idStaff") int idStaff);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/getRoomsToClean.php")
+    Call<Push> getRoomsToClean(
+            @Header("Authorization") String authorization,
+            @Field("idStaff") int idStaff);
+
+    @POST("/afpa_hotellerie/getUnassignedRooms.php")
+    Call<Push> getUnassignedRooms(
+            @Header("Authorization") String authorization);
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/removeAssignment.php")
+    Call<Push> removeAssignment(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom);
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addAssignment.php")
+    Call<Push> addAssignment(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom,
+            @Field("idStaff") int idStaff);
 }

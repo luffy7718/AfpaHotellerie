@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
@@ -71,7 +71,14 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if(currentFragment instanceof AssignedStaffFragment){
+                if(((AssignedStaffFragment) currentFragment).doBack()){
+                    super.onBackPressed();
+                }
+            }else{
+                super.onBackPressed();
+            }
         }
     }
 
@@ -145,7 +152,7 @@ public class HomeActivity extends AppCompatActivity
                 frag = new AssignedRoomsFragment();
                 break;
             case Constants.FRAG_ASSIGNMENT:
-                frag = new AssignmentFragment();
+                frag = new AssignedStaffFragment();
                 break;
 
 
@@ -174,4 +181,7 @@ public class HomeActivity extends AppCompatActivity
         txtHeaderName.setText(user.getFullName());
     }
 
+    public Fragment getLastFragment(){
+        return currentFragment;
+    }
 }
