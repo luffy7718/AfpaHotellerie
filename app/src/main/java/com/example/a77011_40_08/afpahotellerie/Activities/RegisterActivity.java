@@ -75,36 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-    private void callAccount(String login, String password) {
-        try {
 
-
-            Call<User> call = userInterface.account(name,firstname,login, password);
-
-            call.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()) {
-
-                        goToLogin();
-                        setResult(Constants._CODE_LOGIN, intent);
-
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Log.e("error", "");
-
-                }
-            });
-
-
-        } catch (Exception e) {
-            Log.e("Tag", e.toString());
-        }
-    }
     private void goToLogin() {
         Intent intent = null;
         intent = new Intent(getApplicationContext(), LoginActivity.class);

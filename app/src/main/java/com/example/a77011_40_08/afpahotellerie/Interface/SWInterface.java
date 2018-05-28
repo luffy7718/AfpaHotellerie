@@ -19,6 +19,9 @@ import retrofit2.http.POST;
 
 public interface SWInterface {
 
+    /******************************************
+     * CALL
+    ******************************************/
     @POST("/afpa_hotellerie/getDBVersion.php")
     Call<Integer> getDBVersion(
             @Header("Authorization") String authorization
@@ -31,16 +34,43 @@ public interface SWInterface {
             @Field("login") String login,
             @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/getAssignedRooms.php")
+    Call<Push> getAssignedRooms(
+            @Header("Authorization") String authorization,
+            @Field("idStaff") int idStaff);
 
     @FormUrlEncoded
-    @POST("/afpa_hotellerie/addUser.php")
-    Call<User> account(
-            @Field("name") String name,
-            @Field("firstname") String firstname,
-               @Field("login") String login,
-             @Field("password") String password);
+    @POST("/afpa_hotellerie/getFurnituresTroublesByIdRoom.php")
+    Call<Push> getFurnituresTroublesByIdRoom(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom);
 
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addRoomsHistory.php")
+    Call<Push> addRoomsHistory(
+            @Header("Authorization") String authorization,
+            @Field("idRoom") int idRoom,
+            @Field("idStaff") int idStaff,
+            @Field("date") String date,
+            @Field("idRoomStatus") int idRoomStatus);
 
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addDevice.php")
+    Call<Push> addDevice(
+            @Header("Authorization") String authorization,
+            @Field("token") String token);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/setDevice.php")
+    Call<Push> setDevice(
+            @Header("Authorization") String authorization,
+            @Field("idDevice") int idDevice,
+            @Field("token") String token);
+
+    /******************************************
+     * OBSERVABLE
+     ******************************************/
 
     @POST("/afpa_hotellerie/getJobs.php")
     Observable<Push> jobs(
@@ -58,26 +88,5 @@ public interface SWInterface {
     Observable<Push>RoomsTypes(
             @Header("Authorization") String authorization
     );
-
-
-    @FormUrlEncoded
-    @POST("/afpa_hotellerie/getAssignedRooms.php")
-    Call<Push> getAssignedRooms(
-            @Header("Authorization") String authorization,
-            @Field("idStaff") int idStaff);
-
-    @FormUrlEncoded
-    @POST("/afpa_hotellerie/getFurnituresTroublesByIdRoom.php")
-    Call<Push> getFurnituresTroublesByIdRoom(
-            @Header("Authorization") String authorization,
-            @Field("idRoom") int idRoom);
-    @FormUrlEncoded
-    @POST("/afpa_hotellerie/addRoomsHistory.php")
-    Call<Push> addRoomsHistory(
-            @Header("Authorization") String authorization,
-            @Field("idRoom") int idRoom,
-            @Field("idStaff") int idStaff,
-            @Field("date") String date,
-            @Field("idRoomStatus") int idRoomStatus);
 
 }
