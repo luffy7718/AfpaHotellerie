@@ -17,7 +17,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
@@ -33,7 +34,7 @@ public class HomeActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     TextView txtHeaderName;
     ImageView imgProfilePics;
-
+int idStaff;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +75,9 @@ public class HomeActivity extends AppCompatActivity
         } else {
 
             if(currentFragment instanceof AssignedStaffFragment){
-                if(((AssignedStaffFragment) currentFragment).doBack()){
+
                     super.onBackPressed();
-                }
+
             }else{
                 super.onBackPressed();
             }
@@ -118,9 +119,9 @@ public class HomeActivity extends AppCompatActivity
             clearFragments();
             changeFragment(Constants._FRAG_HOME,null);
         } else if (id == R.id.nav_chambre) {
-            changeFragment(Constants.FRAG_LIST_ROOMS,null);
+            changeFragment(Constants.FRAG_ROOMS_CLEAN,null);
         } else if (id == R.id.nav_affectation) {
-            changeFragment(Constants.FRAG_ASSIGNMENT,null);
+            changeFragment(Constants.FRAG_ASSIGNED_STAFF,null);
         } else if (id == R.id.nav_stateRooms) {
             changeFragment(Constants.FRAG_SATEROOMS,null);
         } else if (id == R.id.nav_manage) {
@@ -149,16 +150,18 @@ public class HomeActivity extends AppCompatActivity
             case Constants._FRAG_HOME:
                 frag = new HomeFragment();
                 break;
-            case Constants.FRAG_LIST_ROOMS:
-                frag = new AssignedRoomsFragment();
+            case Constants.FRAG_ROOMS_CLEAN:
+                frag = new RoomsToCleanFragment();
                 break;
-            case Constants.FRAG_ASSIGNMENT:
+            case Constants.FRAG_ASSIGNED_STAFF:
                 frag = new AssignedStaffFragment();
                 break;
             case Constants.FRAG_SATEROOMS:
                 frag = new StateRoomsFragment();
                 break;
-
+            case Constants.FRAG_ASSIGNED_ROOM:
+                frag = AssignRoomFragment.newInstance(params);
+                break;
 
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
@@ -188,4 +191,6 @@ public class HomeActivity extends AppCompatActivity
     public Fragment getLastFragment(){
         return currentFragment;
     }
+
+
 }

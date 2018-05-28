@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
+import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.holders.RoomsAssignmentHolder;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
@@ -78,7 +79,7 @@ public class RoomsAssignmentAdapter extends RecyclerView.Adapter<RoomsAssignment
         Room deletedRoom = rooms.get(position);
         rooms.remove(position);
         HomeActivity home= (HomeActivity) activity;
-        AssignedStaffFragment frag = (AssignedStaffFragment) home.getLastFragment();
+        AssignRoomFragment frag = (AssignRoomFragment) home.getLastFragment();
         frag.transfert(deletedRoom, isAssigned);
     }
 

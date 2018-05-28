@@ -27,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AssignedRoomsFragment extends Fragment {
+public class RoomsToCleanFragment extends Fragment {
 
     Context context;
     RecyclerView rvwListRooms;
@@ -36,7 +36,7 @@ public class AssignedRoomsFragment extends Fragment {
     SWInterface swInterface;
 
 
-    public AssignedRoomsFragment() {
+    public RoomsToCleanFragment() {
         // Required empty public constructor
     }
 
@@ -55,7 +55,7 @@ public class AssignedRoomsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-     View view=inflater.inflate(R.layout.fragment_list_rooms, container, false);
+     View view=inflater.inflate(R.layout.fragment_rooms_toclean, container, false);
         rvwListRooms = view.findViewById(R.id.rvwListRooms);
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
         rvwListRooms.setLayoutManager(layoutManagerR);

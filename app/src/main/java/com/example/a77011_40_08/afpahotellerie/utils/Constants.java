@@ -15,9 +15,10 @@ public class Constants {
 
     //FRAGMENT CODE -->HomeActivity
     public final static int _FRAG_HOME = 0;
-    public final static int FRAG_LIST_ROOMS = 1;
-    public final static int FRAG_ASSIGNMENT = 2;
+    public final static int FRAG_ROOMS_CLEAN = 1;
+    public final static int FRAG_ASSIGNED_STAFF = 2;
     public final static int FRAG_SATEROOMS = 3;
+    public final static int FRAG_ASSIGNED_ROOM = 4;
 
 
     //STARTACTIVITYFORRESULT -->HomeActivity

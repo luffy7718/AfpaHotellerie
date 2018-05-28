@@ -6,7 +6,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="5dp"
-    tools:context=".fragments.AssignedRoomsFragment">
+    tools:context=".fragments.RoomsToCleanFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvwStateRooms"
