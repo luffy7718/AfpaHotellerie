@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="true">
+
+
+    <FrameLayout
+        android:id="@+id/frlRoom"
+        android:layout_width="match_parent"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@drawable/card_view_bg1"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/txtNumber"
+                android:textColor="#FFF"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:gravity="center"
+                android:background="@drawable/text_view_bg1"
+                android:text="378" />
+
+
+            <TextView
+                android:id="@+id/txtAbbreviation"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:text="TextView"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtInProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:visibility="visible"
+                        android:textColor="@color/colorTxtDark"
+                        android:text="En cours..."/>
+
+                    <TextView
+                        android:id="@+id/txtAgentInProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:visibility="visible"
+                        android:textColor="@color/colorTxtLight"
+                        android:text="Marie Boubouche"/>
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</android.support.v7.widget.CardView>

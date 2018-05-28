@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorTxtDark">#333333</color>
+    <color name="colorTxtLight">#929292</color>
+
+    <color name="colorStatusLP">#2bb673</color>
+    <color name="colorStatusLS">#f15a29</color>
+    <color name="colorStatusOP">#27aae1</color>
+    <color name="colorStatusOS">#be1e2d</color>
+    <color name="colorStatusDA">#262262</color>
 </resources>

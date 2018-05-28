@@ -5,21 +5,22 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.AssignmentFragment;
 import com.example.a77011_40_08.afpahotellerie.Fragments.HomeFragment;
-import com.example.a77011_40_08.afpahotellerie.Fragments.AssignedRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.Fragments.StateRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.Models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
@@ -109,12 +110,12 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_home){
             clearFragments();
             changeFragment(Constants._FRAG_HOME,null);
-        }
-      else   if (id == R.id.nav_chambre) {
+        } else if (id == R.id.nav_chambre) {
             changeFragment(Constants.FRAG_LIST_ROOMS,null);
-
         } else if (id == R.id.nav_affectation) {
             changeFragment(Constants.FRAG_ASSIGNMENT,null);
+        } else if (id == R.id.nav_stateRooms) {
+            changeFragment(Constants.FRAG_SATEROOMS,null);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -147,6 +148,9 @@ public class HomeActivity extends AppCompatActivity
             case Constants.FRAG_ASSIGNMENT:
                 frag = new AssignmentFragment();
                 break;
+            case Constants.FRAG_SATEROOMS:
+                frag = new StateRoomsFragment();
+                break;
 
 
             default:
@@ -173,5 +177,4 @@ public class HomeActivity extends AppCompatActivity
     public void userHasChange(User user){
         txtHeaderName.setText(user.getFullName());
     }
-
 }

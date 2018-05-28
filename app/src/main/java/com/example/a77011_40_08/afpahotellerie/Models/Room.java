@@ -9,6 +9,7 @@ public class Room {
     private int idRoomStatus;
     private  String date;
     private  int idRoomType;
+    private  int idStaff;
 
     public Room(int n, int idr, int idf) {
         this.number=n;
@@ -63,4 +64,8 @@ public class Room {
     public void setIdRoomType(int idRoomType) {
         this.idRoomType = idRoomType;
     }
+
+    public int getIdStaff() { return idStaff; }
+
+    public void setIdStaff(int idStaff) { this.idStaff = idStaff; }
 }

@@ -1,42 +1,39 @@
 package com.example.a77011_40_08.afpahotellerie.Adapters;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.a77011_40_08.afpahotellerie.Holders.AssignedRoomsHolder;
+import com.example.a77011_40_08.afpahotellerie.Holders.StateRoomsHolder;
 import com.example.a77011_40_08.afpahotellerie.Models.Room;
 import com.example.a77011_40_08.afpahotellerie.Models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.R;
 
-
-/**
- * Created by 77011-40-05 on 16/03/2018.
- */
-
-public class AssignedRoomsAdapter extends RecyclerView.Adapter<AssignedRoomsHolder> {
+public class StateRoomsAdapter extends RecyclerView.Adapter<StateRoomsHolder> {
 
     Rooms rooms;
     Activity activity;
 
-    public AssignedRoomsAdapter(Activity activity) {
-        this.activity = activity;
+    public StateRoomsAdapter(Activity activity) {
         this.rooms = new Rooms();
+        this.activity = activity;
     }
 
+    @NonNull
     @Override
-    public AssignedRoomsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StateRoomsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_rooms, parent, false);
-        return new AssignedRoomsHolder(view);
+                .inflate(R.layout.card_view_state_rooms, parent, false);
+        return new StateRoomsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AssignedRoomsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StateRoomsHolder holder, int position) {
         Room room = rooms.get(position);
-        holder.setRooms(room,position,activity,this);
+        holder.setRooms(room, activity);
     }
 
     @Override
@@ -54,7 +51,6 @@ public class AssignedRoomsAdapter extends RecyclerView.Adapter<AssignedRoomsHold
 
     public  void loadRoom(Rooms rooms)
     {
-      this.rooms = rooms;
+        this.rooms = rooms;
     }
-
 }

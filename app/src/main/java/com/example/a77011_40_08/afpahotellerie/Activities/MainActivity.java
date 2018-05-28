@@ -4,35 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.Interface.SWInterface;
-import com.example.a77011_40_08.afpahotellerie.Models.Floor;
 import com.example.a77011_40_08.afpahotellerie.Models.Floors;
-import com.example.a77011_40_08.afpahotellerie.Models.Job;
 import com.example.a77011_40_08.afpahotellerie.Models.Jobs;
 import com.example.a77011_40_08.afpahotellerie.Models.Push;
-import com.example.a77011_40_08.afpahotellerie.Models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.Models.RoomsTypes;
-import com.example.a77011_40_08.afpahotellerie.Models.User;
-import com.example.a77011_40_08.afpahotellerie.Models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.Utils.App;
 import com.example.a77011_40_08.afpahotellerie.Utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.Utils.Functions;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         app = (App) getApplication();
         swInterface = RetrofitApi.getInterface();
+        loadColors();
         getData();
        goToLogin();
     }
@@ -148,6 +142,17 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Observer", "" + t.toString());
         Toast.makeText(this, "ERROR IN GETTING DATA",
                 Toast.LENGTH_LONG).show();
+    }
+
+    private void loadColors(){
+        HashMap<String, Integer> colors = new HashMap<>();
+        colors.put("LP",getResources().getColor(R.color.colorStatusLP));
+        colors.put("LS",getResources().getColor(R.color.colorStatusLS));
+        colors.put("OP",getResources().getColor(R.color.colorStatusOP));
+        colors.put("OS",getResources().getColor(R.color.colorStatusOS));
+        colors.put("DA",getResources().getColor(R.color.colorStatusDA));
+
+        App.setColors(colors);
     }
 
 }
