@@ -11,18 +11,22 @@
         <item
             android:id="@+id/nav_chambre"
             android:icon="@drawable/ic_stat_chambre"
+            android:visible="true"
             android:title="Liste des chambres" />
         <item
             android:id="@+id/nav_affectation"
             android:icon="@drawable/ic_action_assignment"
+            android:visible="true"
             android:title="Affectations" />
         <item
             android:id="@+id/nav_stateRooms"
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:visible="true"
             android:title="État des chambres" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_action_name"
+            android:visible="true"
             android:title="Agenda" />
         <item
             android:id="@+id/nav_manage"

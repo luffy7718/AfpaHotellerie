@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText txtLoginName;
     TextInputEditText txtLoginPwd;
     TextView lblLoginForgotten;
-    TextView lblLoginRegister;
     Context context;
     int requestType = 0;
     SWInterface swInterface;
@@ -55,11 +54,9 @@ public class LoginActivity extends AppCompatActivity {
         txtLoginPwd = findViewById(R.id.txtLogin_pwd);
 
         lblLoginForgotten = findViewById(R.id.lblLogin_forgotten);
-        // lblLoginRegister = findViewById(R.id.lblLogin_register);
         lblLoginForgotten.setPaintFlags(lblLoginForgotten.getPaintFlags() | Paint
                 .UNDERLINE_TEXT_FLAG);
-/*        lblLoginRegister.setPaintFlags(lblLoginRegister.getPaintFlags() | Paint
-                .UNDERLINE_TEXT_FLAG);*/
+
 
         Button btnLoginValidate = findViewById(R.id.btnLogin_validate);
         Button btnLoginBack = findViewById(R.id.btnLogin_back);
@@ -116,16 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(context, "Login manquant.", Toast.LENGTH_LONG).show();
                     return;
                 }
-               /* AsyncCallWS asyncCallWS = new AsyncCallWS(Constants._URL_WEBSERVICE +
-               "lostPassword.php", new AsyncCallWS.OnCallBackAsyncTask() {
-                    @Override
-                    public void onResultCallBack(String result) {
-                        Toast.makeText(context,"MDP: "+result, Toast.LENGTH_LONG).show();
-                        vswLogin.showPrevious();
-                    }
-                });
-                asyncCallWS.addParam("login",login);
-                asyncCallWS.execute();*/
+
             }
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Fermer", new DialogInterface
@@ -150,7 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.e("TAG ", response.body().toString());
                         Push push = response.body();
-                        if(push.getStatus()==1) {
+                        if (push.getStatus() == 1) {
+
                             Gson gson = new Gson();
                             User user = gson.fromJson(push.getData(), User.class);
                             Session.setMyUser(user);
@@ -164,9 +153,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
                                     + ", data:" + push.getData()
                                     + "]");
-                        } else
-                        {
-                            Log.e("push.getdata = ",push.getData());
+                        } else {
+                            Log.e("push.getdata = ", push.getData());
 
                         }
                         //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)

@@ -27,6 +27,9 @@ import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Context context;
@@ -34,16 +37,48 @@ public class HomeActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     TextView txtHeaderName;
     ImageView imgProfilePics;
-int idStaff;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       context=this;
+        context = this;
+
+        Map<Boolean, String> myMap = new HashMap<Boolean, String>();
+        myMap.put(true, "1");
+        myMap.put(false, "2");
+        myMap.put(false, "3");
+        myMap.put(false, "4");
+        myMap.put(false, "5");
+        myMap = new HashMap<Boolean, String>();
+        myMap.put(false, "1");
+        myMap.put(true, "2");
+        myMap.put(false, "3");
+        myMap.put(false, "4");
+        myMap.put(false, "5");
+        myMap = new HashMap<Boolean, String>();
+        myMap.put(false, "1");
+        myMap.put(false, "2");
+        myMap.put(true, "3");
+        myMap.put(false, "4");
+        myMap.put(false, "5");
+        myMap = new HashMap<Boolean, String>();
+        myMap.put(false, "1");
+        myMap.put(false, "2");
+        myMap.put(false, "3");
+        myMap.put(true, "4");
+        myMap.put(false, "5");
+        myMap = new HashMap<Boolean, String>();
+        myMap.put(false, "1");
+        myMap.put(false, "2");
+        myMap.put(false, "3");
+        myMap.put(false, "4");
+        myMap.put(true, "5");
+
         fragmentManager = getFragmentManager();
-        changeFragment(Constants._FRAG_HOME,null);
+        changeFragment(Constants._FRAG_HOME, null);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +90,8 @@ int idStaff;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
+                .navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -73,16 +109,10 @@ int idStaff;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-
-            if(currentFragment instanceof AssignedStaffFragment){
-
-                    super.onBackPressed();
-
-            }else{
-                super.onBackPressed();
-            }
+            super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,10 +131,9 @@ int idStaff;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if(id == R.id.action_login)
-        {
-            Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
-            startActivityForResult(intent, 2);// Activity is started with requestCode 2
+        } else if (id == R.id.action_login) {
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -115,15 +144,15 @@ int idStaff;
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_home){
+        if (id == R.id.nav_home) {
             clearFragments();
-            changeFragment(Constants._FRAG_HOME,null);
+            changeFragment(Constants._FRAG_HOME, null);
         } else if (id == R.id.nav_chambre) {
-            changeFragment(Constants.FRAG_ROOMS_CLEAN,null);
+            changeFragment(Constants.FRAG_ROOMS_CLEAN, null);
         } else if (id == R.id.nav_affectation) {
-            changeFragment(Constants.FRAG_ASSIGNED_STAFF,null);
+            changeFragment(Constants.FRAG_ASSIGNED_STAFF, null);
         } else if (id == R.id.nav_stateRooms) {
-            changeFragment(Constants.FRAG_SATEROOMS,null);
+            changeFragment(Constants.FRAG_SATEROOMS, null);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -136,17 +165,19 @@ int idStaff;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void clearFragments(){
+
+    private void clearFragments() {
         int end = fragmentManager.getBackStackEntryCount();
-        for (int i = 0; i<=end;i++){
+        for (int i = 0; i <= end; i++) {
             //Log.e(Constants._TAG_LOG,i+"/"+end);
             fragmentManager.popBackStackImmediate();
         }
         //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
     }
-    public void changeFragment(int code, Bundle params){
+
+    public void changeFragment(int code, Bundle params) {
         Fragment frag = null;
-        switch (code){
+        switch (code) {
             case Constants._FRAG_HOME:
                 frag = new HomeFragment();
                 break;
@@ -164,31 +195,32 @@ int idStaff;
                 break;
 
             default:
-                Log.e("[ERROR]","changeFragment: code invalide "+code);
+                Log.e("[ERROR]", "changeFragment: code invalide " + code);
                 break;
         }
 
-        if(frag !=null){
+        if (frag != null) {
             loadFragment(frag);
         }
 
     }
 
-    private void loadFragment(Fragment fragment){
+    private void loadFragment(Fragment fragment) {
         currentFragment = fragment;
-        int backStackCount =fragmentManager.getBackStackEntryCount();
-        String tag = "Frag"+backStackCount;
+        int backStackCount = fragmentManager.getBackStackEntryCount();
+        String tag = "Frag" + backStackCount;
 
         fragmentManager.beginTransaction()
-                .replace(R.id.frtHome,fragment,tag)
+                .replace(R.id.frtHome, fragment, tag)
                 .addToBackStack(tag)
                 .commit();
     }
-    public void userHasChange(User user){
+
+    public void userHasChange(User user) {
         txtHeaderName.setText(user.getFullName());
     }
 
-    public Fragment getLastFragment(){
+    public Fragment getLastFragment() {
         return currentFragment;
     }
 
