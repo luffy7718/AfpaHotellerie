@@ -95,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
     private void showPasswordForgottenDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("Mot de passe oublié");
-        //alertDialog.setMessage(utilisateur.getNom());
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View container = inflater.inflate(R.layout.dialog_forgotten_password, null);
@@ -127,55 +126,49 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void callLogin(String login, String password) {
-        try {
+        Log.e(Constants._TAG_LOG,"Login ...");
+        Call<Push> call = swInterface.login(Functions.getAuth(), login, password,Functions.getMyIdDevice(context));
 
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if (response.isSuccessful()) {
+                    Log.e(Constants._TAG_LOG, response.toString());
+                    Push push = response.body();
+                    if(push.getStatus()==1) {
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(push.getData(), User.class);
+                        Session.setMyUser(user);
+                        Session.setConnectionChecked(true);
+                        goToHome();
+                        setResult(Constants._CODE_LOGIN, intent);
 
-            Call<Push> call = swInterface.login(Functions.getAuth(), login, password);
+                        Log.e(Constants._TAG_LOG, "User " + user.getFirstname());
 
-            call.enqueue(new Callback<Push>() {
-                @Override
-                public void onResponse(Call<Push> call, Response<Push> response) {
-                    if (response.isSuccessful()) {
-                        Log.e("TAG ", response.body().toString());
-                        Push push = response.body();
-                        if (push.getStatus() == 1) {
+                        //textView.setText(push.getName());
+                        Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
+                                + ", data:" + push.getData()
+                                + "]");
+                    } else
+                    {
+                        Log.e(Constants._TAG_LOG,"push.getdata = "+push.getData());
 
-                            Gson gson = new Gson();
-                            User user = gson.fromJson(push.getData(), User.class);
-                            Session.setMyUser(user);
-                            Session.setConnectionChecked(true);
-                            goToHome();
-                            setResult(Constants._CODE_LOGIN, intent);
-
-                            Log.e(Constants._TAG_LOG, "User " + user.getFirstname());
-
-                            //textView.setText(push.getName());
-                            Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
-                                    + ", data:" + push.getData()
-                                    + "]");
-                        } else {
-                            Log.e("push.getdata = ", push.getData());
-
-                        }
-                        //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
-                        // .show();
-                    } else {
-                        //todo:gérer les code erreur de retour
                     }
-
+                    //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
+                    // .show();
+                } else {
+                    //todo:gérer les code erreur de retour
+                    Log.e(Constants._TAG_LOG, response.toString());
                 }
 
-                @Override
-                public void onFailure(Call<Push> call, Throwable t) {
-                    Log.e("error", "");
+            }
 
-                }
-            });
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+                Log.e("error", "");
 
-
-        } catch (Exception e) {
-            Log.e("Tag", e.toString());
-        }
+            }
+        });
     }
 
     private void goToHome() {

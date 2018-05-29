@@ -15,20 +15,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
+import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,13 +46,18 @@ public class HomeActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     TextView txtHeaderName;
     ImageView imgProfilePics;
+    SWInterface swInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        context=this;
+        swInterface = RetrofitApi.getInterface();
         context = this;
 
         Map<Boolean, String> myMap = new HashMap<Boolean, String>();
@@ -78,7 +92,7 @@ public class HomeActivity extends AppCompatActivity
         myMap.put(true, "5");
 
         fragmentManager = getFragmentManager();
-        changeFragment(Constants._FRAG_HOME, null);
+        changeFragment(Constants._FRAG_HOME,null);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +104,7 @@ public class HomeActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
-                .navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -131,9 +144,8 @@ public class HomeActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_login) {
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
+        } else if(id == R.id.action_login) {
+            logout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -144,15 +156,15 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_home){
             clearFragments();
-            changeFragment(Constants._FRAG_HOME, null);
+            changeFragment(Constants._FRAG_HOME,null);
         } else if (id == R.id.nav_chambre) {
             changeFragment(Constants.FRAG_ROOMS_CLEAN, null);
         } else if (id == R.id.nav_affectation) {
             changeFragment(Constants.FRAG_ASSIGNED_STAFF, null);
         } else if (id == R.id.nav_stateRooms) {
-            changeFragment(Constants.FRAG_SATEROOMS, null);
+            changeFragment(Constants.FRAG_SATEROOMS,null);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -168,7 +180,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void clearFragments() {
         int end = fragmentManager.getBackStackEntryCount();
-        for (int i = 0; i <= end; i++) {
+        for (int i = 0; i<=end;i++){
             //Log.e(Constants._TAG_LOG,i+"/"+end);
             fragmentManager.popBackStackImmediate();
         }
@@ -177,7 +189,7 @@ public class HomeActivity extends AppCompatActivity
 
     public void changeFragment(int code, Bundle params) {
         Fragment frag = null;
-        switch (code) {
+        switch (code){
             case Constants._FRAG_HOME:
                 frag = new HomeFragment();
                 break;
@@ -195,34 +207,57 @@ public class HomeActivity extends AppCompatActivity
                 break;
 
             default:
-                Log.e("[ERROR]", "changeFragment: code invalide " + code);
+                Log.e("[ERROR]","changeFragment: code invalide "+code);
                 break;
         }
 
-        if (frag != null) {
+        if(frag !=null){
             loadFragment(frag);
         }
 
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment){
         currentFragment = fragment;
-        int backStackCount = fragmentManager.getBackStackEntryCount();
-        String tag = "Frag" + backStackCount;
+        int backStackCount =fragmentManager.getBackStackEntryCount();
+        String tag = "Frag"+backStackCount;
 
         fragmentManager.beginTransaction()
-                .replace(R.id.frtHome, fragment, tag)
+                .replace(R.id.frtHome,fragment,tag)
                 .addToBackStack(tag)
                 .commit();
     }
 
-    public void userHasChange(User user) {
+    public void userHasChange(User user){
         txtHeaderName.setText(user.getFullName());
     }
 
-    public Fragment getLastFragment() {
+    public Fragment getLastFragment(){
         return currentFragment;
     }
 
+    private void logout() {
+        Call<Push> call = swInterface.logout(Functions.getAuth(), Session.getMyUser().getIdStaff());
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if(response.isSuccessful()){
+                    Push push = response.body();
+                    if(push.getStatus() == 1){
+                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(context,push.getData(),Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Log.e(Constants._TAG_LOG,response.toString());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+
+            }
+        });
+    }
 }
