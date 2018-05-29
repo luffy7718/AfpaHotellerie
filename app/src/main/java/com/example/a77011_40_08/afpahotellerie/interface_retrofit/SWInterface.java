@@ -26,7 +26,14 @@ public interface SWInterface {
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
-            @Field("password") String password);
+            @Field("password") String password,
+            @Field("idDevice") int idDevice);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/logout.php")
+    Call<Push> logout(
+            @Header("Authorization") String authorization,
+            @Field("idStaff") int idStaff);
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/getAssignedRooms.php")

@@ -108,6 +108,15 @@ public class Functions {
         return format.format(today);
     }
 
+    public static int getMyIdDevice(Context context){
+        String id = getPreferenceString(context,"idDevice");
+        return Integer.parseInt(id);
+    }
+
+    public static String getMyToken(Context context){
+        return getPreferenceString(context,"token");
+    }
+
     public static void  setViewBgColorByStatus(View view, String status) {
         GradientDrawable bgShape = (GradientDrawable)view.getBackground();
         int idRessource = App.getColors().get(status);

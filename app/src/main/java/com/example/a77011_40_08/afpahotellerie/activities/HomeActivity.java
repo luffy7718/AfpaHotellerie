@@ -16,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
@@ -25,10 +27,17 @@ import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragmen
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
+import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
+import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,14 +46,18 @@ public class HomeActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     TextView txtHeaderName;
     ImageView imgProfilePics;
+    SWInterface swInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       context=this;
+
+        context=this;
+        swInterface = RetrofitApi.getInterface();
         fragmentManager = getFragmentManager();
         changeFragment(Constants._FRAG_HOME,null);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -104,10 +117,8 @@ public class HomeActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if(id == R.id.action_login)
-        {
-            Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
-            startActivityForResult(intent, 2);// Activity is started with requestCode 2
+        } else if(id == R.id.action_login) {
+            logout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -191,6 +202,31 @@ public class HomeActivity extends AppCompatActivity
 
     public Fragment getLastFragment(){
         return currentFragment;
+    }
+
+    private void logout() {
+        Call<Push> call = swInterface.logout(Functions.getAuth(), Session.getMyUser().getIdStaff());
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if(response.isSuccessful()){
+                    Push push = response.body();
+                    if(push.getStatus() == 1){
+                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(context,push.getData(),Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Log.e(Constants._TAG_LOG,response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+
+            }
+        });
     }
 
     public void showPhotoDetails(Room room,  RoomStatut roomStatut){
