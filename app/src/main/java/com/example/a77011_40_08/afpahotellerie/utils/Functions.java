@@ -99,4 +99,13 @@ public class Functions {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         return format.format(today);
     }
+
+    public static int getMyIdDevice(Context context){
+        String id = getPreferenceString(context,"idDevice");
+        return Integer.parseInt(id);
+    }
+
+    public static String getMyToken(Context context){
+        return getPreferenceString(context,"token");
+    }
 }

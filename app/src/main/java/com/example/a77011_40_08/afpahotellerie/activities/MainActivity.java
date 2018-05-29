@@ -48,15 +48,13 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         app = (App) getApplication();
         swInterface = RetrofitApi.getInterface();
+        Log.e(Constants._TAG_LOG,"idDevice: "+Functions.getPreferenceString(this, "idDevice"));
+        Log.e(Constants._TAG_LOG,"token: "+Functions.getPreferenceString(this, "token"));
         checkVersion();
         loadColors();
-        //getData();
-
     }
 
     private void goToLogin() {
-
-
         Intent intent;
         if (Build.VERSION.SDK_INT >= 23) {
             intent = new Intent(getApplicationContext(), PermissionActivity.class);
@@ -66,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
         finish();
-
-
     }
 
     private void checkVersion() {
@@ -77,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 if (response.isSuccessful()) {
                     int currentVersion = response.body();
-                    getData(currentVersion);
+                    getDataFromSP(currentVersion);
                 }else{
                     Log.e(Constants._TAG_LOG,"checkVersion: "+response.toString());
                 }
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getData(int dbVersion) {
+    private void getDataFromSP(int dbVersion) {//SP SharedPreference
         String save = Functions.getPreferenceString(this, "localVersion");
         if (!save.equals("")) {
             int localVersion = Integer.parseInt(save);
@@ -129,9 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(Constants._TAG_LOG, "APP loaded from SP.");
             goToLogin();
         }
-
     }
-
 
     @SuppressWarnings("unchecked")
     @SuppressLint("CheckResult")
@@ -168,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             Gson gson=new Gson();
 
             switch (push.getType()) {
-                case "getJobs":
+                case "jobs":
                     jobs = gson.fromJson(push.getData(), Jobs.class);
                     App.setJobs(jobs);
                     Functions.addPreferenceString(this, "jobsTable", push.getData());
@@ -190,14 +184,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(getJobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
-            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
-            {
+            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
+            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null) {
                 Log.e(Constants._TAG_LOG,"APP loaded");
                 goToLogin();
             }
-
-
         }
 
 

@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_affectation"
             android:icon="@drawable/ic_action_assignment"
-            android:title="Affectations" />
+            android:title="Affectations"/>
         <item
             android:id="@+id/nav_stateRooms"
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"
