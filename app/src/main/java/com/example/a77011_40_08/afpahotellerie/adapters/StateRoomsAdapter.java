@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.holders.StateRoomsHolder;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
+import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.R;
 
@@ -34,6 +36,12 @@ public class StateRoomsAdapter extends RecyclerView.Adapter<StateRoomsHolder> {
     public void onBindViewHolder(@NonNull StateRoomsHolder holder, int position) {
         Room room = rooms.get(position);
         holder.setRooms(room, activity);
+        /*holder.frlRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)activity).showPhotoDetails(room, holder.roomStatut);
+            }
+        });*/
     }
 
     @Override

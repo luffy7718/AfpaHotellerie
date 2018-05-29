@@ -2,6 +2,7 @@ package com.example.a77011_40_08.afpahotellerie.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.models.Room;
+import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
@@ -187,5 +191,12 @@ public class HomeActivity extends AppCompatActivity
 
     public Fragment getLastFragment(){
         return currentFragment;
+    }
+
+    public void showPhotoDetails(Room room,  RoomStatut roomStatut){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        RoomDetailDialogFragment detailDialog = RoomDetailDialogFragment.newInstance();
+        detailDialog.setDetailRoom(room, roomStatut);
+        detailDialog.show(ft, "TAG detail");
     }
 }

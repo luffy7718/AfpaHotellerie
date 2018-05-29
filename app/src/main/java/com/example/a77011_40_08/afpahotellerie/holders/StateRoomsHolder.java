@@ -5,8 +5,10 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
@@ -16,15 +18,19 @@ import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
+
+import java.util.function.Function;
 
 public class StateRoomsHolder extends RecyclerView.ViewHolder {
+    RoomStatut roomStatut;
     TextView txtNumber;
     TextView txtAbbreviation;
     TextView txtInProgress;
     TextView txtAgentInProgress;
+    public FrameLayout frlRoom;
     SWInterface swInterface;
     Room room;
-    App app;
 
 
 
@@ -37,21 +43,30 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
         txtAbbreviation = view.findViewById(R.id.txtAbbreviation);
         txtInProgress = view.findViewById(R.id.txtInProgress);
         txtAgentInProgress = view.findViewById(R.id.txtAgentInProgress);
+        frlRoom = view.findViewById(R.id.frlRoom);
     }
 
     public void setRooms(final Room room, Activity activity) {
         this.room = room;
         txtNumber.setText("" + room.getNumber());
-        app = (App) activity.getApplication();
-        RoomStatuts rs = app.getRoomStatuts();
-        String status = "XX";
-        for (RoomStatut entry : rs) {
+        /*app = (App) activity.getApplication();
+        RoomStatuts rs = app.getRoomStatuts();*/
+        String status = "";
+        for (RoomStatut roomStatut : App.getRoomStatuts()) {
             //Log.e(Constants._TAG_LOG, "Entry: " + entry.getIdRoomStatus() + "," + entry.getName() + "," + entry.getAbbreviation());
             //Log.e(Constants._TAG_LOG, entry.getIdRoomStatus() + " = " + room.getIdRoomStatus());
-            if (entry.getIdRoomStatus() == room.getIdRoomStatus()) {
-                status = entry.getAbbreviation();
+            if (roomStatut.getIdRoomStatus() == room.getIdRoomStatus()) {
+                this.roomStatut = roomStatut;
+                status = roomStatut.getAbbreviation();
             }
         }
+
+        frlRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)activity).showPhotoDetails(room, roomStatut);
+            }
+        });
 
         Log.e(Constants._TAG_LOG, "Room: " + room.getNumber() + ", " + status);
         switch(status){
@@ -87,8 +102,10 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
 
         txtAbbreviation.setText(status);
 
-        GradientDrawable bgShape = (GradientDrawable)txtAbbreviation.getBackground();
+        Functions.setViewBgColorByStatus(txtAbbreviation, status);
+
+        /*radientDrawable bgShape = (GradientDrawable)txtAbbreviation.getBackground();
         int idRessource = App.getColors().get(status);
-        bgShape.setColor(idRessource);
+        bgShape.setColor(idRessource);*/
     }
 }

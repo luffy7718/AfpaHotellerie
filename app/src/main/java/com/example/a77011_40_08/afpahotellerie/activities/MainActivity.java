@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         app = (App) getApplication();
         swInterface = RetrofitApi.getInterface();
+        Log.e(Constants._TAG_LOG,"idDevice: "+Functions.getPreferenceString(this, "idDevice"));
+        Log.e(Constants._TAG_LOG,"token: "+Functions.getPreferenceString(this, "token"));
         checkVersion();
         loadColors();
         //getData();
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             Gson gson=new Gson();
 
             switch (push.getType()) {
-                case "getJobs":
+                case "jobs":
                     jobs = gson.fromJson(push.getData(), Jobs.class);
                     App.setJobs(jobs);
                     Functions.addPreferenceString(this, "jobsTable", push.getData());
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(getJobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
+            Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
             if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
             {
                 Log.e(Constants._TAG_LOG,"APP loaded");

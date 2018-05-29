@@ -2,10 +2,18 @@ package com.example.a77011_40_08.afpahotellerie.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
+import android.view.View;
+import android.widget.TextView;
 
+
+import com.example.a77011_40_08.afpahotellerie.R;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -98,5 +106,19 @@ public class Functions {
         today = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         return format.format(today);
+    }
+
+    public static void  setViewBgColorByStatus(View view, String status) {
+        GradientDrawable bgShape = (GradientDrawable)view.getBackground();
+        int idRessource = App.getColors().get(status);
+        bgShape.setColor(idRessource);
+    }
+
+    public static void  setBiColorString(String first, String next, TextView textView, int color) {
+        textView.setText(first + next, TextView.BufferType.SPANNABLE);
+        Spannable s = (Spannable)textView.getText();
+        int start = first.length();
+        int end = start + next.length();
+        s.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }
