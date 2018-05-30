@@ -1,5 +1,7 @@
 package com.example.a77011_40_08.afpahotellerie.utils;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -7,11 +9,15 @@ import android.net.NetworkInfo;
 import android.util.Base64;
 
 
+import com.example.a77011_40_08.afpahotellerie.R;
+import com.google.gson.JsonObject;
+
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by 77011-40-05 on 15/03/2018.
@@ -107,5 +113,21 @@ public class Functions {
 
     public static String getMyToken(Context context){
         return getPreferenceString(context,"token");
+    }
+
+    public static void createNotification(Context context, String title, String body) {
+
+        Notification notification = new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSmallIcon(R.mipmap.ic_launcher_logo)
+                .build();
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        // hide the notification after its selected
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        notificationManager.notify(0, notification);
+
     }
 }
