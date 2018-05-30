@@ -1,10 +1,21 @@
 package com.example.a77011_40_08.afpahotellerie.services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public MyFirebaseMessagingService() {
@@ -17,17 +28,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(Constants._TAG_LOG, "From: " + remoteMessage.getFrom());
+        Log.d(Constants._TAG_LOG, remoteMessage.toString());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(Constants._TAG_LOG, "Message data payload: " + remoteMessage.getData());
-
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                //scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                //handleNow();
+            Map<String, String> data = remoteMessage.getData();
+            Log.d(Constants._TAG_LOG,data.get("type"));
+            switch (data.get("type")){
+                case "notification":
+                    Gson gson = new Gson();
+                    JsonObject json = gson.fromJson(data.get("body"),JsonObject.class);
+                    if(json.has("title") && json.has("text")){
+                        Functions.createNotification(getApplicationContext(),json.get("title").getAsString(),json.get("text").getAsString());
+                    }else{
+                        Log.e(Constants._TAG_LOG,"Body mal formé: "+json);
+                    }
+                    break;
+                case "message":
+                    Toast.makeText(getApplicationContext(),data.get("body"),Toast.LENGTH_LONG).show();
+                    break;
+                case "alert":
+                    Toast.makeText(getApplicationContext(),data.get("body"),Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    Log.e(Constants._TAG_LOG,"Mauvais type: "+data.get("type"));
+                    break;
             }
 
         }
