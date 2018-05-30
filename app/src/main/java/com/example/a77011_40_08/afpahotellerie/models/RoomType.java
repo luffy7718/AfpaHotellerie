@@ -4,7 +4,7 @@ public class RoomType {
 
     private int idRoomType;
     private String name;
-    private  int beds;
+    private int beds;
 
     public RoomType() {
     }

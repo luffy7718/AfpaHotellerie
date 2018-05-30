@@ -31,6 +31,7 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
     public FrameLayout frlRoom;
     SWInterface swInterface;
     Room room;
+    User staff;
 
 
 
@@ -61,12 +62,7 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
             }
         }
 
-        frlRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeActivity)activity).showPhotoDetails(room, roomStatut);
-            }
-        });
+
 
         Log.e(Constants._TAG_LOG, "Room: " + room.getNumber() + ", " + status);
         switch(status){
@@ -81,6 +77,7 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
                     Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
                     if(user.getIdStaff() == (room.getIdStaff())) {
                         Log.e(Constants._TAG_LOG, "idStaff Success");
+                        this.staff = user;
                         staffName = user.getFullName();
                     }
                 }
@@ -107,5 +104,12 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
         /*radientDrawable bgShape = (GradientDrawable)txtAbbreviation.getBackground();
         int idRessource = App.getColors().get(status);
         bgShape.setColor(idRessource);*/
+
+        frlRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)activity).showRoomDetails(room, roomStatut, staff);
+            }
+        });
     }
 }

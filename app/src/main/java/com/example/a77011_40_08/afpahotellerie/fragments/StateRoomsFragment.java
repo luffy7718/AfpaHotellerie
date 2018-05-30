@@ -63,7 +63,7 @@ public class StateRoomsFragment extends Fragment {
 
         rvwStateRooms = view.findViewById(R.id.rvwStateRooms);
         //RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false);
-        RecyclerView.LayoutManager layoutManagerR = new GridLayoutManager(context, 1);
+        RecyclerView.LayoutManager layoutManagerR = new GridLayoutManager(context, 3);
         rvwStateRooms.setLayoutManager(layoutManagerR);
         //rvwStateRooms.setItemAnimator(new DefaultItemAnimator());
 

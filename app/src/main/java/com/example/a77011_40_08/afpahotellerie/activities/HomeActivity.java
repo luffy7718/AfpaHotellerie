@@ -229,10 +229,10 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
-    public void showPhotoDetails(Room room,  RoomStatut roomStatut){
+    public void showRoomDetails(Room room,  RoomStatut roomStatut, User staff){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         RoomDetailDialogFragment detailDialog = RoomDetailDialogFragment.newInstance();
-        detailDialog.setDetailRoom(room, roomStatut);
+        detailDialog.setDetailRoom(room, roomStatut, staff);
         detailDialog.show(ft, "TAG detail");
     }
 }

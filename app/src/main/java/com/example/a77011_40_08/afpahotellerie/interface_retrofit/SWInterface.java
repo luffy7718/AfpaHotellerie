@@ -22,7 +22,8 @@ public interface SWInterface {
     );
 
     @FormUrlEncoded
-    @POST("/afpa_hotellerie/login.php")
+    @POST("/afpa_hotellerie/forceLogin.php")
+    //@POST("/afpa_hotellerie/login.php")
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
@@ -127,5 +128,4 @@ public interface SWInterface {
     Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
     );
-
 }

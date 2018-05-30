@@ -9,11 +9,13 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 
 import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.models.User;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;

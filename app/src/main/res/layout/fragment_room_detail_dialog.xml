@@ -9,9 +9,6 @@
     android:background="#fff"
     android:layout_gravity="center">
 
-
-
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
 
@@ -65,7 +62,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/circle"
             android:gravity="center"
             android:text="TextView"
@@ -75,29 +72,56 @@
 
 
     <ScrollView
+        android:fadeScrollbars="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
             <TextView
-                style="@style/MarginDetail"
-                android:id="@+id/txtRoomType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTxtLight"
-                android:text="Prénom NOM"/>
-
-            <TextView
-                style="@style/MarginDetail"
                 android:id="@+id/txtStatus"
+                style="@style/MarginDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTxtLight"
-                android:text="Prénom NOM"/>
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
+            <TextView
+                android:id="@+id/txtAssignment"
+                style="@style/MarginDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
+            <TextView
+                android:id="@+id/txtRoomType"
+                style="@style/MarginDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
+            <TextView
+                android:id="@+id/txtRoomBeds"
+                style="@style/MarginDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
+            <TextView
+                android:id="@+id/txtFloor"
+                style="@style/MarginDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
 
             <!--<TextView
                 style="@style/MarginDetail"
@@ -121,9 +145,18 @@
             <ImageView
                 android:id="@+id/imgDetailPhoto"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginBottom="15dp"
-                app:srcCompat="@android:drawable/btn_dialog"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ritz" />
+            <ImageView
+                android:id="@+id/imgDetailPhoto2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:src="@drawable/bath" />
 
 
         </LinearLayout>
