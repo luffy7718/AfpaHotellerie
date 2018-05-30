@@ -6,33 +6,33 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
-import com.example.a77011_40_08.afpahotellerie.holders.AssignedStaffHolder;
+import com.example.a77011_40_08.afpahotellerie.fragments.AssignStaffFragment;
+import com.example.a77011_40_08.afpahotellerie.holders.AssignStaffHolder;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
 
-public class AssignedStaffAdapter extends RecyclerView.Adapter<AssignedStaffHolder> {
+public class AssignStaffAdapter extends RecyclerView.Adapter<AssignStaffHolder> {
 
     Users users;
-    AssignedStaffFragment assignedStaffFragment;
+    AssignStaffFragment assignStaffFragment;
 
-    public AssignedStaffAdapter(AssignedStaffFragment assignedStaffFragment) {
+    public AssignStaffAdapter(AssignStaffFragment assignStaffFragment) {
 
-        this.assignedStaffFragment = assignedStaffFragment;
+        this.assignStaffFragment = assignStaffFragment;
 
     }
 
 
     @Override
-    public AssignedStaffHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssignStaffHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_staffs, parent, false);
-        return new AssignedStaffHolder(view);
+        return new AssignStaffHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AssignedStaffHolder holder, int position) {
+    public void onBindViewHolder(AssignStaffHolder holder, int position) {
         User user = users.get(position);
         holder.setUser(user, position, this);
     }

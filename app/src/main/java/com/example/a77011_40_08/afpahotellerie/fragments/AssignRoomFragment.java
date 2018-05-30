@@ -1,8 +1,6 @@
 package com.example.a77011_40_08.afpahotellerie.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,8 +15,7 @@ import android.widget.TextView;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.adapters.AssignedStaffAdapter;
-import com.example.a77011_40_08.afpahotellerie.adapters.RoomsAssignmentAdapter;
+import com.example.a77011_40_08.afpahotellerie.adapters.AssignRoomAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
@@ -27,7 +24,16 @@ import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.GridSpacingItemDecoration;
+import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,15 +43,15 @@ import retrofit2.Response;
 public class AssignRoomFragment extends Fragment {
     SWInterface swInterface;
     Context context;
-    RoomsAssignmentAdapter roomsAssignmentAdapter;
-    RoomsAssignmentAdapter unaffectedRoomsAdapter;
+    AssignRoomAdapter assignRoomAdapter;
+    AssignRoomAdapter unaffectedRoomsAdapter;
     TextView txtName;
     TextView txtFirstName;
     RecyclerView rvwListAssign;
     RecyclerView rvwListUnaffected;
     int numberOfColumns = 5;
-    int idStaff;
     User user;
+    Rooms savedRooms;
 
     public AssignRoomFragment() {
         // Required empty public constructor
@@ -62,24 +68,24 @@ public class AssignRoomFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        HomeActivity home= (HomeActivity) context;
+        HomeActivity home = (HomeActivity) context;
         if (getArguments() != null) {
-            if (getArguments().containsKey("user") ) {
+            if (getArguments().containsKey("user")) {
                 String json = getArguments().getString("user");
-                Log.e(Constants._TAG_LOG,"User selected: "+json);
+                Log.e(Constants._TAG_LOG, "User selected: " + json);
                 Gson gson = new Gson();
-                user = gson.fromJson(json,User.class);
+                user = gson.fromJson(json, User.class);
             }
         }
         swInterface = RetrofitApi.getInterface();
-        roomsAssignmentAdapter = new RoomsAssignmentAdapter(true, getActivity());
-        unaffectedRoomsAdapter = new RoomsAssignmentAdapter(false, getActivity());
+        assignRoomAdapter = new AssignRoomAdapter(true, getActivity());
+        unaffectedRoomsAdapter = new AssignRoomAdapter(false, getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-     View view=inflater.inflate(R.layout.fragment_assign_room, container, false);
+        View view = inflater.inflate(R.layout.fragment_assign_room, container, false);
         txtName = view.findViewById(R.id.txtName);
         txtFirstName = view.findViewById(R.id.txtFirstName);
         rvwListAssign = view.findViewById(R.id.rvwListAssign);
@@ -92,7 +98,7 @@ public class AssignRoomFragment extends Fragment {
         rvwListUnaffected.setLayoutManager(layoutManagerR3);
         rvwListAssign.setItemAnimator(new DefaultItemAnimator());
         rvwListUnaffected.setItemAnimator(new DefaultItemAnimator());
-        rvwListAssign.setAdapter(roomsAssignmentAdapter);
+        rvwListAssign.setAdapter(assignRoomAdapter);
         rvwListUnaffected.setAdapter(unaffectedRoomsAdapter);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen
                 .recycler_view_item_spacing);
@@ -100,9 +106,45 @@ public class AssignRoomFragment extends Fragment {
                 spacingInPixels, true, 0));
         rvwListUnaffected.addItemDecoration(new GridSpacingItemDecoration(numberOfColumns,
                 spacingInPixels, true, 0));
-
         selectedUser();
+
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(Constants._TAG_LOG,"OnStop");
+        if(!assignRoomAdapter.compareRooms(savedRooms)){
+            Log.e(Constants._TAG_LOG,"Changements detectés");
+            Gson gson = new Gson();
+            HashMap<String,String> body = new HashMap<>();
+            body.put("title","Changement d'affectation");
+            body.put("text","Vous avez de nouvelles affectations.");
+            String json = gson.toJson(body);
+            Log.e(Constants._TAG_LOG,"Body: "+json);
+            Call<Push> call = swInterface.sendMessage(Functions.getAuth(),user.getIdStaff(), Session.getMyUser().getIdStaff(),"notification",json);
+            call.enqueue(new Callback<Push>() {
+                @Override
+                public void onResponse(Call<Push> call, Response<Push> response) {
+                    if(response.isSuccessful()){
+                        Push push = response.body();
+                        if(push.getStatus() == 1){
+                            Log.e(Constants._TAG_LOG,"Success onStop");
+                        }else{
+                            Log.e(Constants._TAG_LOG,push.getData());
+                        }
+                    }else{
+                        Log.e(Constants._TAG_LOG,response.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Push> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     private void getAssignedRooms() {
@@ -118,9 +160,15 @@ public class AssignRoomFragment extends Fragment {
                     if (push.getStatus() == 1) {
                         Gson gson = new Gson();
                         Rooms rooms = gson.fromJson(push.getData(), Rooms.class);
-                        roomsAssignmentAdapter.loadRoom(rooms);
-                        roomsAssignmentAdapter.notifyDataSetChanged();
+                        savedRooms = gson.fromJson(push.getData(), Rooms.class);
+                        assignRoomAdapter.loadRoom(rooms);
+                        assignRoomAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
+
+                        /*if (idStaff == 0) {
+                            assignRoomAdapter.loadRoom(null);
+                            assignRoomAdapter.notifyDataSetChanged();
+                        }*/
                     }
                 } else {
 
@@ -162,15 +210,16 @@ public class AssignRoomFragment extends Fragment {
             }
         });
     }
+
     public void transfert(Room room, boolean fromAssigned) {
         if (fromAssigned) {
             unaffectedRoomsAdapter.addRoom(room);
         } else {
-            roomsAssignmentAdapter.addRoom(room);
+            assignRoomAdapter.addRoom(room);
         }
     }
 
-    public void selectedUser(){
+    public void selectedUser() {
         txtName.setText(user.getName());
         txtFirstName.setText(user.getFirstname());
         unaffectedRoomsAdapter.setIdStaff(user.getIdStaff());
@@ -178,16 +227,41 @@ public class AssignRoomFragment extends Fragment {
         getUnassignedRooms();
     }
 
-    public void showRoomPanel(User user, int idStaff) {
-        Log.e(Constants._TAG_LOG,"User selected: "+idStaff);
-        //isRoomPanel = true;
-        txtName.setText(user.getName());
-        txtFirstName.setText(user.getFirstname());
-        this.idStaff =idStaff;
-        unaffectedRoomsAdapter.setIdStaff(idStaff);
-        getAssignedRooms();
-        getUnassignedRooms();
 
-    }
+   /* public static boolean jsonObjsAreEqual(Room room, Room room1) throws JSONException {
+        if (room == null || room1 == null) {
+            return (room == room1);
+        }
+
+        List<Integer> l1 = Arrays.asList(room.getIdRoom());
+        Collections.sort(l1);
+        List<Integer> l2 = Arrays.asList(room1.getIdRoom());
+        Collections.sort(l2);
+        if (!l1.equals(l2)) {
+            return false;
+        }
+        for (Integer key : l1) {
+            Object val1 = room.getIdRoom();
+            Object val2 = room1.getIdRoom();
+            if (val1 instanceof JSONObject) {
+                if (!(val2 instanceof JSONObject)) {
+                    return false;
+                }
+                if (!jsonObjsAreEqual((Room) val1, (Room) val2)) {
+                    return false;
+                }
+            }
+
+            if (val1 == null) {
+                if (val2 != null) {
+                    return false;
+                }
+            } else if (!val1.equals(val2)) {
+                return false;
+            }
+        }
+        return true;
+    }*/
+
 
 }

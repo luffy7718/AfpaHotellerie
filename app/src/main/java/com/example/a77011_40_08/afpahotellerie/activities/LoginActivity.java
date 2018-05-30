@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                         Session.setMyUser(user);
                         Session.setConnectionChecked(true);
                         goToHome();
-                        setResult(Constants._CODE_LOGIN, intent);
+                        //setResult(Constants._CODE_LOGIN, intent);
 
                         Log.e(Constants._TAG_LOG, "User " + user.getFirstname());
 

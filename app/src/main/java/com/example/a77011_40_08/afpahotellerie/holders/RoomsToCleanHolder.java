@@ -15,7 +15,7 @@ import android.widget.Toolbar;
 
 
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.adapters.AssignedRoomsAdapter;
+import com.example.a77011_40_08.afpahotellerie.adapters.RoomsToCleanAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
@@ -38,7 +38,7 @@ import retrofit2.Response;
  * Created by 77011-40-05 on 14/03/2018.
  */
 
-public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
+public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
     public final TextView txtNumber;
     public final TextView txtAbbréviation;
     public final ImageButton btnPlay;
@@ -48,10 +48,10 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
     Room room;
     App app;
     int position;
-    AssignedRoomsAdapter parent;
+    RoomsToCleanAdapter parent;
 
 
-    public AssignedRoomsHolder(View view) {
+    public RoomsToCleanHolder(View view) {
         super(view);
         Context context = (Activity) view.getContext();
         swInterface = RetrofitApi.getInterface();
@@ -61,6 +61,8 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
         btnPause = (ImageButton) view.findViewById(R.id.btnPause);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_card_view);
+
+        btnPause.setVisibility(View.GONE);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -104,10 +106,13 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("OE");
                 }
                 if(idRoomStatus != -1){
+                    btnPlay.setVisibility(View.GONE);
+                    btnPause.setVisibility(View.VISIBLE);
                     callRoomsHistory(idRoomStatus);
                 }
             }
         });
+
         btnPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +126,8 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("OP");
                 }
                 if(idRoomStatus != -1){
+                    btnPlay.setVisibility(View.VISIBLE);
+                    btnPause.setVisibility(View.GONE);
                     callRoomsHistory(idRoomStatus);
                 }
             }
@@ -129,7 +136,7 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setRooms(final Room room,int position, Activity activity, AssignedRoomsAdapter parent) {
+    public void setRooms(final Room room,int position, Activity activity, RoomsToCleanAdapter parent) {
         this.parent = parent;
         this.room = room;
         this.position = position;
@@ -191,48 +198,42 @@ public class AssignedRoomsHolder extends RecyclerView.ViewHolder {
     }
 
     private void callRoomsHistory(int idRoomStatus) {
-        try {
+        int position = getAdapterPosition();
+        Log.e(Constants._TAG_LOG,"Position: "+position);
+        Call<Push> call = swInterface.addRoomsHistory(Functions.getAuth(), room
+                .getIdRoom(),Session.getMyUser().getIdStaff(),Functions.today(),idRoomStatus);
 
-            Log.e(Constants._TAG_LOG,"callRoomsHistory2: "+room
-            .getIdRoom()+"  "+Session.getMyUser().getIdStaff()+" "+Functions.today()+" "+idRoomStatus+" ");
-            Call<Push> call = swInterface.addRoomsHistory(Functions.getAuth(), room
-                    .getIdRoom(),Session.getMyUser().getIdStaff(),Functions.today(),idRoomStatus);
-
-            call.enqueue(new Callback<Push>() {
-                @Override
-                public void onResponse(Call<Push> call, Response<Push> response) {
-                    if (response.isSuccessful()) {
-                        Log.e(Constants._TAG_LOG, "callRoomsHistory : " + response.body
-                                ().toString());
-                        Push push = response.body();
-                        room.setIdRoomStatus(idRoomStatus);
-                        parent.notifyDataSetChanged();
-                        if (push.getStatus() == 1) {
-                            Gson gson = new Gson();
-
-                        } else {
-                            Log.e("push.getdata = ", push.getData());
-
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if (response.isSuccessful()) {
+                    Log.e(Constants._TAG_LOG, "callRoomsHistory : " + response.body
+                            ().toString());
+                    Push push = response.body();
+                    room.setIdRoomStatus(idRoomStatus);
+                    parent.notifyDataSetChanged();
+                    if (push.getStatus() == 1) {
+                        if(idRoomStatus == 1){
+                            parent.removeRoom(position);
                         }
-
                     } else {
-                        //todo:gérer les code erreur de retour
-                        Log.e(Constants._TAG_LOG, "ERROR code :" + response.code());
+                        Log.e("push.getdata = ", push.getData());
+
                     }
 
+                } else {
+                    //todo:gérer les code erreur de retour
+                    Log.e(Constants._TAG_LOG, "ERROR code :" + response.code());
                 }
 
-                @Override
-                public void onFailure(Call<Push> call, Throwable t) {
-                    Log.e("error", "");
+            }
 
-                }
-            });
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+                Log.e("error", "");
 
-
-        } catch (Exception e) {
-            Log.e("Tag", e.toString());
-        }
+            }
+        });
     }
 
 

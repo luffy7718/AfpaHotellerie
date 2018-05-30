@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.adapters.AssignedStaffAdapter;
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
+import com.example.a77011_40_08.afpahotellerie.adapters.AssignStaffAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
@@ -20,17 +18,17 @@ import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.google.gson.Gson;
 
 
-public class AssignedStaffHolder extends RecyclerView.ViewHolder {
+public class AssignStaffHolder extends RecyclerView.ViewHolder {
     public final TextView txtName;
     public final TextView txtFirstName;
     public final TextView txtAssign;
     SWInterface swInterface;
     User user;
     int position;
-    AssignedStaffAdapter parent;
+    AssignStaffAdapter parent;
     public final CardView cv;
 
-    public AssignedStaffHolder(View view) {
+    public AssignStaffHolder(View view) {
         super(view);
         Context context = (Activity) view.getContext();
         swInterface = RetrofitApi.getInterface();
@@ -52,13 +50,13 @@ public class AssignedStaffHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setUser(final User user, int position, AssignedStaffAdapter parent) {
+    public void setUser(final User user, int position, AssignStaffAdapter parent) {
         this.parent = parent;
         this.user = user;
         this.position = position;
         txtName.setText(user.getName());
         txtFirstName.setText(user.getFirstname());
-        txtAssign.setText("affections");
+        //txtAssign.setText("affections"+rooms.size());
 
 
     }

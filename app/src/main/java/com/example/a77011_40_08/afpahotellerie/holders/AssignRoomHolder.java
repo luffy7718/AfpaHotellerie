@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.adapters.RoomsAssignmentAdapter;
+import com.example.a77011_40_08.afpahotellerie.adapters.AssignRoomAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
@@ -20,16 +20,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RoomsAssignmentHolder extends RecyclerView.ViewHolder {
+public class AssignRoomHolder extends RecyclerView.ViewHolder {
 
     int position;
-    RoomsAssignmentAdapter parent;
+    AssignRoomAdapter parent;
     Room room;
     CardView cvaffected;
     SWInterface swInterface;
     public final TextView txtNumber;
 
-    public RoomsAssignmentHolder(View view) {
+    public AssignRoomHolder(View view) {
         super(view);
         swInterface = RetrofitApi.getInterface();
         txtNumber = (TextView) view.findViewById(R.id.txtNumber);
@@ -50,7 +50,7 @@ public class RoomsAssignmentHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setRooms(final Room room, int position, RoomsAssignmentAdapter parent, boolean
+    public void setRooms(final Room room, int position, AssignRoomAdapter parent, boolean
             isAssigned) {
         this.parent = parent;
         this.room = room;

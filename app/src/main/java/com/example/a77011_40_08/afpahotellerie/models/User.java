@@ -12,6 +12,7 @@ public class User {
     private String firstname;
     private String path;
     private int idJob;
+
     public User(){
 
     }

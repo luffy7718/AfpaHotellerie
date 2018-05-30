@@ -2,29 +2,30 @@ package com.example.a77011_40_08.afpahotellerie.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
-import com.example.a77011_40_08.afpahotellerie.holders.RoomsAssignmentHolder;
+import com.example.a77011_40_08.afpahotellerie.holders.AssignRoomHolder;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 
 import java.util.Collections;
 
 
-public class RoomsAssignmentAdapter extends RecyclerView.Adapter<RoomsAssignmentHolder> {
+public class AssignRoomAdapter extends RecyclerView.Adapter<AssignRoomHolder> {
 
     Rooms rooms;
     int idStaff;
     boolean isAssigned;
     Activity activity;
 
-    public RoomsAssignmentAdapter(boolean isAssigned, Activity activity) {
+    public AssignRoomAdapter(boolean isAssigned, Activity activity) {
         this.rooms = new Rooms();
         this.isAssigned = isAssigned;
         this.activity = activity;
@@ -32,15 +33,15 @@ public class RoomsAssignmentAdapter extends RecyclerView.Adapter<RoomsAssignment
     }
 
     @Override
-    public RoomsAssignmentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AssignRoomHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_view_assigned_rooms, parent, false);
 
-        return new RoomsAssignmentHolder(view);
+        return new AssignRoomHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RoomsAssignmentHolder holder, int position) {
+    public void onBindViewHolder(AssignRoomHolder holder, int position) {
         Room room = rooms.get(position);
         holder.setRooms(room, position, this, isAssigned);
     }
@@ -89,5 +90,24 @@ public class RoomsAssignmentAdapter extends RecyclerView.Adapter<RoomsAssignment
         notifyDataSetChanged();
     }
 
+
+    public boolean compareRooms(Rooms toCompare){
+        //null checking
+        if(rooms==null && toCompare==null)
+            return true;
+        if((rooms == null && toCompare != null) || (rooms != null && toCompare == null))
+            return false;
+
+        if(rooms.size()!=toCompare.size())
+            return false;
+        for(Room room: rooms)
+        {
+            Log.e(Constants._TAG_LOG,"ROOM: "+room.getIdRoom()+" n°"+room.getNumber());
+            if(!toCompare.contains(room))
+                return false;
+        }
+
+        return true;
+    }
 
 }

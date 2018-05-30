@@ -9,32 +9,20 @@
             android:icon="@drawable/ic_action_home"
             android:title="Home" />
         <item
-            android:id="@+id/nav_chambre"
-            android:icon="@drawable/ic_stat_chambre"
-            android:visible="true"
+            android:id="@+id/nav_room_to_clean"
+            android:icon="@drawable/ic_action_room_to_clean"
             android:title="Liste des chambres" />
         <item
             android:id="@+id/nav_affectation"
             android:icon="@drawable/ic_action_assignment"
-            android:visible="true"
             android:title="Affectations" />
         <item
             android:id="@+id/nav_stateRooms"
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"
-            android:visible="true"
             android:title="État des chambres" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_action_name"
-            android:visible="true"
-            android:title="Agenda" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
     </group>
 
-    <item android:title="Communicate">
+    <!--<item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
@@ -45,6 +33,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>

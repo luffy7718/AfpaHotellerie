@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,21 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
-import com.example.a77011_40_08.afpahotellerie.adapters.RoomsAssignmentAdapter;
-import com.example.a77011_40_08.afpahotellerie.adapters.AssignedStaffAdapter;
+import com.example.a77011_40_08.afpahotellerie.adapters.AssignStaffAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
-import com.example.a77011_40_08.afpahotellerie.models.Room;
-import com.example.a77011_40_08.afpahotellerie.models.Rooms;
-import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
-import com.example.a77011_40_08.afpahotellerie.utils.GridSpacingItemDecoration;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
 
@@ -36,16 +29,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AssignedStaffFragment extends Fragment {
+public class AssignStaffFragment extends Fragment {
     Context context;
     RecyclerView rvwListStaff;
     TextView txtAvailable;
     TextView txtUnaffected;
-    AssignedStaffFragment assignedStaffFragment;
-    AssignedStaffAdapter assignedStaffAdapter;
+    AssignStaffFragment assignStaffFragment;
+    AssignStaffAdapter assignStaffAdapter;
     SWInterface swInterface;
 
-    public AssignedStaffFragment() {
+    public AssignStaffFragment() {
         // Required empty public constructor
 
     }
@@ -55,7 +48,7 @@ public class AssignedStaffFragment extends Fragment {
         super.onCreate(savedInstanceState);
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
-        assignedStaffAdapter = new AssignedStaffAdapter(assignedStaffFragment);
+        assignStaffAdapter = new AssignStaffAdapter(assignStaffFragment);
         getSubordinates();
 
     }
@@ -77,7 +70,7 @@ public class AssignedStaffFragment extends Fragment {
         rvwListStaff.setLayoutManager(layoutManagerR);
         rvwListStaff.setItemAnimator(new DefaultItemAnimator());
 
-        rvwListStaff.setAdapter(assignedStaffAdapter);
+        rvwListStaff.setAdapter(assignStaffAdapter);
 
 
         txtAvailable.setText("agents disponibles");
@@ -103,8 +96,8 @@ public class AssignedStaffFragment extends Fragment {
                     if (push.getStatus() == 1) {
                         Gson gson = new Gson();
                         Users users = gson.fromJson(push.getData(), Users.class);
-                        assignedStaffAdapter.loadStaff(users);
-                        assignedStaffAdapter.notifyDataSetChanged();
+                        assignStaffAdapter.loadStaff(users);
+                        assignStaffAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
                     }
                 } else {

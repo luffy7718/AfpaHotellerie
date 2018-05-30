@@ -22,7 +22,7 @@ public interface SWInterface {
     );
 
     @FormUrlEncoded
-    @POST("/afpa_hotellerie/login.php")
+    @POST("/afpa_hotellerie/forceLogin.php")//forceLogin.php ou login.php
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
@@ -34,6 +34,15 @@ public interface SWInterface {
     Call<Push> logout(
             @Header("Authorization") String authorization,
             @Field("idStaff") int idStaff);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/sendMessage.php")
+    Call<Push> sendMessage(
+            @Header("Authorization") String authorization,
+            @Field("to") int to,
+            @Field("from") int from,
+            @Field("type") String type,
+            @Field("body") String body);
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/getAssignedRooms.php")
@@ -127,5 +136,6 @@ public interface SWInterface {
     Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
     );
+
 
 }

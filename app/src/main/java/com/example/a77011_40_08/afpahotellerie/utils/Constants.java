@@ -1,5 +1,7 @@
 package com.example.a77011_40_08.afpahotellerie.utils;
 
+import java.util.HashMap;
+
 /**
  * Created by 77011-40-05 on 14/03/2018.
  */
@@ -21,11 +23,7 @@ public class Constants {
     public final static int FRAG_ASSIGNED_ROOM = 4;
 
 
-    //STARTACTIVITYFORRESULT -->HomeActivity
-    public final static int _CODE_LOGIN = 2;
-    //REQUEST CODE -->LoginActivity
     public static final String APP_NAME = "AfpaHotellerie";
     public static final String _URL_WEBSERVICE =  "http://10.75.25.137:8080/afpa_hotellerie/";
     //public static final String _URL_WEBSERVICE =  "https://afpa-hotellerie.000webhostapp.com";
-
 }
