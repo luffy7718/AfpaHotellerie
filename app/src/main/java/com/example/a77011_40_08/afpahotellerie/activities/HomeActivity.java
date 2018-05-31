@@ -2,9 +2,12 @@ package com.example.a77011_40_08.afpahotellerie.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +31,7 @@ import com.example.a77011_40_08.afpahotellerie.models.Job;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.services.MyFirebaseMessagingService;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
@@ -46,7 +50,7 @@ public class HomeActivity extends AppCompatActivity
     TextView txtHeaderName;
     ImageView imgProfilePics;
     SWInterface swInterface;
-    Job job;
+    //MyFirebaseMessagingService myFirebaseMessagingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,20 @@ public class HomeActivity extends AppCompatActivity
         userHasChange(Session.getMyUser());
 
     }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(context).registerReceiver((mMessageReceiver),
+                new IntentFilter("MessageReceive")
+        );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mMessageReceiver);
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -136,6 +154,8 @@ public class HomeActivity extends AppCompatActivity
             changeFragment(Constants.FRAG_ASSIGNED_STAFF, null);
         } else if (id == R.id.nav_stateRooms) {
             changeFragment(Constants.FRAG_SATEROOMS, null);
+        } else if (id == R.id.nav_unaffectation) {
+            changeFragment(Constants.FRAG_ASSIGNED_ROOM,null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -226,8 +246,8 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
-    private void adapteDrawer(NavigationView navigationView){
-        HashMap<Integer,Boolean> access = Session.getMyAccess();
+    private void adapteDrawer(NavigationView navigationView) {
+        HashMap<Integer, Boolean> access = Session.getMyAccess();
         Menu menu = navigationView.getMenu();
         menu.findItem(R.id.nav_home).setVisible(access.get(Constants._FRAG_HOME));
         menu.findItem(R.id.nav_room_to_clean).setVisible(access.get(Constants.FRAG_ROOMS_CLEAN));
@@ -236,4 +256,16 @@ public class HomeActivity extends AppCompatActivity
         //menu.findItem(R.id.nav_affectation).setVisible(access.get(Constants.FRAG_ASSIGNED_ROOM));
 
     }
+
+    /*private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int idFrom = intent.getIntExtra("idFragment",-1);
+            if(idFrom != -1){
+                Log.e(Constants._TAG_LOG, "HomeActivity: " + idFrom);
+            }else{
+                Log.e(Constants._TAG_LOG, "HomeActivity: pas d'idFrom");
+            }
+        }
+    };*/
 }

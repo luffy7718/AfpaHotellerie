@@ -11,11 +11,15 @@
         <item
             android:id="@+id/nav_room_to_clean"
             android:icon="@drawable/ic_action_room_to_clean"
-            android:title="Liste des chambres" />
+            android:title="Chambres à nettoyer" />
         <item
             android:id="@+id/nav_affectation"
             android:icon="@drawable/ic_action_assignment"
-            android:title="Affectations" />
+            android:title="Affecter les chambres" />
+        <item
+            android:id="@+id/nav_unaffectation"
+            android:icon="@drawable/ic_action_assign_room"
+            android:title="Désaffecter les chambres" />
         <item
             android:id="@+id/nav_stateRooms"
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"

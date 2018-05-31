@@ -1,8 +1,12 @@
 package com.example.a77011_40_08.afpahotellerie.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +25,7 @@ import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.models.User;
+import com.example.a77011_40_08.afpahotellerie.services.MyFirebaseMessagingService;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.GridSpacingItemDecoration;
@@ -53,6 +58,7 @@ public class AssignRoomFragment extends Fragment {
     User user;
     Rooms savedRooms;
 
+
     public AssignRoomFragment() {
         // Required empty public constructor
     }
@@ -63,6 +69,8 @@ public class AssignRoomFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,8 @@ public class AssignRoomFragment extends Fragment {
                 Gson gson = new Gson();
                 user = gson.fromJson(json, User.class);
             }
+        }else{
+           Log.e(Constants._TAG_LOG,"Pas d'utilisateur");
         }
         swInterface = RetrofitApi.getInterface();
         assignRoomAdapter = new AssignRoomAdapter(true, getActivity());
@@ -107,35 +117,40 @@ public class AssignRoomFragment extends Fragment {
         rvwListUnaffected.addItemDecoration(new GridSpacingItemDecoration(numberOfColumns,
                 spacingInPixels, true, 0));
         selectedUser();
-
         return view;
     }
+
+
+
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(Constants._TAG_LOG,"OnStop");
-        if(!assignRoomAdapter.compareRooms(savedRooms)){
-            Log.e(Constants._TAG_LOG,"Changements detectés");
+
+        Log.e(Constants._TAG_LOG, "OnStop");
+        if (!assignRoomAdapter.compareRooms(savedRooms) && user != null) {
+            Log.e(Constants._TAG_LOG, "Changements detectés");
             Gson gson = new Gson();
-            HashMap<String,String> body = new HashMap<>();
-            body.put("title","Changement d'affectation");
-            body.put("text","Vous avez de nouvelles affectations.");
+            HashMap<String, String> body = new HashMap<>();
+            body.put("title", "Changement d'affectation");
+            body.put("text", "Vous avez de nouvelles affectations.");
+            body.put("update",Constants.FRAG_ROOMS_CLEAN+"");
             String json = gson.toJson(body);
-            Log.e(Constants._TAG_LOG,"Body: "+json);
-            Call<Push> call = swInterface.sendMessage(Functions.getAuth(),user.getIdStaff(), Session.getMyUser().getIdStaff(),"notification",json);
+            Log.e(Constants._TAG_LOG, "Body: " + json);
+            Call<Push> call = swInterface.sendMessage(Functions.getAuth(), user.getIdStaff(),
+                    Session.getMyUser().getIdStaff(), "notification", json);
             call.enqueue(new Callback<Push>() {
                 @Override
                 public void onResponse(Call<Push> call, Response<Push> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         Push push = response.body();
-                        if(push.getStatus() == 1){
-                            Log.e(Constants._TAG_LOG,"Success onStop");
-                        }else{
-                            Log.e(Constants._TAG_LOG,push.getData());
+                        if (push.getStatus() == 1) {
+                            Log.e(Constants._TAG_LOG, "Success onStop");
+                        } else {
+                            Log.e(Constants._TAG_LOG, push.getData());
                         }
-                    }else{
-                        Log.e(Constants._TAG_LOG,response.toString());
+                    } else {
+                        Log.e(Constants._TAG_LOG, response.toString());
                     }
                 }
 
@@ -148,7 +163,12 @@ public class AssignRoomFragment extends Fragment {
     }
 
     private void getAssignedRooms() {
-        Call<Push> call = swInterface.getAssignedRooms(Functions.getAuth(), user.getIdStaff());
+        Call<Push> call;
+        if(user != null){
+            call = swInterface.getAssignedRooms(Functions.getAuth(), user.getIdStaff());
+        }else{
+            call = swInterface.getAssignedRooms(Functions.getAuth(), 0);
+        }
 
         call.enqueue(new Callback<Push>() {
             @Override
@@ -164,11 +184,6 @@ public class AssignRoomFragment extends Fragment {
                         assignRoomAdapter.loadRoom(rooms);
                         assignRoomAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
-
-                        /*if (idStaff == 0) {
-                            assignRoomAdapter.loadRoom(null);
-                            assignRoomAdapter.notifyDataSetChanged();
-                        }*/
                     }
                 } else {
 
@@ -220,48 +235,16 @@ public class AssignRoomFragment extends Fragment {
     }
 
     public void selectedUser() {
-        txtName.setText(user.getName());
-        txtFirstName.setText(user.getFirstname());
-        unaffectedRoomsAdapter.setIdStaff(user.getIdStaff());
+        if(user != null){
+            txtName.setText(user.getName());
+            txtFirstName.setText(user.getFirstname());
+            unaffectedRoomsAdapter.setIdStaff(user.getIdStaff());
+        }else{
+            Log.e(Constants._TAG_LOG,"Pas d'utilisateur selectionné");
+        }
         getAssignedRooms();
         getUnassignedRooms();
     }
-
-
-   /* public static boolean jsonObjsAreEqual(Room room, Room room1) throws JSONException {
-        if (room == null || room1 == null) {
-            return (room == room1);
-        }
-
-        List<Integer> l1 = Arrays.asList(room.getIdRoom());
-        Collections.sort(l1);
-        List<Integer> l2 = Arrays.asList(room1.getIdRoom());
-        Collections.sort(l2);
-        if (!l1.equals(l2)) {
-            return false;
-        }
-        for (Integer key : l1) {
-            Object val1 = room.getIdRoom();
-            Object val2 = room1.getIdRoom();
-            if (val1 instanceof JSONObject) {
-                if (!(val2 instanceof JSONObject)) {
-                    return false;
-                }
-                if (!jsonObjsAreEqual((Room) val1, (Room) val2)) {
-                    return false;
-                }
-            }
-
-            if (val1 == null) {
-                if (val2 != null) {
-                    return false;
-                }
-            } else if (!val1.equals(val2)) {
-                return false;
-            }
-        }
-        return true;
-    }*/
 
 
 }
