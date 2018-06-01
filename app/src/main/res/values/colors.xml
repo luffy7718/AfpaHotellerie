@@ -12,4 +12,7 @@
     <color name="colorStatusOP">#27aae1</color>
     <color name="colorStatusOS">#be1e2d</color>
     <color name="colorStatusDA">#262262</color>
+
+    <color name="colorTextBtn">#ffffff</color>
+    <color name="colorError">#be1e2d</color>
 </resources>

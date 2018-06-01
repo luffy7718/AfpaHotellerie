@@ -6,52 +6,42 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
-import com.example.a77011_40_08.afpahotellerie.models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.models.User;
-import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
-import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 
-import java.util.function.Function;
-
-public class StateRoomsHolder extends RecyclerView.ViewHolder {
+public class StateRoomsHolderGrid extends RecyclerView.ViewHolder {
     RoomStatut roomStatut;
-    TextView txtNumber;
-    TextView txtAbbreviation;
-    TextView txtInProgress;
-    TextView txtAgentInProgress;
+    TextView txtNumberGrid;
+    ImageView imgNotifBg;
+    ImageView imgNotif;
     public FrameLayout frlRoom;
     SWInterface swInterface;
     Room room;
     User staff;
-
-
-
     String staffName;
 
-    public StateRoomsHolder(View view) {
+    public StateRoomsHolderGrid(View view) {
         super(view);
         swInterface = RetrofitApi.getInterface();
-        txtNumber = view.findViewById(R.id.txtNumber);
-        txtAbbreviation = view.findViewById(R.id.txtAbbreviation);
-        txtInProgress = view.findViewById(R.id.txtInProgress);
-        txtAgentInProgress = view.findViewById(R.id.txtAgentInProgress);
+        txtNumberGrid = view.findViewById(R.id.txtNumberGrid);
+        imgNotifBg = view.findViewById(R.id.imgNotifBg);
+        imgNotif = view.findViewById(R.id.imgNotif);
         frlRoom = view.findViewById(R.id.frlRoom);
     }
 
     public void setRooms(final Room room, Activity activity) {
         this.room = room;
-        txtNumber.setText("" + room.getNumber());
-        /*app = (App) activity.getApplication();
-        RoomStatuts rs = app.getRoomStatuts();*/
+
         String status = "";
         for (RoomStatut roomStatut : App.getRoomStatuts()) {
             //Log.e(Constants._TAG_LOG, "Entry: " + entry.getIdRoomStatus() + "," + entry.getName() + "," + entry.getAbbreviation());
@@ -62,14 +52,12 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
             }
         }
 
-
-
         Log.e(Constants._TAG_LOG, "Room: " + room.getNumber() + ", " + status);
         switch(status){
             case "LE":
                 status = "LS";
-                txtInProgress.setVisibility(View.VISIBLE);
-                txtAgentInProgress.setVisibility(View.VISIBLE);
+                imgNotifBg.setVisibility(View.VISIBLE);
+                imgNotif.setVisibility(View.VISIBLE);
 
                 Log.e(Constants._TAG_LOG, "Valeur recherchée : " + room.getIdStaff());
 
@@ -82,28 +70,24 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
                     }
                 }
 
-                txtAgentInProgress.setText(staffName);
-
                 Log.e(Constants._TAG_LOG, "Changement LE");
                 break;
             case "OE":
                 status = "OS";
-                txtInProgress.setVisibility(View.VISIBLE);
+                imgNotifBg.setVisibility(View.VISIBLE);
+                imgNotif.setVisibility(View.VISIBLE);
                 Log.e(Constants._TAG_LOG, "Changement OE");
                 break;
             default:
-                txtInProgress.setVisibility(View.GONE);
-                txtAgentInProgress.setVisibility(View.GONE);
+                imgNotifBg.setVisibility(View.GONE);
+                imgNotif.setVisibility(View.GONE);
                 break;
         }
 
-        txtAbbreviation.setText(status);
-
-        Functions.setViewBgColorByStatus(txtAbbreviation, status);
-
-        /*GradientDrawable bgShape = (GradientDrawable)txtNumber.getBackground();
-        //int idRessource = App.getColors().get(status);
-        bgShape.setColor(activity.getResources().getColor(R.color.colorAccent));*/
+        GradientDrawable bgShape = (GradientDrawable)txtNumberGrid.getBackground();
+        int idRessource = App.getColors().get(status);
+        bgShape.setColor(idRessource);
+        bgShape.setStroke(1, idRessource);
 
         frlRoom.setOnClickListener(new View.OnClickListener() {
             @Override

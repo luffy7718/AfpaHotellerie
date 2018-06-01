@@ -1,15 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="5dp"
+    android:id="@+id/frlState"
     tools:context=".fragments.AssignedRoomsFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvwStateRooms"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnInfos"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/colorTextBtn"
+                android:background="@drawable/btn_shape1"
+                android:text="Infos" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorTextBtn"
+                    android:background="@drawable/btn_shape1"
+                    android:text="Filtres" />
+
+                <ImageButton
+                    android:id="@+id/btnSwitchView"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorTextBtn"
+                    android:background="@drawable/btn_shape1"
+                    android:src="@drawable/ic_view_comfy_white_24dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvwStateRooms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
 </FrameLayout>
