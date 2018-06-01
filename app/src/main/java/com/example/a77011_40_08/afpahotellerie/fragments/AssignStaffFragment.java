@@ -62,8 +62,8 @@ public class AssignStaffFragment extends Fragment {
         rvwListStaff = view.findViewById(R.id.rvwListStaff);
 
 
-        txtAvailable = view.findViewById(R.id.txtAvailable);
-        txtUnaffected = view.findViewById(R.id.txtUnaffected);
+        //txtAvailable = view.findViewById(R.id.txtAvailable);
+        //txtUnaffected = view.findViewById(R.id.txtUnaffected);
 
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false);
@@ -73,8 +73,8 @@ public class AssignStaffFragment extends Fragment {
         rvwListStaff.setAdapter(assignStaffAdapter);
 
 
-        txtAvailable.setText("agents disponibles");
-        txtUnaffected.setText("sans affectations");
+      //  txtAvailable.setText("agents disponibles");
+       // txtUnaffected.setText("sans affectations");
 
 
         return view;

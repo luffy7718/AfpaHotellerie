@@ -8,10 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
     app:cardUseCompatPadding="true"
-    app:contentPadding="15dp">
+    app:contentPadding="5dp">
 
 
     <LinearLayout
@@ -52,7 +52,9 @@
              android:id="@+id/txtAssign"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:text="TextView"
+             android:layout_gravity="right"
+             android:textSize="10sp"
+             android:text=" affecté(s)"
              android:textColor="#a70000" />
 
      </LinearLayout>

@@ -1,0 +1,166 @@
+package com.example.a77011_40_08.afpahotellerie.adapters;
+
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.holders.ChatMessageHolder;
+import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
+import com.example.a77011_40_08.afpahotellerie.models.ChatMessage;
+import com.example.a77011_40_08.afpahotellerie.models.ChatMessages;
+import com.example.a77011_40_08.afpahotellerie.models.Push;
+import com.example.a77011_40_08.afpahotellerie.models.User;
+import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
+import com.example.a77011_40_08.afpahotellerie.utils.Session;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
+
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
+public class ChatMessagesAdapter
+        extends RecyclerView.Adapter<ChatMessageHolder> {
+
+    ChatMessages chatMessages;
+    Context context;
+    String idDevice;
+    String idUser;
+    SWInterface swInterface;
+    Date date = new Date();
+
+    public ChatMessagesAdapter(Context context, String idDevice, String idUser) {
+        this.chatMessages = new ChatMessages();
+        this.context = context;
+        this.idDevice = idDevice;
+        this.idUser = idUser;
+    }
+
+    @Override
+    public ChatMessageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_message, parent, false);
+        swInterface = RetrofitApi.getInterface();
+        return new ChatMessageHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(final ChatMessageHolder chatMessageHolder, int position) {
+
+        ChatMessage chatMessage = chatMessages.get(position);
+        chatMessageHolder.setMessage(chatMessage, context, idDevice);
+    }
+
+    @Override
+    public int getItemCount() {
+        return chatMessages.size();
+    }
+
+    public void loadMessages() {
+        // String idDevice = Functions.getPreferenceString(getApplicationContext(),"idDevice");
+
+        Call<Push> call = swInterface.getMessagesChat(Functions.getAuth(), Integer.parseInt
+                (idDevice), Session.getMyUser().getIdStaff());
+
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if (response.isSuccessful()) {
+                    Log.e(Constants._TAG_LOG, response.toString());
+                    Push push = response.body();
+                    if (push.getStatus() == 1) {
+                        Gson gson = new Gson();
+
+
+                        //textView.setText(push.getName());
+                        Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
+                                + ", data:" + push.getData()
+                                + "]");
+                    } else {
+                        Log.e(Constants._TAG_LOG, "push.getdata = " + push.getData());
+
+                    }
+                    //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
+                    // .show();
+                } else {
+                    //todo:gérer les code erreur de retour
+                    Log.e(Constants._TAG_LOG, response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+                Log.e("error", "");
+
+            }
+        });
+    }
+
+
+    public void addMessage(String message, String pseudo) {
+        Call<Push> call = swInterface.addMessageChat(Functions.getAuth(), Integer.parseInt
+                (idDevice), Session.getMyUser().getIdStaff(), message, date.toString(), pseudo);
+
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+                if (response.isSuccessful()) {
+                    Log.e(Constants._TAG_LOG, response.toString());
+                    Push push = response.body();
+                    if (push.getStatus() == 1) {
+                        Gson gson = new Gson();
+
+
+                        //textView.setText(push.getName());
+                        Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
+                                + ", data:" + push.getData()
+                                + "]");
+                    } else {
+                        Log.e(Constants._TAG_LOG, "push.getdata = " + push.getData());
+
+                    }
+                    //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
+                    // .show();
+                } else {
+                    //todo:gérer les code erreur de retour
+                    Log.e(Constants._TAG_LOG, response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+                Log.e("error", "");
+
+            }
+        });
+    }
+
+    public void addMessageReceive(String message) {
+        Date date = new Date();
+
+        Log.e("TAG", "idDevice=" + idDevice + " idUser=" + idUser + " message" + message);
+
+        final ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessage(message);
+        chatMessage.setIdFrom(idUser);
+        chatMessage.setIdTo(idDevice);
+        chatMessage.setDate(date.toString());
+        chatMessages.add(chatMessage);
+        notifyDataSetChanged();
+    }
+
+}

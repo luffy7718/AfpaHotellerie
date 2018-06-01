@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_action_login"
         android:title="Reconnexion"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_message"
+        android:icon="@drawable/ic_action_message"
+        android:title="Messagerie"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_settings"

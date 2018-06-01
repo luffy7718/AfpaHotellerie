@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         lblLoginForgotten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showPasswordForgottenDialog();
             }
         });

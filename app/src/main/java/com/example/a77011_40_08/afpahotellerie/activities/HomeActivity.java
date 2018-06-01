@@ -1,9 +1,11 @@
 package com.example.a77011_40_08.afpahotellerie.activities;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -15,8 +17,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,7 +138,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_login) {
-            logout();
+            showDisconnectDialog();
         }
 
         return super.onOptionsItemSelected(item);
@@ -155,12 +159,33 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_stateRooms) {
             changeFragment(Constants.FRAG_SATEROOMS, null);
         } else if (id == R.id.nav_unaffectation) {
-            changeFragment(Constants.FRAG_ASSIGNED_ROOM,null);
+            changeFragment(Constants.FRAG_ASSIGNED_ROOM, null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showDisconnectDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Quitter ?");
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "non", new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Oui", new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                logout();
+            }
+        });
+        alertDialog.show();
     }
 
     private void clearFragments() {
@@ -253,7 +278,7 @@ public class HomeActivity extends AppCompatActivity
         menu.findItem(R.id.nav_room_to_clean).setVisible(access.get(Constants.FRAG_ROOMS_CLEAN));
         menu.findItem(R.id.nav_affectation).setVisible(access.get(Constants.FRAG_ASSIGNED_STAFF));
         menu.findItem(R.id.nav_stateRooms).setVisible(access.get(Constants.FRAG_SATEROOMS));
-        //menu.findItem(R.id.nav_affectation).setVisible(access.get(Constants.FRAG_ASSIGNED_ROOM));
+        menu.findItem(R.id.nav_unaffectation).setVisible(access.get(Constants.FRAG_ASSIGNED_ROOM));
 
     }
 

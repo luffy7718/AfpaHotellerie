@@ -1,7 +1,6 @@
 package com.example.a77011_40_08.afpahotellerie.interface_retrofit;
 
 
-
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 
 import io.reactivex.Observable;
@@ -15,14 +14,15 @@ public interface SWInterface {
 
     /******************************************
      * CALL
-    ******************************************/
+     ******************************************/
     @POST("/afpa_hotellerie/getDBVersion.php")
     Call<Integer> getDBVersion(
             @Header("Authorization") String authorization
     );
 
     @FormUrlEncoded
-    @POST("/afpa_hotellerie/forceLogin.php")//forceLogin.php ou login.php
+    @POST("/afpa_hotellerie/forceLogin.php")
+//forceLogin.php ou login.php
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
@@ -57,6 +57,14 @@ public interface SWInterface {
             @Field("idRoom") int idRoom);
 
     @FormUrlEncoded
+    @POST("/afpa_hotellerie/getMessagesChat.php.php")
+    Call<Push> getMessagesChat(
+            @Header("Authorization") String authorization,
+            @Field("idDevice") int idDevice,
+            @Field("idUser") int idUser);
+
+
+    @FormUrlEncoded
     @POST("/afpa_hotellerie/addRoomsHistory.php")
     Call<Push> addRoomsHistory(
             @Header("Authorization") String authorization,
@@ -70,6 +78,16 @@ public interface SWInterface {
     Call<Push> addDevice(
             @Header("Authorization") String authorization,
             @Field("token") String token);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/addMessageChat.php")
+    Call<Push> addMessageChat(
+            @Header("Authorization") String authorization,
+            @Field("token") int idFrom,
+            @Field("idStaff") int idTo,
+            @Field("date") String message,
+            @Field("idRoomStatus") String date,
+            @Field("idRoomStatus") String pseudo);
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/setDevice.php")
@@ -124,14 +142,17 @@ public interface SWInterface {
     Observable<Push> getJobs(
             @Header("Authorization") String authorization
     );
+
     @POST("/afpa_hotellerie/getRoomsStatus.php")
     Observable<Push> getRoomsStatus(
             @Header("Authorization") String authorization
     );
+
     @POST("/afpa_hotellerie/getFloors.php")
     Observable<Push> getFloors(
             @Header("Authorization") String authorization
     );
+
     @POST("/afpa_hotellerie/getRoomsTypes.php")
     Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
