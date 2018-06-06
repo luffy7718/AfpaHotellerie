@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_login"
-        android:icon="@drawable/ic_action_login"
+        android:icon="@drawable/ic_account_circle_black_24dp"
         android:title="Reconnexion"
         app:showAsAction="always" />
 

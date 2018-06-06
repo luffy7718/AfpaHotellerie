@@ -45,7 +45,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:text="Détails de la chambre"
+            android:text="Filtrer les résultats"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -54,7 +54,7 @@
 
     </LinearLayout>
 
-        <TextView
+        <!--<TextView
             android:id="@+id/txtAbbreviation"
             android:layout_width="43dp"
             android:layout_height="43dp"
@@ -66,39 +66,115 @@
             android:background="@drawable/circle"
             android:gravity="center"
             android:text="TextView"
-            android:textColor="#FFF" />
+            android:textColor="#FFF" />-->
 
     </RelativeLayout>
+
+
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
     <ScrollView
         android:fadeScrollbars="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="15dp"
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/txtStatus"
-                style="@style/MarginDetail"
+                android:id="@+id/lblStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="Status"
+                android:layout_marginLeft="7dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/colorTxtLight" />
 
-            <TextView
-                android:id="@+id/txtAssignment"
-                style="@style/MarginDetail"
+            <LinearLayout
+                android:id="@+id/llFilterStatus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            </LinearLayout>
+
+            <!--<CheckBox
+                android:id="@+id/cbLP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorTxtLight" />
+                android:tag=""
+                android:text="LP" />
+
+            <CheckBox
+                android:id="@+id/cbLS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LS" />
+
+            <CheckBox
+                android:id="@+id/cbOP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OP" />
+
+            <CheckBox
+                android:id="@+id/cbOS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OS" />
+
+            <CheckBox
+                android:id="@+id/cbDA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DA" />-->
 
             <TextView
+                android:id="@+id/lblFloor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Étage"
+                android:layout_marginLeft="7dp"
+                android:layout_marginBottom="5dp"
+
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorTxtLight" />
+
+            <Spinner
+                android:id="@+id/spFloor"
+                android:layout_width="150dp"
+                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/lblRoomType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Type de chambre"
+                android:layout_marginLeft="7dp"
+                android:layout_marginBottom="5dp"
+
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorTxtLight" />
+
+            <LinearLayout
+                android:id="@+id/llFilterRoomType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            </LinearLayout>
+
+
+            <!--<TextView
                 android:id="@+id/txtRoomType"
                 style="@style/MarginDetail"
                 android:layout_width="match_parent"
@@ -122,25 +198,6 @@
                 android:text="TextView"
                 android:textColor="@color/colorTxtLight" />
 
-            <!--<TextView
-                style="@style/MarginDetail"
-                android:id="@+id/txtDetailTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginBottom="10dp"
-                android:textStyle="bold"
-                android:text="TextView" />
-
-            <TextView
-                style="@style/MarginDetail"
-                android:id="@+id/txtDetailDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. L'avantage du Lorem Ipsum sur un texte générique comme 'Du texte. Du texte. Du texte.' est qu'il possède une distribution de lettres plus ou moins normale, et en tout cas comparable avec celle du français standard. De nombreuses suites logicielles de mise en page ou éditeurs de sites Web ont fait du Lorem Ipsum leur faux texte par défaut, et une recherche  pour 'Lorem Ipsum' vous conduira vers de nombreux sites qui n'en sont encore qu'à leur phase de construction. Plusieurs versions sont apparues avec le temps, parfois par accident, souvent intentionnellement (histoire d'y rajouter de petits clins d'oeil, voire des phrases embarassantes)."
-
-                android:textSize="16sp"/>-->
-
             <ImageView
                 android:id="@+id/imgDetailPhoto"
                 android:layout_width="match_parent"
@@ -155,11 +212,30 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:src="@drawable/bath" />
+                android:src="@drawable/bath" />-->
 
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrer"/>
+    </LinearLayout>
+
+
+
+    </RelativeLayout>
+
 
 
 </LinearLayout>

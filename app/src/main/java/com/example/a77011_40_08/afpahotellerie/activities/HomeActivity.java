@@ -6,33 +6,31 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.FilterDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
-import com.example.a77011_40_08.afpahotellerie.models.Room;
-import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
+import com.example.a77011_40_08.afpahotellerie.models.Room;
+import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.User;
-import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
@@ -236,5 +234,12 @@ public class HomeActivity extends AppCompatActivity
         RoomDetailDialogFragment detailDialog = RoomDetailDialogFragment.newInstance();
         detailDialog.setDetailRoom(room, roomStatut, staff);
         detailDialog.show(ft, "TAG detail");
+    }
+
+    public void showFilterDialog(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FilterDialogFragment filterDialog = FilterDialogFragment.newInstance();
+        //detailDialog.setDetailRoom(room, roomStatut, staff);
+        filterDialog.show(ft, "TAG detail");
     }
 }

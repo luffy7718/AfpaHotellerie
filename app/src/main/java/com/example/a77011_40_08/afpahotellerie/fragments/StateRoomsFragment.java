@@ -18,9 +18,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.StateRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
@@ -43,6 +43,7 @@ public class StateRoomsFragment extends Fragment {
     ImageButton btnSwitchView;
     Button btnInfos;
     Button btnFilter;
+    Boolean isSnackbarClose = true;
 
     public StateRoomsAdapter stateRoomsAdapter;
     SWInterface swInterface;
@@ -85,7 +86,6 @@ public class StateRoomsFragment extends Fragment {
         btnSwitchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Mon_texte", Toast.LENGTH_LONG).show();
                 boolean isSwitched = stateRoomsAdapter.toggleItemViewType();
                 rvwStateRooms.setLayoutManager(isSwitched ? new LinearLayoutManager(context) : new GridLayoutManager(context, 4));
                 stateRoomsAdapter.notifyDataSetChanged();
@@ -148,19 +148,37 @@ public class StateRoomsFragment extends Fragment {
         // Add the view to the Snackbar's layout
         layout.addView(snackView, 0);
 
-        btnInfos.setOnClickListener(new View.OnClickListener() {
+        snackbar.addCallback(new Snackbar.Callback() {
+
             @Override
-            public void onClick(View v) {
-                snackbar.show();
+            public void onDismissed(Snackbar snackbar, int event) {
+                isSnackbarClose = true;
+            }
+
+            @Override
+            public void onShown(Snackbar snackbar) {
+                isSnackbarClose = false;
             }
         });
 
-        /*btnFilter.setOnClickListener(new View.OnClickListener() {
+        btnInfos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                snackbar.dismiss();
+                if(isSnackbarClose) {
+                    snackbar.show();
+                } else {
+                    snackbar.dismiss();
+                }
             }
-        });*/
+        });
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stateRoomsAdapter.notifyDataSetChanged();
+                ((HomeActivity)context).showFilterDialog();
+            }
+        });
 
         return view;
     }
@@ -178,8 +196,9 @@ public class StateRoomsFragment extends Fragment {
                     if(push.getStatus()==1) {
                         Gson gson = new Gson();
                         Rooms rooms = gson.fromJson(push.getData(),Rooms.class);
+                        //stateRoomsAdapter.loadRoom(rooms.filterByRoomStatus(new int[]{2, 6}));
                         stateRoomsAdapter.loadRoom(rooms);
-                        stateRoomsAdapter.notifyDataSetChanged();
+                        //stateRoomsAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
                     }
                 } else {
@@ -193,7 +212,6 @@ public class StateRoomsFragment extends Fragment {
             }
         });
     }
-
 
     private void getStaff(){
         Call<Push> call = swInterface.getStaff(Functions.getAuth());

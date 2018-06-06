@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.holders.StateRoomsHolder;
 import com.example.a77011_40_08.afpahotellerie.holders.StateRoomsHolderGrid;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
-import com.example.a77011_40_08.afpahotellerie.R;
 
 public class StateRoomsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -81,6 +81,7 @@ public class StateRoomsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public  void loadRoom(Rooms rooms)
     {
         this.rooms = rooms;
+        notifyDataSetChanged();
     }
 
     public boolean toggleItemViewType () {

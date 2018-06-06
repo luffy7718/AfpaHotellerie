@@ -11,4 +11,55 @@ public class Rooms extends ArrayList<Room> {
             return r1.getIdRoom()-r2.getIdRoom();
         }
     }
+
+    public Rooms filterByRoomStatus(int[] statusList){
+        Rooms rooms = new Rooms();
+        for(Room room: this){
+            boolean isValid = false;
+            for(int status: statusList){
+                if(room.getIdRoomStatus() == status){
+                    isValid = true;
+                }
+            }
+            if(isValid){
+                rooms.add(room);
+            }
+        }
+
+        return rooms;
+    }
+
+    public Rooms filterByFloor(int[] floorList){
+        Rooms rooms = new Rooms();
+        for(Room room: this){
+            boolean isValid = false;
+            for(int floor: floorList){
+                if(room.getIdFloor() == floor){
+                    isValid = true;
+                }
+            }
+            if(isValid){
+                rooms.add(room);
+            }
+        }
+
+        return rooms;
+    }
+
+    public Rooms filterByRoomType(int[] typeList){
+        Rooms rooms = new Rooms();
+        for(Room room: this){
+            boolean isValid = false;
+            for(int type: typeList){
+                if(room.getIdRoomType() == type){
+                    isValid = true;
+                }
+            }
+            if(isValid){
+                rooms.add(room);
+            }
+        }
+
+        return rooms;
+    }
 }
