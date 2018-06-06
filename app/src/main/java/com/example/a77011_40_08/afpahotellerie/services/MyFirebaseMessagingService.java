@@ -5,12 +5,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.a77011_40_08.afpahotellerie.models.ChatMessage;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import org.parceler.Parcels;
 
 import java.util.Map;
 
@@ -59,6 +62,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 case "message":
                     Toast.makeText(getApplicationContext(), data.get("body"), Toast.LENGTH_LONG)
                             .show();
+                    gson = new Gson();
+                    JsonObject jsonMessage = gson.fromJson(data.get("body"), JsonObject.class);
+                    if (jsonMessage.has("title") && jsonMessage.has("text")) {
+                        Functions.createNotification(getApplicationContext(), jsonMessage.get
+                                ("title")
+                                .getAsString(), jsonMessage.get("text").getAsString());
+
+
+                    } else {
+                        Log.e(Constants._TAG_LOG, "Body mal formé: " + jsonMessage);
+                    }
                     break;
                 case "alert":
                     Toast.makeText(getApplicationContext(), data.get("body"), Toast.LENGTH_LONG)
@@ -86,6 +100,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent("MessageReceive");
         intent.putExtra("idFragment", idFragment);
         broadcaster.sendBroadcast(intent);
+        //intent.putExtra("chatMessage", Parcels.wrap(ChatMessage));
         return idFragment;
     }
 }

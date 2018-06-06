@@ -57,12 +57,17 @@ public interface SWInterface {
             @Field("idRoom") int idRoom);
 
     @FormUrlEncoded
-    @POST("/afpa_hotellerie/getMessagesChat.php.php")
+    @POST("/afpa_hotellerie/getMessagesChat.php")
     Call<Push> getMessagesChat(
             @Header("Authorization") String authorization,
             @Field("idDevice") int idDevice,
             @Field("idUser") int idUser);
 
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/getUsers.php")
+    Call<Push> getUsers(
+            @Header("Authorization") String authorization,
+            @Field("idDevice") int idDevice);
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/addRoomsHistory.php")
@@ -79,15 +84,7 @@ public interface SWInterface {
             @Header("Authorization") String authorization,
             @Field("token") String token);
 
-    @FormUrlEncoded
-    @POST("/afpa_hotellerie/addMessageChat.php")
-    Call<Push> addMessageChat(
-            @Header("Authorization") String authorization,
-            @Field("token") int idFrom,
-            @Field("idStaff") int idTo,
-            @Field("date") String message,
-            @Field("idRoomStatus") String date,
-            @Field("idRoomStatus") String pseudo);
+
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/setDevice.php")

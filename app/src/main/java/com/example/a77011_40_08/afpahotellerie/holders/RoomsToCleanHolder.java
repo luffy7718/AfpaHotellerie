@@ -49,7 +49,7 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
     App app;
     int position;
     RoomsToCleanAdapter parent;
-
+    GenericAlertDialog genericAlertDialog;
 
     public RoomsToCleanHolder(View view) {
         super(view);
@@ -78,14 +78,15 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
 
                         callGetFurnituresTroubles();
                         new GenericAlertDialog((Activity) view.getContext(), "Chambre " + room
-                                .getNumber(), container,
+                                .getNumber(), "", null,
                                 new GenericAlertDialog.CallGenericAlertDialog() {
                                     @Override
-                                    public void onValidate() {
+                                    public void validate() {
 
 
                                     }
                                 });
+
                     }
 
                 }
@@ -98,14 +99,14 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
 
             public void onClick(View v) {
                 RoomStatuts roomStatuts = app.getRoomStatuts();
-                String code = roomStatuts.get(room.getIdRoomStatus()-1).getAbbreviation();
+                String code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
                 int idRoomStatus = -1;
-                if( code.equals("LS")){
+                if (code.equals("LS")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("LE");
-                }else if(code.equals("OS")){
+                } else if (code.equals("OS")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("OE");
                 }
-                if(idRoomStatus != -1){
+                if (idRoomStatus != -1) {
                     btnPlay.setVisibility(View.GONE);
                     btnPause.setVisibility(View.VISIBLE);
                     callRoomsHistory(idRoomStatus);
@@ -118,14 +119,14 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
 
                 RoomStatuts roomStatuts = app.getRoomStatuts();
-                String code = roomStatuts.get(room.getIdRoomStatus()-1).getAbbreviation();
+                String code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
                 int idRoomStatus = -1;
-                if( code.equals("LE")){
+                if (code.equals("LE")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("LP");
-                }else if(code.equals("OE")){
+                } else if (code.equals("OE")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("OP");
                 }
-                if(idRoomStatus != -1){
+                if (idRoomStatus != -1) {
                     btnPlay.setVisibility(View.VISIBLE);
                     btnPause.setVisibility(View.GONE);
                     callRoomsHistory(idRoomStatus);
@@ -136,12 +137,13 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setRooms(final Room room,int position, Activity activity, RoomsToCleanAdapter parent) {
+    public void setRooms(final Room room, int position, Activity activity, RoomsToCleanAdapter
+            parent) {
         this.parent = parent;
         this.room = room;
         this.position = position;
         txtNumber.setText("" + room.getNumber());
-         app = (App) activity.getApplication();
+        app = (App) activity.getApplication();
         RoomStatuts rs = app.getRoomStatuts();
         String status = "XX";
         for (RoomStatut entry : rs) {
@@ -199,9 +201,9 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
 
     private void callRoomsHistory(int idRoomStatus) {
         int position = getAdapterPosition();
-        Log.e(Constants._TAG_LOG,"Position: "+position);
+        Log.e(Constants._TAG_LOG, "Position: " + position);
         Call<Push> call = swInterface.addRoomsHistory(Functions.getAuth(), room
-                .getIdRoom(),Session.getMyUser().getIdStaff(),Functions.today(),idRoomStatus);
+                .getIdRoom(), Session.getMyUser().getIdStaff(), Functions.today(), idRoomStatus);
 
         call.enqueue(new Callback<Push>() {
             @Override
@@ -213,7 +215,7 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
                     room.setIdRoomStatus(idRoomStatus);
                     parent.notifyDataSetChanged();
                     if (push.getStatus() == 1) {
-                        if(idRoomStatus == 1){
+                        if (idRoomStatus == 1) {
                             parent.removeRoom(position);
                         }
                     } else {

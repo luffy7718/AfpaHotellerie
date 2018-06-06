@@ -2,6 +2,7 @@ package com.example.a77011_40_08.afpahotellerie.utils;
 
 import android.util.Log;
 
+import com.example.a77011_40_08.afpahotellerie.models.ChatUser;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 
 import java.util.HashMap;
@@ -12,7 +13,15 @@ import java.util.HashMap;
 
 public class Session {
 
- 
+    private static ChatUser myChatUser;
+
+    public static ChatUser getMyChatUser() {
+        return myChatUser;
+    }
+
+    public static void setMyChatUser(ChatUser myChatUser) {
+        Session.myChatUser = myChatUser;
+    }
     private static User myUser;
 
     private static Boolean connectionChecked = false;

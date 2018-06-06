@@ -11,33 +11,47 @@ import android.view.View;
 
 public class GenericAlertDialog {
 
-    private CallGenericAlertDialog callBack;
+    public GenericAlertDialog(Activity activity, String title, String message, View view, final CallGenericAlertDialog callback) {
 
-    public GenericAlertDialog(Activity activity, String title, View view, CallGenericAlertDialog call){
 
-        this.callBack = call;
+        final android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(activity);
 
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-        alertDialog.setTitle(title);
+        if (message.isEmpty() && view != null) {
+            alertDialogBuilder.setView(view);
+        } else {
+            alertDialogBuilder.setMessage(message);
+        }
 
-        alertDialog.setView(view);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Valider", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setCancelable(false); //Mode modal
+
+        //int id = Functions.getResourceId(context,xmlRessource, "layout");
+        //View view = LayoutInflater.from(context).inflate(id,null);
+
+        alertDialogBuilder.setNegativeButton("Fermer", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                callBack.onValidate();
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
             }
+
         });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Fermer", new DialogInterface.OnClickListener() {
+
+        alertDialogBuilder.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
+            public void onClick(DialogInterface dialog, int which) {
+
+                callback.validate();
                 dialog.dismiss();
             }
         });
+
+        android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
-    public interface CallGenericAlertDialog{
-        void onValidate();
+    public interface CallGenericAlertDialog {
+        void validate();
     }
 
 

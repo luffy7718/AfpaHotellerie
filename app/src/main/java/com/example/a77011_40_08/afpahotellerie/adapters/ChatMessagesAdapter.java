@@ -24,6 +24,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +39,8 @@ public class ChatMessagesAdapter
     String idDevice;
     String idUser;
     SWInterface swInterface;
-    Date date = new Date();
+
+    User user;
 
     public ChatMessagesAdapter(Context context, String idDevice, String idUser) {
         this.chatMessages = new ChatMessages();
@@ -111,48 +113,44 @@ public class ChatMessagesAdapter
 
 
     public void addMessage(String message, String pseudo) {
-        Call<Push> call = swInterface.addMessageChat(Functions.getAuth(), Integer.parseInt
-                (idDevice), Session.getMyUser().getIdStaff(), message, date.toString(), pseudo);
 
+
+        Gson gson = new Gson();
+        HashMap<String, String> body = new HashMap<>();
+        body.put("title", "message de:" + pseudo);
+        body.put("text", "Vous avez de nouveaux messages."+message);
+        body.put("update", Constants._FRAG_HOME+ "");
+        String json = gson.toJson(body);
+        Log.e(Constants._TAG_LOG, "Body: " + json);
+        Call<Push> call = swInterface.sendMessage(Functions.getAuth(), user.getIdStaff(),
+                Session.getMyUser().getIdStaff(), "message", json);
         call.enqueue(new Callback<Push>() {
             @Override
             public void onResponse(Call<Push> call, Response<Push> response) {
                 if (response.isSuccessful()) {
-                    Log.e(Constants._TAG_LOG, response.toString());
                     Push push = response.body();
                     if (push.getStatus() == 1) {
-                        Gson gson = new Gson();
-
-
-                        //textView.setText(push.getName());
-                        Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
-                                + ", data:" + push.getData()
-                                + "]");
+                        Log.e(Constants._TAG_LOG, "Success ");
                     } else {
-                        Log.e(Constants._TAG_LOG, "push.getdata = " + push.getData());
-
+                        Log.e(Constants._TAG_LOG, push.getData());
                     }
-                    //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
-                    // .show();
                 } else {
-                    //todo:gérer les code erreur de retour
                     Log.e(Constants._TAG_LOG, response.toString());
                 }
-
             }
 
             @Override
             public void onFailure(Call<Push> call, Throwable t) {
-                Log.e("error", "");
 
             }
         });
+
     }
 
     public void addMessageReceive(String message) {
         Date date = new Date();
 
-        Log.e("TAG", "idDevice=" + idDevice + " idUser=" + idUser + " message" + message);
+        Log.e("TAG", "idStaff=" + idDevice + " idUser=" + idUser + " message" + message);
 
         final ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMessage(message);

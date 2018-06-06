@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignRoomFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.ChatFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.ChatPrivateMessagesFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
@@ -54,8 +56,8 @@ public class HomeActivity extends AppCompatActivity
     TextView txtHeaderName;
     ImageView imgProfilePics;
     SWInterface swInterface;
-    //MyFirebaseMessagingService myFirebaseMessagingService;
 
+    //MyFirebaseMessagingService myFirebaseMessagingService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,8 +116,15 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+
+
         } else {
             super.onBackPressed();
+            int backStackCount = fragmentManager.getBackStackEntryCount();
+            if (backStackCount == 0) {
+                showDisconnectAppliDialog();
+            }
+
         }
     }
 
@@ -139,7 +148,9 @@ public class HomeActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_login) {
             showDisconnectDialog();
-        }
+        }  else if (id == R.id.action_message) {
+       changeFragment(Constants.FRAG_CHAT,null);
+    }
 
         return super.onOptionsItemSelected(item);
     }
@@ -167,9 +178,32 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
+    private void showDisconnectAppliDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Quitter l'application ?");
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "non", new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                changeFragment(Constants._FRAG_HOME, null);
+            }
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Oui", new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                logout();
+                System.exit(0);
+
+            }
+        });
+        alertDialog.show();
+    }
+
     private void showDisconnectDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Quitter ?");
+        alertDialog.setTitle("Déconnexion de votre compte ?");
 
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "non", new DialogInterface
                 .OnClickListener() {
@@ -182,6 +216,7 @@ public class HomeActivity extends AppCompatActivity
                 .OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 logout();
             }
         });
@@ -193,6 +228,7 @@ public class HomeActivity extends AppCompatActivity
         for (int i = 0; i <= end; i++) {
             //Log.e(Constants._TAG_LOG,i+"/"+end);
             fragmentManager.popBackStackImmediate();
+
         }
         //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
     }
@@ -215,6 +251,13 @@ public class HomeActivity extends AppCompatActivity
             case Constants.FRAG_ASSIGNED_ROOM:
                 frag = AssignRoomFragment.newInstance(params);
                 break;
+            case Constants.FRAG_CHAT:
+                frag =  new ChatFragment();
+                break;
+            case Constants.FRAG_CHAT_PRIVATE:
+                frag =  new ChatPrivateMessagesFragment();
+                break;
+
 
             default:
                 Log.e("[ERROR]", "changeFragment: code invalide " + code);
