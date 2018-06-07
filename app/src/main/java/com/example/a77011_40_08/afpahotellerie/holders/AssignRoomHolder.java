@@ -57,9 +57,10 @@ public class AssignRoomHolder extends RecyclerView.ViewHolder {
         this.position = position;
         if (isAssigned) {
             txtNumber.setText("" + room.getNumber());
-            cvaffected.setCardBackgroundColor(Color.parseColor("#FFC9CCF1"));
+            cvaffected.setCardBackgroundColor(Color.parseColor("#00FF00"));
         } else {
             txtNumber.setText("" + room.getNumber());
+            cvaffected.setCardBackgroundColor(Color.parseColor("#AFAFAF"));
         }
 
 

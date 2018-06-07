@@ -45,9 +45,7 @@ import retrofit2.Response;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ChatFragment extends Fragment {
 
     RecyclerView lstUsers;

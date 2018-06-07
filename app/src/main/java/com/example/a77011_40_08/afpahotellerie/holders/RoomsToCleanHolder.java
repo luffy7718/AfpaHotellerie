@@ -3,6 +3,7 @@ package com.example.a77011_40_08.afpahotellerie.holders;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,8 +50,9 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
     App app;
     int position;
     RoomsToCleanAdapter parent;
-    GenericAlertDialog genericAlertDialog;
-
+    RoomStatuts roomStatuts;
+    String code;
+     CardView cvRoomsToClean;
     public RoomsToCleanHolder(View view) {
         super(view);
         Context context = (Activity) view.getContext();
@@ -61,7 +63,7 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
         btnPause = (ImageButton) view.findViewById(R.id.btnPause);
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_card_view);
-
+        cvRoomsToClean=view.findViewById(R.id.cvRoomsToClean);
         btnPause.setVisibility(View.GONE);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -98,8 +100,8 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
             @Override
 
             public void onClick(View v) {
-                RoomStatuts roomStatuts = app.getRoomStatuts();
-                String code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
+                roomStatuts = app.getRoomStatuts();
+                code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
                 int idRoomStatus = -1;
                 if (code.equals("LS")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("LE");
@@ -118,8 +120,8 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
 
-                RoomStatuts roomStatuts = app.getRoomStatuts();
-                String code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
+                roomStatuts = app.getRoomStatuts();
+                code = roomStatuts.get(room.getIdRoomStatus() - 1).getAbbreviation();
                 int idRoomStatus = -1;
                 if (code.equals("LE")) {
                     idRoomStatus = roomStatuts.getIdRoomStatusByCode("LP");
@@ -146,11 +148,35 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
         app = (App) activity.getApplication();
         RoomStatuts rs = app.getRoomStatuts();
         String status = "XX";
+        cvRoomsToClean.setForeground(null);
         for (RoomStatut entry : rs) {
             if (entry.getIdRoomStatus() == room.getIdRoomStatus()) {
                 status = entry.getAbbreviation();
             }
+            code = rs.get(room.getIdRoomStatus() - 1).getAbbreviation();
+            int idRoomStatus = -1;
+            if (code.equals("LE")) {
+                btnPlay.setVisibility(View.GONE);
+                btnPause.setVisibility(View.VISIBLE);
+                idRoomStatus = rs.getIdRoomStatusByCode("LP");
+
+            } else if (code.equals("OE")) {
+                btnPlay.setVisibility(View.GONE);
+                btnPause.setVisibility(View.VISIBLE);
+                idRoomStatus = rs.getIdRoomStatusByCode("OP");
+            } else if (code.equals("LP") || (code.equals("OP"))) {
+                cvRoomsToClean.setForeground(activity.getDrawable(R.drawable.card_view_disable));
+                btnPlay.setVisibility(View.GONE);
+                btnPause.setVisibility(View.GONE);
+            }
+
+
+            if (idRoomStatus != -1) {
+
+
+            }
         }
+
         txtAbbréviation.setText(status);
 
 
