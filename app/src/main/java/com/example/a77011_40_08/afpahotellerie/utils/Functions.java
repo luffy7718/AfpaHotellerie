@@ -4,10 +4,14 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
-
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.google.gson.JsonObject;
@@ -113,6 +117,40 @@ public class Functions {
 
     public static String getMyToken(Context context){
         return getPreferenceString(context,"token");
+    }
+
+    public static void  setViewBgColorByStatus(View view, String status) {
+        GradientDrawable bgShape = (GradientDrawable)view.getBackground();
+        int idRessource = App.getColors().get(status);
+        bgShape.setColor(idRessource);
+    }
+
+    public static void  setBiColorString(String first, String next, TextView textView, int color, boolean isColorAtLeft) {
+        textView.setText(first + next, TextView.BufferType.SPANNABLE);
+        Spannable s = (Spannable)textView.getText();
+        int start = first.length();
+        int end = start + next.length();
+        if (isColorAtLeft) {
+            s.setSpan(new ForegroundColorSpan(color), 0, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            s.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    public static String[] singlePlural(int count, String singular, String plural, String nothing) {
+        String[] arrString = new String[2];
+        if (count == 0) {
+            arrString[0] = nothing;
+            arrString[1] = singular;
+
+        } else if(count == 1) {
+            arrString[0] = ""+count;
+            arrString[1] = singular;
+        } else {
+            arrString[0] = ""+count;
+            arrString[1] = plural;
+        }
+        return arrString;
     }
 
     public static void createNotification(Context context, String title, String body) {

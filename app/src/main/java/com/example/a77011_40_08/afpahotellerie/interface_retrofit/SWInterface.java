@@ -1,6 +1,7 @@
 package com.example.a77011_40_08.afpahotellerie.interface_retrofit;
 
 
+
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 
 import io.reactivex.Observable;
@@ -14,7 +15,7 @@ public interface SWInterface {
 
     /******************************************
      * CALL
-     ******************************************/
+    ******************************************/
     @POST("/afpa_hotellerie/getDBVersion.php")
     Call<Integer> getDBVersion(
             @Header("Authorization") String authorization
@@ -22,7 +23,7 @@ public interface SWInterface {
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/forceLogin.php")
-//forceLogin.php ou login.php
+    //@POST("/afpa_hotellerie/login.php")
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
@@ -84,8 +85,6 @@ public interface SWInterface {
             @Header("Authorization") String authorization,
             @Field("token") String token);
 
-
-
     @FormUrlEncoded
     @POST("/afpa_hotellerie/setDevice.php")
     Call<Push> setDevice(
@@ -139,21 +138,17 @@ public interface SWInterface {
     Observable<Push> getJobs(
             @Header("Authorization") String authorization
     );
-
     @POST("/afpa_hotellerie/getRoomsStatus.php")
     Observable<Push> getRoomsStatus(
             @Header("Authorization") String authorization
     );
-
     @POST("/afpa_hotellerie/getFloors.php")
     Observable<Push> getFloors(
             @Header("Authorization") String authorization
     );
-
     @POST("/afpa_hotellerie/getRoomsTypes.php")
     Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
     );
-
 
 }

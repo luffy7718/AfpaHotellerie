@@ -185,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Log.e(Constants._TAG_LOG, "Jobs:"+String.valueOf(jobs!=null)+" | RoomStatus:"+String.valueOf(roomStatuts!=null)+" | getFloors:"+String.valueOf(floors!=null)+" | getRoomsTypes:"+String.valueOf(roomsTypes!=null));
-            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null) {
+            if(jobs != null && roomStatuts!=null && floors!=null && roomsTypes!=null)
+            {
                 Log.e(Constants._TAG_LOG,"APP loaded");
                 goToLogin();
             }
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         colors.put("OP",getResources().getColor(R.color.colorStatusOP));
         colors.put("OS",getResources().getColor(R.color.colorStatusOS));
         colors.put("DA",getResources().getColor(R.color.colorStatusDA));
+        colors.put("colorNext",getResources().getColor(R.color.colorPrimaryDark));
 
         App.setColors(colors);
     }

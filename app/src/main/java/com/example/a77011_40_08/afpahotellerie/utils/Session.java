@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.a77011_40_08.afpahotellerie.models.ChatUser;
 import com.example.a77011_40_08.afpahotellerie.models.User;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 
@@ -32,6 +33,16 @@ public class Session {
 
     public static Boolean getConnectionChecked() {
         return connectionChecked;
+    }
+
+    private static JsonObject joRoomFilter;
+
+    public static JsonObject getJoRoomFilter() {
+        return joRoomFilter;
+    }
+
+    public static void setJoRoomFilter(JsonObject joRoomFilter) {
+        Session.joRoomFilter = joRoomFilter;
     }
 
     public static void setConnectionChecked(Boolean connectionChecked) {

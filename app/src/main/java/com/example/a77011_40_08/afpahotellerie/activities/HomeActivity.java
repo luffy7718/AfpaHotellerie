@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,11 +32,18 @@ import com.example.a77011_40_08.afpahotellerie.fragments.ChatFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.ChatPrivateMessagesFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignStaffFragment;
+import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.FilterDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
+import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Job;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
+import com.example.a77011_40_08.afpahotellerie.models.Room;
+import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.services.MyFirebaseMessagingService;
@@ -66,12 +75,12 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        context = this;
+        context=this;
         swInterface = RetrofitApi.getInterface();
-        context = this;
+
 
         fragmentManager = getFragmentManager();
-        changeFragment(Constants._FRAG_HOME, null);
+        changeFragment(Constants._FRAG_HOME,null);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +92,7 @@ public class HomeActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string
-                .navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -116,18 +124,14 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-
-
         } else {
             super.onBackPressed();
             int backStackCount = fragmentManager.getBackStackEntryCount();
             if (backStackCount == 0) {
                 showDisconnectAppliDialog();
             }
-
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,7 +164,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_home){
             clearFragments();
             changeFragment(Constants._FRAG_HOME, null);
         } else if (id == R.id.nav_room_to_clean) {
@@ -225,17 +229,15 @@ public class HomeActivity extends AppCompatActivity
 
     private void clearFragments() {
         int end = fragmentManager.getBackStackEntryCount();
-        for (int i = 0; i <= end; i++) {
+        for (int i = 0; i<=end;i++){
             //Log.e(Constants._TAG_LOG,i+"/"+end);
             fragmentManager.popBackStackImmediate();
-
         }
         //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
     }
-
-    public void changeFragment(int code, Bundle params) {
+    public void changeFragment(int code, Bundle params){
         Fragment frag = null;
-        switch (code) {
+        switch (code){
             case Constants._FRAG_HOME:
                 frag = new HomeFragment();
                 break;
@@ -260,32 +262,31 @@ public class HomeActivity extends AppCompatActivity
 
 
             default:
-                Log.e("[ERROR]", "changeFragment: code invalide " + code);
+                Log.e("[ERROR]","changeFragment: code invalide "+code);
                 break;
         }
 
-        if (frag != null) {
+        if(frag !=null){
             loadFragment(frag);
         }
 
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment){
         currentFragment = fragment;
         int backStackCount = fragmentManager.getBackStackEntryCount();
         String tag = "Frag" + backStackCount;
 
         fragmentManager.beginTransaction()
-                .replace(R.id.frtHome, fragment, tag)
+                .replace(R.id.frtHome,fragment,tag)
                 .addToBackStack(tag)
                 .commit();
     }
-
-    public void userHasChange(User user) {
+    public void userHasChange(User user){
         txtHeaderName.setText(user.getFullName());
     }
 
-    public Fragment getLastFragment() {
+    public Fragment getLastFragment(){
         return currentFragment;
     }
 
@@ -336,4 +337,18 @@ public class HomeActivity extends AppCompatActivity
             }
         }
     };*/
+
+    public void showRoomDetails(Room room,  RoomStatut roomStatut, User staff){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        RoomDetailDialogFragment detailDialog = RoomDetailDialogFragment.newInstance();
+        detailDialog.setDetailRoom(room, roomStatut, staff);
+        detailDialog.show(ft, "TAG detail");
+    }
+
+    public void showFilterDialog(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FilterDialogFragment filterDialog = FilterDialogFragment.newInstance();
+        //detailDialog.setDetailRoom(room, roomStatut, staff);
+        filterDialog.show(ft, "TAG detail");
+    }
 }

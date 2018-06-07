@@ -2,16 +2,16 @@ package com.example.a77011_40_08.afpahotellerie.models;
 
 public class Floor {
 
-    private int idfloor;
+    private int idFloor;
     private int number;
     private String name;
 
-    public int getIdfloor() {
-        return idfloor;
+    public int getIdFloor() {
+        return idFloor;
     }
 
-    public void setIdfloor(int idfloor) {
-        this.idfloor = idfloor;
+    public void setIdFloor(int idfloor) {
+        this.idFloor = idfloor;
     }
 
     public int getNumber() {

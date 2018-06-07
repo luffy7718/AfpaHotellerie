@@ -7,15 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.holders.StateRoomsHolder;
+import com.example.a77011_40_08.afpahotellerie.holders.StateRoomsHolderGrid;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
-import com.example.a77011_40_08.afpahotellerie.R;
 
-public class StateRoomsAdapter extends RecyclerView.Adapter<StateRoomsHolder> {
+public class StateRoomsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Rooms rooms;
     Activity activity;
+
+    boolean isSwitchView = true;
+    private static final int LIST_ITEM = 0;
+    private static final int GRID_ITEM = 1;
 
     public StateRoomsAdapter(Activity activity) {
         this.rooms = new Rooms();
@@ -24,16 +29,33 @@ public class StateRoomsAdapter extends RecyclerView.Adapter<StateRoomsHolder> {
 
     @NonNull
     @Override
-    public StateRoomsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view_state_rooms, parent, false);
-        return new StateRoomsHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == LIST_ITEM){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_state_rooms, parent, false);
+            return new StateRoomsHolder(view);
+        }else{
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_grid_state_rooms, parent, false);
+            return new StateRoomsHolderGrid(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StateRoomsHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Room room = rooms.get(position);
-        holder.setRooms(room, activity);
+        switch (holder.getItemViewType()) {
+            case 0:
+                StateRoomsHolder stateRoomsHolder = (StateRoomsHolder)holder;
+                stateRoomsHolder.setRooms(room, activity);
+                break;
+
+            case 1:
+                StateRoomsHolderGrid stateRoomsHolderGrid = (StateRoomsHolderGrid)holder;
+                stateRoomsHolderGrid.setRooms(room, activity);
+                break;
+        }
+
     }
 
     @Override
@@ -52,5 +74,20 @@ public class StateRoomsAdapter extends RecyclerView.Adapter<StateRoomsHolder> {
     public  void loadRoom(Rooms rooms)
     {
         this.rooms = rooms;
+        notifyDataSetChanged();
+    }
+
+    public boolean toggleItemViewType () {
+        isSwitchView = !isSwitchView;
+        return isSwitchView;
+    }
+
+    @Override
+    public int getItemViewType (int position) {
+        if (isSwitchView){
+            return LIST_ITEM;
+        }else{
+            return GRID_ITEM;
+        }
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#9e1f63</color>
+    <color name="colorPrimaryDark">#9e1f63</color>
+    <color name="colorAccent">#726658</color>
 
     <color name="colorTxtDark">#333333</color>
     <color name="colorTxtLight">#929292</color>
@@ -12,6 +12,9 @@
     <color name="colorStatusOP">#27aae1</color>
     <color name="colorStatusOS">#be1e2d</color>
     <color name="colorStatusDA">#262262</color>
+
+    <color name="colorTextBtn">#ffffff</color>
+    <color name="colorError">#be1e2d</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="message_a">#E91E63</color>
