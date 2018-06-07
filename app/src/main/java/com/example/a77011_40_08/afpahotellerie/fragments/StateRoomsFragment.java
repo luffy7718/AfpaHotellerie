@@ -30,7 +30,9 @@ import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
+import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +46,11 @@ public class StateRoomsFragment extends Fragment {
     Button btnInfos;
     Button btnFilter;
     Boolean isSnackbarClose = true;
+    Rooms roomsFromDB;
+    Rooms rooms;
+    Gson gson;
+    TextView txtResultInfo;
+    String[] strArr;
 
     public StateRoomsAdapter stateRoomsAdapter;
     SWInterface swInterface;
@@ -77,6 +84,7 @@ public class StateRoomsFragment extends Fragment {
         btnSwitchView = view.findViewById(R.id.btnSwitchView);
         btnInfos = view.findViewById(R.id.btnInfos);
         btnFilter = view.findViewById(R.id.btnFilter);
+        txtResultInfo = view.findViewById(R.id.txtResultInfo);
 
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context);
         rvwStateRooms.setLayoutManager(layoutManagerR);
@@ -194,10 +202,13 @@ public class StateRoomsFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
-                        Gson gson = new Gson();
-                        Rooms rooms = gson.fromJson(push.getData(),Rooms.class);
-                        //stateRoomsAdapter.loadRoom(rooms.filterByRoomStatus(new int[]{2, 6}));
-                        stateRoomsAdapter.loadRoom(rooms);
+                        gson = new Gson();
+                        roomsFromDB = gson.fromJson(push.getData(),Rooms.class);
+
+                        strArr = Functions.singlePlural(roomsFromDB.size(), " chambre trouvée", " chambres trouvées", "Aucune");
+                        Functions.setBiColorString(strArr[0], strArr[1], txtResultInfo, App.getColors().get("colorNext"), true);
+
+                        stateRoomsAdapter.loadRoom(roomsFromDB);
                         //stateRoomsAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
                     }
@@ -213,6 +224,7 @@ public class StateRoomsFragment extends Fragment {
         });
     }
 
+
     private void getStaff(){
         Call<Push> call = swInterface.getStaff(Functions.getAuth());
 
@@ -224,7 +236,6 @@ public class StateRoomsFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
-                        Gson gson = new Gson();
                         Users staff = gson.fromJson(push.getData(),Users.class);
                         App.setStaff(staff);
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
@@ -239,6 +250,38 @@ public class StateRoomsFragment extends Fragment {
 
             }
         });
+    }
+
+
+    public void refreshRoomFilter() {
+        rooms = new Rooms(roomsFromDB);
+
+        JsonObject joFilter = Session.getJoRoomFilter();
+
+        if(joFilter != null) {
+            if(joFilter.has("roomStatus")) {
+                int[] ids = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomStatus"), int[].class);
+                rooms = rooms.filterByRoomStatus(ids);
+            }
+
+            if(joFilter.has("floor")) {
+                int id = joFilter.get("floor").getAsInt();
+                Log.e(Constants._TAG_LOG,"Floor: "+id);
+                if (id != 0) {
+                    rooms = rooms.filterByFloor(id);
+                }
+            }
+
+            if(joFilter.has("roomType")) {
+                int[] ids = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomType"), int[].class);
+                rooms = rooms.filterByRoomType(ids);
+            }
+        }
+
+        strArr = Functions.singlePlural(rooms.size(), " chambre trouvée", " chambres trouvées", "Aucune");
+        Functions.setBiColorString(strArr[0], strArr[1], txtResultInfo, App.getColors().get("colorNext"), true);
+
+        stateRoomsAdapter.loadRoom(rooms);
     }
 
 }

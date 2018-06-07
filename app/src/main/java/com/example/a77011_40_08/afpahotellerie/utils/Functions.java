@@ -5,17 +5,11 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-
-import com.example.a77011_40_08.afpahotellerie.R;
-import com.example.a77011_40_08.afpahotellerie.models.User;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -125,11 +119,31 @@ public class Functions {
         bgShape.setColor(idRessource);
     }
 
-    public static void  setBiColorString(String first, String next, TextView textView, int color) {
+    public static void  setBiColorString(String first, String next, TextView textView, int color, boolean isColorAtLeft) {
         textView.setText(first + next, TextView.BufferType.SPANNABLE);
         Spannable s = (Spannable)textView.getText();
         int start = first.length();
         int end = start + next.length();
-        s.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (isColorAtLeft) {
+            s.setSpan(new ForegroundColorSpan(color), 0, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            s.setSpan(new ForegroundColorSpan(color), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    public static String[] singlePlural(int count, String singular, String plural, String nothing) {
+        String[] arrString = new String[2];
+        if (count == 0) {
+            arrString[0] = nothing;
+            arrString[1] = singular;
+
+        } else if(count == 1) {
+            arrString[0] = ""+count;
+            arrString[1] = singular;
+        } else {
+            arrString[0] = ""+count;
+            arrString[1] = plural;
+        }
+        return arrString;
     }
 }

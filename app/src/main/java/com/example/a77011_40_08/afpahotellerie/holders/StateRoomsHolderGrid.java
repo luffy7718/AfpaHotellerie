@@ -41,6 +41,7 @@ public class StateRoomsHolderGrid extends RecyclerView.ViewHolder {
 
     public void setRooms(final Room room, Activity activity) {
         this.room = room;
+        txtNumberGrid.setText("" + room.getNumber());
 
         String status = "";
         for (RoomStatut roomStatut : App.getRoomStatuts()) {

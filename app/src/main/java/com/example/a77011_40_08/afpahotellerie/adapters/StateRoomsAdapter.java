@@ -58,13 +58,6 @@ public class StateRoomsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
-    /*@Override
-    public void onBindViewHolder(@NonNull StateRoomsHolder holder, int position) {
-        Room room = rooms.get(position);
-        holder.setRooms(room, activity);
-
-    }*/
-
     @Override
     public int getItemCount() {
 

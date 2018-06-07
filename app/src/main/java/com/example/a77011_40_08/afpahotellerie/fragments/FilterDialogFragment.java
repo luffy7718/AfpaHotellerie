@@ -4,6 +4,7 @@ package com.example.a77011_40_08.afpahotellerie.fragments;
 import android.app.DialogFragment;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,14 +19,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.a77011_40_08.afpahotellerie.R;
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
 import com.example.a77011_40_08.afpahotellerie.models.Floor;
-import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.RoomType;
-import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
+import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Session;
+import com.example.a77011_40_08.afpahotellerie.utils.StringWithTag;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -34,25 +37,23 @@ import java.util.List;
 
 public class FilterDialogFragment extends DialogFragment {
 
-    /*TextView txtTitleBar;
-    TextView txtAbbreviation;
-    TextView txtStatus;
-    TextView txtAssignment;
-    TextView txtRoomType;
-    TextView txtRoomBeds;
-    TextView txtFloor;
-    ImageView imgDetailPhoto;
-    Room room;
-    RoomStatut roomStatut;
-    User staff;*/
     FrameLayout frlClose;
     LinearLayout llFilterStatus;
     LinearLayout llFilterRoomType;
     Spinner spFloor;
     Button btnFilter;
-    List<String> spinnerArray;
-    List<CheckBox> checkBoxesSatus;
+    List<CheckBox> checkBoxesStatus;
     List<CheckBox> checkBoxesRoomType;
+    List<StringWithTag> spinnerArray;
+    Gson gson;
+    Boolean isRoomStatusFilter = false;
+    Boolean isFloorFilter = false;
+    Boolean isRoomTypeFilter = false;
+    int[] idsRoomStatus;
+    int idFloor;
+    int[] idsRoomType;
+
+    JsonObject jo;
 
     public FilterDialogFragment() {
         // Required empty public constructor
@@ -63,15 +64,13 @@ public class FilterDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    public void setDetailRoom(Room room, RoomStatut roomStatut, User staff) {
-        /*this.room = room;
-        this.roomStatut = roomStatut;
-        this.staff = staff;*/
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_filter_dialog, container, false);
+
+        gson = new Gson();
+
+        spinnerArray = new ArrayList<StringWithTag>();
 
         frlClose = root.findViewById(R.id.frlClose);
         llFilterStatus = root.findViewById(R.id.llFilterStatus);
@@ -79,69 +78,63 @@ public class FilterDialogFragment extends DialogFragment {
         btnFilter = root.findViewById(R.id.btnFilter);
         spFloor = root.findViewById(R.id.spFloor);
 
-        spinnerArray =  new ArrayList<>();
-        checkBoxesSatus =  new ArrayList<>();
+        checkBoxesStatus =  new ArrayList<>();
+        checkBoxesRoomType =  new ArrayList<>();
 
+        spinnerArray.add(new StringWithTag("Tous les étages", 0));
         for (Floor floor : App.getFloors()) {
-            spinnerArray.add(floor.getName());
+            spinnerArray.add(new StringWithTag(floor.getName(), floor.getIdFloor()));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+        ArrayAdapter<StringWithTag> adapter = new ArrayAdapter<StringWithTag> (getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFloor.setAdapter(adapter);
+
+        if (Session.getJoRoomFilter() != null) {
+            JsonObject joFilter = Session.getJoRoomFilter();
+            if(joFilter.has("roomStatus")) {
+                idsRoomStatus = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomStatus"), int[].class);
+                isRoomStatusFilter = true;
+            }
+            if(joFilter.has("floor")) {
+                idFloor = joFilter.get("floor").getAsInt();
+                isFloorFilter = true;
+                if (idFloor != 0) {
+                    spFloor.setSelection(idFloor);
+                }
+            }
+            if(joFilter.has("roomType")) {
+                idsRoomType = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomType"), int[].class);
+                isRoomTypeFilter = true;
+            }
+        }
+
 
         for(RoomStatut roomStatut : App.getRoomStatuts()) {
             CheckBox cb = new CheckBox(getActivity());
             cb.setTag(roomStatut.getIdRoomStatus());
             cb.setText(roomStatut.getAbbreviation() + " ("+roomStatut.getName()+")");
+            if(isRoomStatusFilter){
+                if(contains(idsRoomStatus, roomStatut.getIdRoomStatus())){
+                    cb.setChecked(true);
+                }
+            }
             llFilterStatus.addView(cb);
-            checkBoxesSatus.add(cb);
+            checkBoxesStatus.add(cb);
         }
 
         for(RoomType roomType : App.getRoomsTypes()) {
             CheckBox cb = new CheckBox(getActivity());
             cb.setTag(roomType.getIdRoomType());
             cb.setText(roomType.getName());
-            llFilterRoomType.addView(cb);
-            //checkBoxesRoomType.add(cb);
-        }
-
-        /*JsonObject jo = new JsonObject();
-        jo.addProperty("name", "path");
-
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add("my-path");
-        jsonArray.add("my-path2");
-        jsonArray.add("my-new-path");
-        jo.add("value", jsonArray);*/
-
-        //Log.e(Constants._TAG_LOG, "JSON: " + jo);
-        /*int txtNextColor = ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark);
-
-        //String path = Constants.URL_SW + Constants.PHOTOS_FOLDER + detailPhoto.getPath();
-
-        txtTitleBar = root.findViewById(R.id.txtTitleBar);
-        txtAbbreviation = root.findViewById(R.id.txtAbbreviation);
-        txtStatus = root.findViewById(R.id.txtStatus);
-        txtAssignment = root.findViewById(R.id.txtAssignment);
-        txtRoomType = root.findViewById(R.id.txtRoomType);
-        txtRoomBeds = root.findViewById(R.id.txtRoomBeds);
-        txtFloor = root.findViewById(R.id.txtFloor);
-        imgDetailPhoto = root.findViewById(R.id.imgDetailPhoto);*/
-
-        //imgDetailPhoto.setImageResource(R.drawable.room);
-
-        /*imgDetailPhoto.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                /*String path2 = Constants.URL_SW + Constants.PHOTOS_FOLDER + detailPhoto.getPath();
-                Intent intent = new Intent(getActivity(),FullScreenImageActivity.class);
-                intent.putExtra("path", path2);
-                startActivity(intent);
+            if(isRoomTypeFilter){
+                if(contains(idsRoomType, roomType.getIdRoomType())){
+                    cb.setChecked(true);
+                }
             }
-        });*/
-
+            llFilterRoomType.addView(cb);
+            checkBoxesRoomType.add(cb);
+        }
 
         frlClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,191 +143,70 @@ public class FilterDialogFragment extends DialogFragment {
             }
         });
 
-
-        JsonObject jo = new JsonObject();
-
-        /*JsonArray jsonArray = new JsonArray();
-        jsonArray.add("my-path");
-        jsonArray.add("my-path2");
-        jsonArray.add("my-new-path");
-        jo.add("value", jsonArray);*/
-
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                roomStatusFilter(jo);
-                /*floorFilter(jo);
-                roomTypeFilter(jo);
-                Log.e(Constants._TAG_LOG, "JSON: " + jo);*/
+                jo = new JsonObject();
+                roomStatusFilter();
+                floorFilter();
+                roomTypeFilter();
+                Session.setJoRoomFilter(jo);
+                closeFilterDialogFragment();
+                dismiss();
+                Log.e(Constants._TAG_LOG, "JSON: " + jo);
             }
         });
-
-
-
-
-
-        /*boolean isValid = false;
-        for(int floor: floorList){
-            if(room.getIdFloor() == floor){
-                isValid = true;
-            }
-        }
-        if(isValid){
-            rooms.add(room);
-        }*/
-
-        /*cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AssignedStaffFragment parent = ((AssignedStaffFragment) ((HomeActivity) context)
-                        .getLastFragment());
-                parent.showRoomPanel(user,user.getIdStaff());
-
-            }
-        });*/
-
-        /*String status = roomStatut.getAbbreviation();
-        String statusFullName = roomStatut.getName();
-
-        switch(status){
-            case "LE":
-                status = "LS";
-                statusFullName = "Libre Sale / En cours...";
-                break;
-            case "OE":
-                status = "OS";
-                statusFullName = "Occupée Sale / En cours...";
-                break;
-        }
-
-        Functions.setBiColorString("Statut : ", statusFullName, txtStatus, txtNextColor);
-
-        String srtStaff = "";
-        if (staff == null) {
-            srtStaff = "Pas d'affectation";
-        } else {
-            srtStaff = staff.getFullName();
-        }
-        Functions.setBiColorString("Affectation : ", srtStaff, txtAssignment, txtNextColor);
-
-        txtAbbreviation.setText(status);
-
-        Functions.setViewBgColorByStatus(txtAbbreviation, status);
-
-
-        String type = "";
-        for(RoomType roomType : App.getRoomsTypes()) {
-            if(roomType.getIdRoomType() == room.getIdRoomType()) {
-                type = roomType.getName();
-            }
-        }
-        Functions.setBiColorString("Type : ", type, txtRoomType, txtNextColor);
-
-        String srtBeds = "";
-        for(RoomType roomType : App.getRoomsTypes()) {
-            if(roomType.getIdRoomType() == room.getIdRoomType()) {
-                srtBeds = ""+roomType.getBeds();
-            }
-        }
-        Functions.setBiColorString("Nombre de lits : ", srtBeds, txtRoomBeds, txtNextColor);
-
-        String srtFloor = "";
-        for(Floor floor : App.getFloors()) {
-            Log.e(Constants._TAG_LOG, floor.getIdFloor() + " = " + room.getIdFloor());
-            if(floor.getIdFloor() == room.getIdFloor()) {
-                srtFloor = ""+floor.getNumber();
-                if(floor.getNumber() < 1) {
-                    srtFloor = floor.getName();
-                }
-            }
-        }
-        Functions.setBiColorString("Étage : ", srtFloor, txtFloor, txtNextColor);*/
-
-        /*txtRoomType.setText(first + next, TextView.BufferType.SPANNABLE);
-        Spannable s = (Spannable)txtRoomType.getText();
-        int start = first.length();
-        int end = start + next.length();
-        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-
-
-
-
-        /*txtStatus.setText(first + next, TextView.BufferType.SPANNABLE);
-        Spannable s = (Spannable)txtStatus.getText();
-        int start = first.length();
-        int end = start + next.length();
-        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-
-
-
-        //txtTitleBar.setText("Chambre " + room.getNumber());
-
-
-        //txtDetailTitle.setText("" + room.getNumber());
-
-
-
-
-        //Functions.createServerRoundedImage(getActivity(), imgDetailPhoto, detailPhoto.getPath(), 500, 500, "");
-
-
-        /*public int getDrawableResIdByName(String resName) {
-            String pkgName = context.getPackageName();
-            int resID = context.getResources().getIdentifier(resName, "drawable", pkgName);
-            return resID;
-        }*/
-
-
-
-        /*Picasso.with(getActivity()).load(path)
-                //.transform(transformation)
-                .fit()
-                //.centerInside()
-                //.resize(300, -1)
-                .centerCrop()
-                .into(imgDetailPhoto);*/
-
-        //imgDetailPhoto.setImageResource(detailPhoto.getId());
 
         return root;
     }
 
-    private void roomStatusFilter(JsonObject jo) {
+    private void closeFilterDialogFragment() {
+        HomeActivity home = (HomeActivity) getActivity();
+        StateRoomsFragment frag = (StateRoomsFragment) home.getLastFragment();
+        frag.refreshRoomFilter();
+    }
+
+    private void roomStatusFilter() {
         boolean isValid = false;
         JsonArray jsonArray = new JsonArray();
-        for (CheckBox cb : checkBoxesSatus) {
+        for (CheckBox cb : checkBoxesStatus) {
             if (cb.isChecked()) {
                 isValid = true;
-                jsonArray.add((JsonElement) cb.getTag());
+                int val = (int) cb.getTag();
+                //Log.e(Constants._TAG_LOG,"Status: "+val);
+                jsonArray.add(val);
             }
         }
         if(isValid){
             jo.add("roomStatus", jsonArray);
         }
+        Log.e(Constants._TAG_LOG,"FILTER1: "+jo.toString());
     }
 
-    private void floorFilter(JsonObject jo) {
-        String stringResult = null;
-        if(spFloor != null && spFloor.getSelectedItem() !=null ) {
-            stringResult = spFloor.getSelectedItem().toString();
+    private void floorFilter() {
+        if(spFloor != null && spFloor.getSelectedItem() != null ) {
+            StringWithTag swt = (StringWithTag) spFloor.getSelectedItem();
+            Integer id = (Integer) swt.tag;
+            jo.addProperty("floor", id);
         }
-        if(stringResult != null){
-            jo.addProperty("floor", "stringSesult");
-        }
+        Log.e(Constants._TAG_LOG,"FILTER2: "+jo.toString());
     }
 
-    private void roomTypeFilter(JsonObject jo) {
+
+    private void roomTypeFilter() {
         boolean isValid = false;
         JsonArray jsonArray = new JsonArray();
         for (CheckBox cb : checkBoxesRoomType) {
             if (cb.isChecked()) {
                 isValid = true;
-                jsonArray.add((JsonElement) cb.getTag());
+                int val = (int) cb.getTag();
+                jsonArray.add(val);
             }
         }
         if(isValid){
             jo.add("roomType", jsonArray);
         }
+        Log.e(Constants._TAG_LOG,"FILTER3: "+jo.toString());
     }
 
     // Calcule la hauteur et largeur du Dialog Fragment
@@ -349,9 +221,18 @@ public class FilterDialogFragment extends DialogFragment {
         int width = size.x;
         int height = size.y;
 
-        //window.setLayout((int) (width * 0.90), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setLayout((int) (width * 0.99), (int) (height * 0.96));
         window.setGravity(Gravity.CENTER);
     }
 
+    public static boolean contains(final int[] array, final int v) {
+        boolean result = false;
+        for(int i : array){
+            if(i == v){
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
 }

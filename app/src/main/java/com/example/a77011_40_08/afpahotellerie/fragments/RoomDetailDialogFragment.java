@@ -120,7 +120,7 @@ public class RoomDetailDialogFragment extends DialogFragment {
                 break;
         }
 
-        Functions.setBiColorString("Statut : ", statusFullName, txtStatus, txtNextColor);
+        Functions.setBiColorString("Statut : ", statusFullName, txtStatus, txtNextColor, false);
 
         String srtStaff = "";
         if (staff == null) {
@@ -128,7 +128,7 @@ public class RoomDetailDialogFragment extends DialogFragment {
         } else {
             srtStaff = staff.getFullName();
         }
-        Functions.setBiColorString("Affectation : ", srtStaff, txtAssignment, txtNextColor);
+        Functions.setBiColorString("Affectation : ", srtStaff, txtAssignment, txtNextColor, false);
 
         txtAbbreviation.setText(status);
 
@@ -141,7 +141,7 @@ public class RoomDetailDialogFragment extends DialogFragment {
                 type = roomType.getName();
             }
         }
-        Functions.setBiColorString("Type : ", type, txtRoomType, txtNextColor);
+        Functions.setBiColorString("Type : ", type, txtRoomType, txtNextColor, false);
 
         String srtBeds = "";
         for(RoomType roomType : App.getRoomsTypes()) {
@@ -150,7 +150,7 @@ public class RoomDetailDialogFragment extends DialogFragment {
             }
         }
 
-        Functions.setBiColorString("Nombre de lits : ", srtBeds, txtRoomBeds, txtNextColor);
+        Functions.setBiColorString("Nombre de lits : ", srtBeds, txtRoomBeds, txtNextColor, false);
 
         String srtFloor = "";
         for(Floor floor : App.getFloors()) {
@@ -162,7 +162,7 @@ public class RoomDetailDialogFragment extends DialogFragment {
                 }
             }
         }
-        Functions.setBiColorString("Étage : ", srtFloor, txtFloor, txtNextColor);
+        Functions.setBiColorString("Étage : ", srtFloor, txtFloor, txtNextColor, false);
         /*txtRoomType.setText(first + next, TextView.BufferType.SPANNABLE);
         Spannable s = (Spannable)txtRoomType.getText();
         int start = first.length();

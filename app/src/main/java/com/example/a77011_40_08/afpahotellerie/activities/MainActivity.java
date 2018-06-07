@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         colors.put("OP",getResources().getColor(R.color.colorStatusOP));
         colors.put("OS",getResources().getColor(R.color.colorStatusOS));
         colors.put("DA",getResources().getColor(R.color.colorStatusDA));
+        colors.put("colorNext",getResources().getColor(R.color.colorPrimaryDark));
 
         App.setColors(colors);
     }

@@ -1,9 +1,19 @@
 package com.example.a77011_40_08.afpahotellerie.models;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 
 public class Rooms extends ArrayList<Room> {
+
+    public Rooms() {
+    }
+
+    public Rooms(@NonNull Collection<? extends Room> c) {
+        super(c);
+    }
 
     public static class SortByIdRoom implements Comparator<Room> {
         @Override
@@ -20,6 +30,21 @@ public class Rooms extends ArrayList<Room> {
                 if(room.getIdRoomStatus() == status){
                     isValid = true;
                 }
+            }
+            if(isValid){
+                rooms.add(room);
+            }
+        }
+
+        return rooms;
+    }
+
+    public Rooms filterByFloor(int floor){
+        Rooms rooms = new Rooms();
+        for(Room room: this){
+            boolean isValid = false;
+            if(room.getIdFloor() == floor){
+                isValid = true;
             }
             if(isValid){
                 rooms.add(room);
