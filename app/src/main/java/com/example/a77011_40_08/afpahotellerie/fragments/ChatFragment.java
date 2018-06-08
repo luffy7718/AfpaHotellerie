@@ -54,6 +54,7 @@ public class ChatFragment extends Fragment {
     ChatUsersAdapter chatUsersAdapter;
     String idDevice;
     int id;
+    Users users;
     SWInterface swInterface;
     GenericAlertDialog genericAlertDialog;
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -91,7 +92,7 @@ public class ChatFragment extends Fragment {
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatUsersAdapter.loadUsers();
+                chatUsersAdapter.loadUser(users);
             }
         });
 
@@ -105,7 +106,7 @@ public class ChatFragment extends Fragment {
         chatUsersAdapter = new ChatUsersAdapter(context, Functions.getPreferenceString(context,
                 "idStaff"));
         lstUsers.setAdapter(chatUsersAdapter);
-        chatUsersAdapter.loadUsers();
+        chatUsersAdapter.loadUser(users);
         return view;
     }
 
@@ -113,7 +114,7 @@ public class ChatFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        chatUsersAdapter.loadUsers();
+        chatUsersAdapter.loadUser(users);
     }
 
     @Override

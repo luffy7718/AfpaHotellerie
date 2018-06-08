@@ -13,6 +13,7 @@ import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.holders.ChatUserHolder;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
+import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
@@ -44,6 +45,7 @@ public class ChatUsersAdapter
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_user, parent, false);
         swInterface = RetrofitApi.getInterface();
+        callgetStaff();
         return new ChatUserHolder(view);
     }
 
@@ -56,12 +58,16 @@ public class ChatUsersAdapter
 
     @Override
     public int getItemCount() {
-        return users.size();
+
+        if (users == null) {
+            return 0;
+        } else {
+            return users.size();
+        }
     }
 
-    public void loadUsers() {
-        callgetStaff();
-    }
+
+
     private void callgetStaff() {
 
         Call<Push> call = swInterface.getStaff(Functions.getAuth());
@@ -89,5 +95,9 @@ public class ChatUsersAdapter
 
             }
         });
+    }
+    public  void loadUser(Users users)
+    {
+        this.users = users;
     }
 }

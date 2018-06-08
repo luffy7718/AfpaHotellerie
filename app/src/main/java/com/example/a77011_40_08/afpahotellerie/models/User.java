@@ -12,8 +12,17 @@ public class User {
     private String firstname;
     private String path;
     private int idJob;
+    private int roomsAssigned;
 
-    public User(){
+    public int getRoomsAssigned() {
+        return roomsAssigned;
+    }
+
+    public void setRoomsAssigned(int roomsAssigned) {
+        this.roomsAssigned = roomsAssigned;
+    }
+
+    public User() {
 
     }
 
@@ -39,8 +48,8 @@ public class User {
         this.firstname = firstname;
     }
 
-    public String getFullName(){
-        return name +" "+ firstname;
+    public String getFullName() {
+        return name + " " + firstname;
     }
 
     public String getPath() {

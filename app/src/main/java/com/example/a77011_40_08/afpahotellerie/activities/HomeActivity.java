@@ -33,8 +33,7 @@ import com.example.a77011_40_08.afpahotellerie.fragments.ChatPrivateMessagesFrag
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignStaffFragment;
 import com.example.a77011_40_08.afpahotellerie.R;
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedRoomsFragment;
-import com.example.a77011_40_08.afpahotellerie.fragments.AssignedStaffFragment;
+
 import com.example.a77011_40_08.afpahotellerie.fragments.FilterDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragment;

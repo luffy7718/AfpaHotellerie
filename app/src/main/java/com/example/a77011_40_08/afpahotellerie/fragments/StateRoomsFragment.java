@@ -68,7 +68,7 @@ public class StateRoomsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
-
+        gson = new Gson();
         stateRoomsAdapter = new StateRoomsAdapter(getActivity());
 
         getRooms();
@@ -202,7 +202,7 @@ public class StateRoomsFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
-                        gson = new Gson();
+
                         roomsFromDB = gson.fromJson(push.getData(),Rooms.class);
 
                         strArr = Functions.singlePlural(roomsFromDB.size(), " chambre trouvée", " chambres trouvées", "Aucune");

@@ -49,7 +49,7 @@ public class AssignStaffFragment extends Fragment {
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
         assignStaffAdapter = new AssignStaffAdapter(assignStaffFragment);
-        getSubordinates();
+
 
     }
 
@@ -60,8 +60,7 @@ public class AssignStaffFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_assign_staff, container, false);
         rvwListStaff = view.findViewById(R.id.rvwListStaff);
-
-
+        getSubordinates();
         //txtAvailable = view.findViewById(R.id.txtAvailable);
         //txtUnaffected = view.findViewById(R.id.txtUnaffected);
 
@@ -73,8 +72,8 @@ public class AssignStaffFragment extends Fragment {
         rvwListStaff.setAdapter(assignStaffAdapter);
 
 
-      //  txtAvailable.setText("agents disponibles");
-       // txtUnaffected.setText("sans affectations");
+        //  txtAvailable.setText("agents disponibles");
+        // txtUnaffected.setText("sans affectations");
 
 
         return view;
@@ -113,12 +112,6 @@ public class AssignStaffFragment extends Fragment {
 
 
     }
-
-
-
-
-
-
 
 
 }

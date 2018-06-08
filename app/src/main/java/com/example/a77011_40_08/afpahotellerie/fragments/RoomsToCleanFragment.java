@@ -95,6 +95,7 @@ public class RoomsToCleanFragment extends Fragment {
 
         txtRoomsCount = view.findViewById(R.id.txtRoomsCount);
         roomsToCleanAdapter.setRoomsCountDisplay(txtRoomsCount);
+        txtRoomsCount.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
         rvwListRooms = view.findViewById(R.id.rvwListRooms);
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context,

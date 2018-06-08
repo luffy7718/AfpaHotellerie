@@ -149,6 +149,7 @@ public class RoomsToCleanHolder extends RecyclerView.ViewHolder {
         RoomStatuts rs = app.getRoomStatuts();
         String status = "XX";
         cvRoomsToClean.setForeground(null);
+        btnPlay.setVisibility(View.VISIBLE);
         for (RoomStatut entry : rs) {
             if (entry.getIdRoomStatus() == room.getIdRoomStatus()) {
                 status = entry.getAbbreviation();
