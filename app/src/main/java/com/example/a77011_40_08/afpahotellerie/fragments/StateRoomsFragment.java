@@ -80,6 +80,8 @@ public class StateRoomsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_state_rooms, container, false);
 
+        gson = new Gson();
+
         rvwStateRooms = view.findViewById(R.id.rvwStateRooms);
         btnSwitchView = view.findViewById(R.id.btnSwitchView);
         btnInfos = view.findViewById(R.id.btnInfos);
@@ -202,7 +204,6 @@ public class StateRoomsFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
-                        gson = new Gson();
                         roomsFromDB = gson.fromJson(push.getData(),Rooms.class);
 
                         strArr = Functions.singlePlural(roomsFromDB.size(), " chambre trouvée", " chambres trouvées", "Aucune");

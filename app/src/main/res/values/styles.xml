@@ -40,4 +40,11 @@
         <item name="android:stateListAnimator">@null</item>
     </style>
 
+    <declare-styleable name="SectionView">
+        <attr name="headText" format="string"/>
+        <attr name="headSize" format="dimension"/>
+        <attr name="headIcon" format="integer"/>
+        <attr name="isCollapse" format="boolean"/>
+    </declare-styleable>
+
 </resources>

@@ -2,8 +2,12 @@ package com.example.a77011_40_08.afpahotellerie.fragments;
 
 
 import android.app.DialogFragment;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.example.a77011_40_08.afpahotellerie.R;
@@ -27,6 +32,7 @@ import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.example.a77011_40_08.afpahotellerie.utils.StringWithTag;
+import com.example.a77011_40_08.afpahotellerie.views.SectionView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -42,6 +48,7 @@ public class FilterDialogFragment extends DialogFragment {
     LinearLayout llFilterRoomType;
     Spinner spFloor;
     Button btnFilter;
+    Button btnDelFilter;
     List<CheckBox> checkBoxesStatus;
     List<CheckBox> checkBoxesRoomType;
     List<StringWithTag> spinnerArray;
@@ -52,6 +59,16 @@ public class FilterDialogFragment extends DialogFragment {
     int[] idsRoomStatus;
     int idFloor;
     int[] idsRoomType;
+    SectionView svStatus;
+    SectionView svFloor;
+    SectionView svRoomType;
+    String colorTxtLight;
+    String colorPrimaryDark;
+    LinearLayout.LayoutParams params;
+    Button btnSelectAllStatus;
+    Button btnDelStatus;
+    Button btnSelectAllRoomType;
+    Button btnDelRoomType;
 
     JsonObject jo;
 
@@ -68,6 +85,11 @@ public class FilterDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_filter_dialog, container, false);
 
+        colorTxtLight = "#" + Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.colorTxtLight));
+        colorPrimaryDark = "#" + Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+
+        params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         gson = new Gson();
 
         spinnerArray = new ArrayList<StringWithTag>();
@@ -76,7 +98,15 @@ public class FilterDialogFragment extends DialogFragment {
         llFilterStatus = root.findViewById(R.id.llFilterStatus);
         llFilterRoomType = root.findViewById(R.id.llFilterRoomType);
         btnFilter = root.findViewById(R.id.btnFilter);
+        btnDelFilter = root.findViewById(R.id.btnDelFilter);
         spFloor = root.findViewById(R.id.spFloor);
+        svStatus = root.findViewById(R.id.svStatus);
+        svFloor = root.findViewById(R.id.svFloor);
+        svRoomType = root.findViewById(R.id.svRoomType);
+        btnSelectAllStatus = root.findViewById(R.id.btnSelectAllStatus);
+        btnDelStatus = root.findViewById(R.id.btnDelStatus);
+        btnSelectAllRoomType = root.findViewById(R.id.btnSelectAllRoomType);
+        btnDelRoomType = root.findViewById(R.id.btnDelRoomType);
 
         checkBoxesStatus =  new ArrayList<>();
         checkBoxesRoomType =  new ArrayList<>();
@@ -86,7 +116,7 @@ public class FilterDialogFragment extends DialogFragment {
             spinnerArray.add(new StringWithTag(floor.getName(), floor.getIdFloor()));
         }
 
-        ArrayAdapter<StringWithTag> adapter = new ArrayAdapter<StringWithTag> (getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
+        ArrayAdapter<StringWithTag> adapter = new ArrayAdapter<StringWithTag> (getActivity(), R.layout.spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spFloor.setAdapter(adapter);
 
@@ -95,31 +125,54 @@ public class FilterDialogFragment extends DialogFragment {
             if(joFilter.has("roomStatus")) {
                 idsRoomStatus = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomStatus"), int[].class);
                 isRoomStatusFilter = true;
+                svStatus.initBody(false);
             }
             if(joFilter.has("floor")) {
                 idFloor = joFilter.get("floor").getAsInt();
                 isFloorFilter = true;
                 if (idFloor != 0) {
                     spFloor.setSelection(idFloor);
+                    svFloor.initBody(false);
                 }
             }
             if(joFilter.has("roomType")) {
                 idsRoomType = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomType"), int[].class);
                 isRoomTypeFilter = true;
+                svRoomType.initBody(false);
             }
         }
 
+
+        ColorStateList colorStateList = new ColorStateList(
+                new int[][]{
+                        new int[]{-android.R.attr.state_checked}, // unchecked
+                        new int[]{android.R.attr.state_checked} , // checked
+                },
+                new int[]{
+                        Color.parseColor(colorTxtLight),
+                        Color.parseColor(colorPrimaryDark),
+                }
+        );
 
         for(RoomStatut roomStatut : App.getRoomStatuts()) {
             CheckBox cb = new CheckBox(getActivity());
             cb.setTag(roomStatut.getIdRoomStatus());
             cb.setText(roomStatut.getAbbreviation() + " ("+roomStatut.getName()+")");
+            cb.setTextColor(getResources().getColor(R.color.colorTxtLight));
+
+            //paddingCb(cb);
+
+
+            params.bottomMargin = 25;
+
+            CompoundButtonCompat.setButtonTintList(cb,colorStateList);
+
             if(isRoomStatusFilter){
                 if(contains(idsRoomStatus, roomStatut.getIdRoomStatus())){
                     cb.setChecked(true);
                 }
             }
-            llFilterStatus.addView(cb);
+            llFilterStatus.addView(cb, paramsCb());
             checkBoxesStatus.add(cb);
         }
 
@@ -127,12 +180,16 @@ public class FilterDialogFragment extends DialogFragment {
             CheckBox cb = new CheckBox(getActivity());
             cb.setTag(roomType.getIdRoomType());
             cb.setText(roomType.getName());
+
+            cb.setTextColor(getResources().getColor(R.color.colorTxtLight));
+            CompoundButtonCompat.setButtonTintList(cb,colorStateList);
+
             if(isRoomTypeFilter){
                 if(contains(idsRoomType, roomType.getIdRoomType())){
                     cb.setChecked(true);
                 }
             }
-            llFilterRoomType.addView(cb);
+            llFilterRoomType.addView(cb, paramsCb());
             checkBoxesRoomType.add(cb);
         }
 
@@ -157,6 +214,47 @@ public class FilterDialogFragment extends DialogFragment {
             }
         });
 
+        btnDelFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Session.setJoRoomFilter(null);
+                clearForm(llFilterStatus);
+                spFloor.setSelection(0);
+                clearForm(llFilterRoomType);
+                svStatus.collapseAction();
+                svFloor.collapseAction();
+                svRoomType.collapseAction();
+            }
+        });
+
+        btnSelectAllStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectAllForm(llFilterStatus);
+            }
+        });
+
+        btnDelStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearForm(llFilterStatus);
+            }
+        });
+
+        btnSelectAllRoomType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectAllForm(llFilterRoomType);
+            }
+        });
+
+        btnDelRoomType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearForm(llFilterRoomType);
+            }
+        });
+
         return root;
     }
 
@@ -173,7 +271,6 @@ public class FilterDialogFragment extends DialogFragment {
             if (cb.isChecked()) {
                 isValid = true;
                 int val = (int) cb.getTag();
-                //Log.e(Constants._TAG_LOG,"Status: "+val);
                 jsonArray.add(val);
             }
         }
@@ -191,7 +288,6 @@ public class FilterDialogFragment extends DialogFragment {
         }
         Log.e(Constants._TAG_LOG,"FILTER2: "+jo.toString());
     }
-
 
     private void roomTypeFilter() {
         boolean isValid = false;
@@ -220,7 +316,6 @@ public class FilterDialogFragment extends DialogFragment {
 
         int width = size.x;
         int height = size.y;
-
         window.setLayout((int) (width * 0.99), (int) (height * 0.96));
         window.setGravity(Gravity.CENTER);
     }
@@ -235,4 +330,28 @@ public class FilterDialogFragment extends DialogFragment {
         }
         return result;
     }
+
+    private void clearForm(ViewGroup parent) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View view = parent.getChildAt(i);
+            if (view instanceof CheckBox) {
+                ((CheckBox) view).setChecked(false);
+            }
+        }
+    }
+
+    private void selectAllForm(ViewGroup parent) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View view = parent.getChildAt(i);
+            if (view instanceof CheckBox) {
+                ((CheckBox) view).setChecked(true);
+            }
+        }
+    }
+
+    private LinearLayout.LayoutParams paramsCb() {
+        params.bottomMargin = 25;
+        return params;
+    }
+
 }

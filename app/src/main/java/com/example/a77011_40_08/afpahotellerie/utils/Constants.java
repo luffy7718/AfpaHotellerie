@@ -24,7 +24,7 @@ public class Constants {
     public final static int _CODE_LOGIN = 2;
     //REQUEST CODE -->LoginActivity
     public static final String APP_NAME = "AfpaHotellerie";
-    public static final String _URL_WEBSERVICE =  "http://10.75.26.11:8080/afpa_hotellerie/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.69:8080/afpa_hotellerie/";
     //public static final String _URL_WEBSERVICE =  "https://afpa-hotellerie.000webhostapp.com";
 
 }
