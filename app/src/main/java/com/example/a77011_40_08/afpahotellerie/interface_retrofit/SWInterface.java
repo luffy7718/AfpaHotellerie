@@ -2,10 +2,15 @@ package com.example.a77011_40_08.afpahotellerie.interface_retrofit;
 
 
 
+
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 
+import java.lang.annotation.Annotation;
+
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Converter;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
@@ -150,5 +155,6 @@ public interface SWInterface {
     Observable<Push> getRoomsTypes(
             @Header("Authorization") String authorization
     );
+
 
 }

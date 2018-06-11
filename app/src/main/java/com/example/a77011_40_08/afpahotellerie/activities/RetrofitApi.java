@@ -5,6 +5,7 @@ package com.example.a77011_40_08.afpahotellerie.activities;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 
+import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,7 +25,7 @@ public class RetrofitApi {
         return userInterface;
     }
 
-    private static void getInstance() {
+    public static void getInstance() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants._URL_WEBSERVICE)
@@ -36,4 +37,7 @@ public class RetrofitApi {
 
 
     }
+
+
+
 }

@@ -25,6 +25,11 @@ import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     Context context;
     int requestType = 0;
     SWInterface swInterface;
+    Push push;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,16 +133,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void callLogin(String login, String password) {
-        Log.e(Constants._TAG_LOG,"Login ...");
-        Call<Push> call = swInterface.login(Functions.getAuth(), login, password,Functions.getMyIdDevice(context));
+        Log.e(Constants._TAG_LOG, "Login ...");
+        Call<Push> call = swInterface.login(Functions.getAuth(), login, password, Functions
+                .getMyIdDevice(context));
 
         call.enqueue(new Callback<Push>() {
             @Override
             public void onResponse(Call<Push> call, Response<Push> response) {
+                Log.d("Login_call", call.request().toString());
                 if (response.isSuccessful()) {
                     Log.e(Constants._TAG_LOG, response.toString());
-                    Push push = response.body();
-                    if(push.getStatus()==1) {
+                    push = response.body();
+                    if (push.getStatus() == 1) {
                         Gson gson = new Gson();
                         User user = gson.fromJson(push.getData(), User.class);
                         Session.setMyUser(user);
@@ -150,23 +158,46 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("TAG ", "[status:" + push.getStatus() + ", type:" + push.getType()
                                 + ", data:" + push.getData()
                                 + "]");
-                    } else
-                    {
-                        Log.e(Constants._TAG_LOG,"push.getdata = "+push.getData());
-
+                    } else {
+                        Toast.makeText(context, push.getData(), Toast.LENGTH_LONG).show();
+                        vswLogin.showPrevious();
                     }
-                    //Toast.makeText(context, "name= " + push.getName(), Toast.LENGTH_LONG)
-                    // .show();
+
                 } else {
                     //todo:gérer les code erreur de retour
-                    Log.e(Constants._TAG_LOG, response.toString());
+
+                    Log.d("Login_call", response.code() + "");
+
+                    switch (response.code()) {
+
+                        case 400:
+                            Toast.makeText(context, "Erreur HTTP code 400:Bad Request", Toast
+                                    .LENGTH_SHORT).show();
+                            vswLogin.showPrevious();
+                            break;
+                        case 404:
+                            Toast.makeText(context, "Erreur HTTP code 404:not found", Toast
+                                    .LENGTH_SHORT).show();
+                            vswLogin.showPrevious();
+                            break;
+                        case 500:
+                            Toast.makeText(context, "Erreur HTTP  code 500:server broken", Toast
+                                    .LENGTH_SHORT).show();
+                            vswLogin.showPrevious();
+                            break;
+                        default:
+                            Toast.makeText(context, "Erreur HTTP  code other:unknown error", Toast
+                                    .LENGTH_SHORT).show();
+                            vswLogin.showPrevious();
+                            break;
+                    }
                 }
 
             }
 
             @Override
             public void onFailure(Call<Push> call, Throwable t) {
-                Log.e("error", "");
+                Log.d("Login_call_fail", "Fail");
 
             }
         });

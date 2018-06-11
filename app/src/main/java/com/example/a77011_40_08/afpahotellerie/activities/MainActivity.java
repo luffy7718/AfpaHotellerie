@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     getDataFromSP(currentVersion);
                 }else{
                     Log.e(Constants._TAG_LOG,"checkVersion: "+response.toString());
+
                 }
             }
 
