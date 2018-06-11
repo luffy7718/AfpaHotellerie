@@ -2,7 +2,7 @@ package com.example.a77011_40_08.afpahotellerie.services;
 
 import android.util.Log;
 
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;

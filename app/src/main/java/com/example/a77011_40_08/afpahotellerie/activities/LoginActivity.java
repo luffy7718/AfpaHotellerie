@@ -22,13 +22,9 @@ import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;

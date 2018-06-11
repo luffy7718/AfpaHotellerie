@@ -1,4 +1,4 @@
-package com.example.a77011_40_08.afpahotellerie.activities;
+package com.example.a77011_40_08.afpahotellerie.utils;
 
 
 

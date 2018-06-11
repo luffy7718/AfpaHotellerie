@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.AssignRoomAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;

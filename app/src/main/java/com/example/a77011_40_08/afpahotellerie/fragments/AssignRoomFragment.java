@@ -1,12 +1,8 @@
 package com.example.a77011_40_08.afpahotellerie.fragments;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,27 +14,20 @@ import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.AssignRoomAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.models.User;
-import com.example.a77011_40_08.afpahotellerie.services.MyFirebaseMessagingService;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.GridSpacingItemDecoration;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

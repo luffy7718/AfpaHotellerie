@@ -23,18 +23,16 @@ import android.widget.LinearLayout;
 
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.ChatUsersAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.ChatMessage;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
-import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.GenericAlertDialog;
-import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
 
 import org.parceler.Parcels;

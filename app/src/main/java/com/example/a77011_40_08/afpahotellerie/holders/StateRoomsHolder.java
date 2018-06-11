@@ -1,7 +1,6 @@
 package com.example.a77011_40_08.afpahotellerie.holders;
 
 import android.app.Activity;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -9,18 +8,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
-import com.example.a77011_40_08.afpahotellerie.models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
-
-import java.util.function.Function;
 
 public class StateRoomsHolder extends RecyclerView.ViewHolder {
     RoomStatut roomStatut;

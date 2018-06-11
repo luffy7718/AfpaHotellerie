@@ -9,11 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.a77011_40_08.afpahotellerie.R;
-import com.example.a77011_40_08.afpahotellerie.activities.RetrofitApi;
+import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.holders.ChatUserHolder;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
-import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.models.User;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
