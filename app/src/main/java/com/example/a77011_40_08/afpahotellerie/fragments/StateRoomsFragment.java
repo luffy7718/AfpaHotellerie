@@ -277,6 +277,15 @@ public class StateRoomsFragment extends Fragment {
                 int[] ids = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomType"), int[].class);
                 rooms = rooms.filterByRoomType(ids);
             }
+
+
+            if(joFilter.has("assignment")) {
+                int id = joFilter.get("assignment").getAsInt();
+                Log.e(Constants._TAG_LOG,"Assignment: "+id);
+                if (id != 0) {
+                    rooms = rooms.filterByAssignment(id);
+                }
+            }
         }
 
         strArr = Functions.singlePlural(rooms.size(), " chambre trouvée", " chambres trouvées", "Aucune");

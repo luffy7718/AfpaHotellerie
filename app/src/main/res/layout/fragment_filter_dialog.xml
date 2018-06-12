@@ -195,6 +195,8 @@
                 android:id="@+id/svRoomType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:layout_marginBottom="15dp"
                 app:headIcon="@drawable/ic_arrow_down_24dp"
                 app:headSize="50dp"
                 app:headText="Type de chambre"
@@ -245,8 +247,36 @@
                 </LinearLayout>
             </com.example.a77011_40_08.afpahotellerie.views.SectionView>
 
-
-
+            <com.example.a77011_40_08.afpahotellerie.views.SectionView
+                android:id="@+id/svAssignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                app:headIcon="@drawable/ic_arrow_down_24dp"
+                app:headSize="50dp"
+                app:headText="Affectation"
+                app:isCollapse="true">
+                <LinearLayout
+                    android:id="@+id/llFilterAssignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/spStaff"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="15dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTxtLight"
+                        android:background="@drawable/custom_spinner_background"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </com.example.a77011_40_08.afpahotellerie.views.SectionView>
 
 
         </LinearLayout>
