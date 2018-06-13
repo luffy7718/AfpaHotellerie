@@ -4,10 +4,12 @@ import android.app.Application;
 
 import com.example.a77011_40_08.afpahotellerie.models.Floors;
 import com.example.a77011_40_08.afpahotellerie.models.Jobs;
+import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatuts;
 import com.example.a77011_40_08.afpahotellerie.models.RoomsTypes;
 import com.example.a77011_40_08.afpahotellerie.models.Users;
 
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -100,4 +102,5 @@ public class App extends Application {
     public static void setStaff(Users staff) {
         App.staff = staff;
     }
+
 }

@@ -19,10 +19,17 @@ public class Rooms extends ArrayList<Room> {
         super(c);
     }
 
-    public static class SortByIdRoom implements Comparator<Room> {
+    public static class SortByNumberAsc implements Comparator<Room> {
         @Override
         public int compare(Room r1, Room r2) {
-            return r1.getIdRoom()-r2.getIdRoom();
+            return r1.getNumber()-r2.getNumber();
+        }
+    }
+
+    public static class SortByNumberDesc implements Comparator<Room> {
+        @Override
+        public int compare(Room r1, Room r2) {
+            return r2.getNumber()-r1.getNumber();
         }
     }
 

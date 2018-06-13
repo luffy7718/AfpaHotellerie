@@ -29,6 +29,7 @@ import com.example.a77011_40_08.afpahotellerie.models.Floor;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.RoomType;
 import com.example.a77011_40_08.afpahotellerie.models.User;
+import com.example.a77011_40_08.afpahotellerie.models.Users;
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
@@ -39,6 +40,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -68,12 +71,13 @@ public class FilterDialogFragment extends DialogFragment {
     SectionView svRoomType;
     SectionView svAssignment;
     String colorTxtLight;
-    String colorPrimaryDark;
+    String colorPrimary;
     LinearLayout.LayoutParams params;
     Button btnSelectAllStatus;
     Button btnDelStatus;
     Button btnSelectAllRoomType;
     Button btnDelRoomType;
+    Users staff;
 
     JsonObject jo;
 
@@ -91,7 +95,7 @@ public class FilterDialogFragment extends DialogFragment {
         View root = inflater.inflate(R.layout.fragment_filter_dialog, container, false);
 
         colorTxtLight = "#" + Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.colorTxtLight));
-        colorPrimaryDark = "#" + Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+        colorPrimary = "#" + Integer.toHexString(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -124,40 +128,28 @@ public class FilterDialogFragment extends DialogFragment {
             spinnerArray.add(new StringWithTag(floor.getName(), floor.getIdFloor()));
         }
 
+        staff = App.getStaff();
+        Collections.sort(staff, new Users.SortByName());
+
+        //Collections.sort(App.getStaff(), (o1, o2) -> o1.getName().compareTo(o2.getName()));
+
         spArrayStaff.add(new StringWithTag("Aucun agent sélectionné", 0));
-        for (User user : App.getStaff()) {
-            spArrayStaff.add(new StringWithTag(user.getFullName(), user.getIdStaff()));
+        for (User user : staff) {
+            if (user.getIdJob() == 5) {
+                spArrayStaff.add(new StringWithTag(user.getFullName(), user.getIdStaff()));
+            }
         }
 
-        /*for(User user : App.getStaff()) {
-            CheckBox cb = new CheckBox(getActivity());
-            cb.setTag(user.getIdStaff());
-            cb.setText(user.getFullName());
-            cb.setTextColor(getResources().getColor(R.color.colorTxtLight));
-            params.bottomMargin = 25;
-
-            CompoundButtonCompat.setButtonTintList(cb,colorStateList);
-
-            if(isRoomStatusFilter){
-                if(contains(idsRoomStatus, roomStatut.getIdRoomStatus())){
-                    cb.setChecked(true);
-                }
-            }
-            llFilterStatus.addView(cb, paramsCb());
-            checkBoxesStatus.add(cb);
-            if(user.getIdStaff() == (room.getIdStaff())) {
-                Log.e(Constants._TAG_LOG, "idStaff Success");
-                this.staff = user;
-                staffName = user.getFullName();
-            }
-        }*/
+        //spArrayStaff = Collections.sort(spArrayStaff);
 
         ArrayAdapter<StringWithTag> adapter = new ArrayAdapter<StringWithTag> (getActivity(), R.layout.spinner_item, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop);
         spFloor.setAdapter(adapter);
 
         ArrayAdapter<StringWithTag> adapterStaff = new ArrayAdapter<StringWithTag> (getActivity(), R.layout.spinner_item, spArrayStaff);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapterStaff.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterStaff.setDropDownViewResource(R.layout.spinner_drop);
         spStaff.setAdapter(adapterStaff);
 
         if (Session.getJoRoomFilter() != null) {
@@ -182,14 +174,19 @@ public class FilterDialogFragment extends DialogFragment {
             }
             if(joFilter.has("assignment")) {
                 idStaff = joFilter.get("assignment").getAsInt();
-                //isAssignmentFilter = true;
+                Log.e(Constants._TAG_LOG,"idStaff: "+idStaff);
+                StringWithTag swtAssignment = null;
                 if (idStaff != 0) {
-                    spStaff.setSelection(idFloor);
+                    for (User user : App.getStaff()) {
+                        if (user.getIdStaff() == idStaff) {
+                            swtAssignment  = new StringWithTag(user.getFullName(), idStaff);
+                        }
+                    }
+                    spStaff.setSelection(getIndexSpinner(spStaff, swtAssignment.toString()));
                     svAssignment.initBody(false);
                 }
             }
         }
-
 
         ColorStateList colorStateList = new ColorStateList(
                 new int[][]{
@@ -198,7 +195,7 @@ public class FilterDialogFragment extends DialogFragment {
                 },
                 new int[]{
                         Color.parseColor(colorTxtLight),
-                        Color.parseColor(colorPrimaryDark),
+                        Color.parseColor(colorPrimary),
                 }
         );
 
@@ -304,6 +301,15 @@ public class FilterDialogFragment extends DialogFragment {
         });
 
         return root;
+    }
+
+    private int getIndexSpinner(Spinner spStaff, String myString){
+        for (int i=0;i<spStaff.getCount();i++){
+            if (spStaff.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void closeFilterDialogFragment() {

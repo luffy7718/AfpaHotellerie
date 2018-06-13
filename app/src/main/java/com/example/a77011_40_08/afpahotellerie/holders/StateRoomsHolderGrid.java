@@ -53,6 +53,15 @@ public class StateRoomsHolderGrid extends RecyclerView.ViewHolder {
             }
         }
 
+        for(User user : App.getStaff()) {
+            Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
+            if(user.getIdStaff() == room.getIdStaff()) {
+                Log.e(Constants._TAG_LOG, "idStaff Success");
+                this.staff = user;
+                staffName = user.getFullName();
+            }
+        }
+
         Log.e(Constants._TAG_LOG, "Room: " + room.getNumber() + ", " + status);
         switch(status){
             case "LE":
@@ -61,15 +70,6 @@ public class StateRoomsHolderGrid extends RecyclerView.ViewHolder {
                 imgNotif.setVisibility(View.VISIBLE);
 
                 Log.e(Constants._TAG_LOG, "Valeur recherchée : " + room.getIdStaff());
-
-                for(User user : App.getStaff()) {
-                    Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
-                    if(user.getIdStaff() == (room.getIdStaff())) {
-                        Log.e(Constants._TAG_LOG, "idStaff Success");
-                        this.staff = user;
-                        staffName = user.getFullName();
-                    }
-                }
 
                 Log.e(Constants._TAG_LOG, "Changement LE");
                 break;

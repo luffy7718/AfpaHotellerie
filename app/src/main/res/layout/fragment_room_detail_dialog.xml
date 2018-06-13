@@ -99,6 +99,14 @@
                 android:textColor="@color/colorTxtLight" />
 
             <TextView
+                android:id="@+id/txtFloor"
+                style="@style/MarginDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/colorTxtLight" />
+
+            <TextView
                 android:id="@+id/txtRoomType"
                 style="@style/MarginDetail"
                 android:layout_width="match_parent"
@@ -114,13 +122,6 @@
                 android:text="TextView"
                 android:textColor="@color/colorTxtLight" />
 
-            <TextView
-                android:id="@+id/txtFloor"
-                style="@style/MarginDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorTxtLight" />
 
             <!--<TextView
                 style="@style/MarginDetail"
