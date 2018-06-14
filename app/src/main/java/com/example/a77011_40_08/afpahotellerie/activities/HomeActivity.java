@@ -33,10 +33,12 @@ import com.example.a77011_40_08.afpahotellerie.fragments.HomeFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.RoomDetailDialogFragment;
 import com.example.a77011_40_08.afpahotellerie.fragments.StateRoomsFragment;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
+import com.example.a77011_40_08.afpahotellerie.models.Job;
 import com.example.a77011_40_08.afpahotellerie.models.Push;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.RoomStatut;
 import com.example.a77011_40_08.afpahotellerie.models.User;
+import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
@@ -54,6 +56,7 @@ public class HomeActivity extends AppCompatActivity
     Fragment currentFragment;
     FragmentManager fragmentManager;
     TextView txtHeaderName;
+    TextView txtHeaderJob;
     ImageView imgProfilePics;
     SWInterface swInterface;
 
@@ -91,6 +94,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         adapteDrawer(navigationView);
         txtHeaderName = navigationView.getHeaderView(0).findViewById(R.id.txtHeader_name);
+        txtHeaderJob = navigationView.getHeaderView(0).findViewById(R.id.txtHeader_job);
         imgProfilePics = navigationView.getHeaderView(0).findViewById(R.id.imgProfilePic);
         userHasChange(Session.getMyUser());
 
@@ -275,6 +279,14 @@ public class HomeActivity extends AppCompatActivity
     }
     public void userHasChange(User user){
         txtHeaderName.setText(user.getFullName());
+
+        String strJob = "";
+        for(Job job : App.getJobs()) {
+            if(job.getIdJob() == user.getIdJob()) {
+                strJob = job.getTitle();
+            }
+        }
+        txtHeaderJob.setText(strJob);
     }
 
     public Fragment getLastFragment(){

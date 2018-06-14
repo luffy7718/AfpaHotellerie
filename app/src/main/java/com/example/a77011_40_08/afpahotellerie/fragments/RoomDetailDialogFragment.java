@@ -163,51 +163,8 @@ public class RoomDetailDialogFragment extends DialogFragment {
             }
         }
         Functions.setBiColorString("Étage : ", srtFloor, txtFloor, txtNextColor, false);
-        /*txtRoomType.setText(first + next, TextView.BufferType.SPANNABLE);
-        Spannable s = (Spannable)txtRoomType.getText();
-        int start = first.length();
-        int end = start + next.length();
-        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-
-
-
-
-        /*txtStatus.setText(first + next, TextView.BufferType.SPANNABLE);
-        Spannable s = (Spannable)txtStatus.getText();
-        int start = first.length();
-        int end = start + next.length();
-        s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-
-
 
         txtTitleBar.setText("Chambre " + room.getNumber());
-
-
-        //txtDetailTitle.setText("" + room.getNumber());
-
-
-
-
-        //Functions.createServerRoundedImage(getActivity(), imgDetailPhoto, detailPhoto.getPath(), 500, 500, "");
-
-
-        /*public int getDrawableResIdByName(String resName) {
-            String pkgName = context.getPackageName();
-            int resID = context.getResources().getIdentifier(resName, "drawable", pkgName);
-            return resID;
-        }*/
-
-
-
-        /*Picasso.with(getActivity()).load(path)
-                //.transform(transformation)
-                .fit()
-                //.centerInside()
-                //.resize(300, -1)
-                .centerCrop()
-                .into(imgDetailPhoto);*/
-
-        //imgDetailPhoto.setImageResource(detailPhoto.getId());
 
         return root;
     }

@@ -46,8 +46,6 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
     public void setRooms(final Room room, Activity activity) {
         this.room = room;
         txtNumber.setText("" + room.getNumber());
-        /*app = (App) activity.getApplication();
-        RoomStatuts rs = app.getRoomStatuts();*/
         String status = "";
         for (RoomStatut roomStatut : App.getRoomStatuts()) {
             //Log.e(Constants._TAG_LOG, "Entry: " + entry.getIdRoomStatus() + "," + entry.getName() + "," + entry.getAbbreviation());
@@ -58,7 +56,14 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
             }
         }
 
-
+        for(User user : App.getStaff()) {
+            Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
+            if(user.getIdStaff() == room.getIdStaff()) {
+                Log.e(Constants._TAG_LOG, "idStaff Success");
+                this.staff = user;
+                staffName = user.getFullName();
+            }
+        }
 
         Log.e(Constants._TAG_LOG, "Room: " + room.getNumber() + ", " + status);
         switch(status){
@@ -68,15 +73,6 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
                 txtAgentInProgress.setVisibility(View.VISIBLE);
 
                 Log.e(Constants._TAG_LOG, "Valeur recherchée : " + room.getIdStaff());
-
-                for(User user : App.getStaff()) {
-                    Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
-                    if(user.getIdStaff() == (room.getIdStaff())) {
-                        Log.e(Constants._TAG_LOG, "idStaff Success");
-                        this.staff = user;
-                        staffName = user.getFullName();
-                    }
-                }
 
                 txtAgentInProgress.setText(staffName);
 
@@ -96,10 +92,6 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
         txtAbbreviation.setText(status);
 
         Functions.setViewBgColorByStatus(txtAbbreviation, status);
-
-        /*GradientDrawable bgShape = (GradientDrawable)txtNumber.getBackground();
-        //int idRessource = App.getColors().get(status);
-        bgShape.setColor(activity.getResources().getColor(R.color.colorAccent));*/
 
         frlRoom.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,10 @@ import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.w3c.dom.Text;
+
+import java.util.Collections;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,9 +48,11 @@ public class StateRoomsFragment extends Fragment {
     Context context;
     RecyclerView rvwStateRooms;
     ImageButton btnSwitchView;
+    ImageButton btnSort;
     Button btnInfos;
     Button btnFilter;
     Boolean isSnackbarClose = true;
+    Boolean isAsc = true;
     Rooms roomsFromDB;
     Rooms rooms;
     Gson gson;
@@ -68,7 +75,7 @@ public class StateRoomsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         swInterface = RetrofitApi.getInterface();
         context = getActivity();
-        gson = new Gson();
+
         stateRoomsAdapter = new StateRoomsAdapter(getActivity());
 
         getRooms();
@@ -80,8 +87,11 @@ public class StateRoomsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_state_rooms, container, false);
 
+        gson = new Gson();
+
         rvwStateRooms = view.findViewById(R.id.rvwStateRooms);
         btnSwitchView = view.findViewById(R.id.btnSwitchView);
+        btnSort = view.findViewById(R.id.btnSort);
         btnInfos = view.findViewById(R.id.btnInfos);
         btnFilter = view.findViewById(R.id.btnFilter);
         txtResultInfo = view.findViewById(R.id.txtResultInfo);
@@ -98,10 +108,37 @@ public class StateRoomsFragment extends Fragment {
                 rvwStateRooms.setLayoutManager(isSwitched ? new LinearLayoutManager(context) : new GridLayoutManager(context, 4));
                 stateRoomsAdapter.notifyDataSetChanged();
 
-                if (isSwitched)
+                if (isSwitched) {
                     btnSwitchView.setImageResource(R.drawable.ic_view_comfy_white_24dp);
-                else
+                    TooltipCompat.setTooltipText(btnSwitchView, "Grille");
+                }
+                else {
                     btnSwitchView.setImageResource(R.drawable.ic_list_white_24dp);
+                    TooltipCompat.setTooltipText(btnSwitchView, "Liste");
+                }
+            }
+        });
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isAsc = !isAsc;
+
+                if (isAsc) {
+                    btnSort.setImageResource(R.drawable.ic_sort_24dp);
+                    btnSort.setScaleX(1);
+                    btnSort.setScaleY(1);
+                    btnSort.setTranslationX(1);
+                    TooltipCompat.setTooltipText(btnSort, "Ordre décroissant");
+                }
+                else {
+                    btnSort.setScaleX(1);
+                    btnSort.setScaleY(-1);
+                    btnSort.setTranslationX(1);
+                    TooltipCompat.setTooltipText(btnSort, "Ordre croissant");
+                }
+
+                refreshRoomFilter();
             }
         });
 
@@ -202,14 +239,8 @@ public class StateRoomsFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if(push.getStatus()==1) {
-
                         roomsFromDB = gson.fromJson(push.getData(),Rooms.class);
-
-                        strArr = Functions.singlePlural(roomsFromDB.size(), " chambre trouvée", " chambres trouvées", "Aucune");
-                        Functions.setBiColorString(strArr[0], strArr[1], txtResultInfo, App.getColors().get("colorNext"), true);
-
-                        stateRoomsAdapter.loadRoom(roomsFromDB);
-                        //stateRoomsAdapter.notifyDataSetChanged();
+                        refreshRoomFilter();
                         Log.e(Constants._TAG_LOG,"DATA RECIEVE");
                     }
                 } else {
@@ -256,6 +287,8 @@ public class StateRoomsFragment extends Fragment {
     public void refreshRoomFilter() {
         rooms = new Rooms(roomsFromDB);
 
+        Collections.sort(rooms, isAsc ? new Rooms.SortByNumberAsc() : new Rooms.SortByNumberDesc());
+
         JsonObject joFilter = Session.getJoRoomFilter();
 
         if(joFilter != null) {
@@ -275,6 +308,15 @@ public class StateRoomsFragment extends Fragment {
             if(joFilter.has("roomType")) {
                 int[] ids = gson.fromJson(Session.getJoRoomFilter().getAsJsonArray("roomType"), int[].class);
                 rooms = rooms.filterByRoomType(ids);
+            }
+
+
+            if(joFilter.has("assignment")) {
+                int id = joFilter.get("assignment").getAsInt();
+                Log.e(Constants._TAG_LOG,"Assignment: "+id);
+                if (id != 0) {
+                    rooms = rooms.filterByAssignment(id);
+                }
             }
         }
 

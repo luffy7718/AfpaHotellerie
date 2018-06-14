@@ -86,7 +86,7 @@ public class AssignRoomAdapter extends RecyclerView.Adapter<AssignRoomHolder> {
 
     public void addRoom(Room room) {
         rooms.add(room);
-        Collections.sort(rooms,new Rooms.SortByIdRoom());
+        Collections.sort(rooms,new Rooms.SortByNumberAsc());
         notifyDataSetChanged();
     }
 

@@ -1,6 +1,10 @@
 package com.example.a77011_40_08.afpahotellerie.models;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.example.a77011_40_08.afpahotellerie.utils.App;
+import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,10 +19,17 @@ public class Rooms extends ArrayList<Room> {
         super(c);
     }
 
-    public static class SortByIdRoom implements Comparator<Room> {
+    public static class SortByNumberAsc implements Comparator<Room> {
         @Override
         public int compare(Room r1, Room r2) {
-            return r1.getIdRoom()-r2.getIdRoom();
+            return r1.getNumber()-r2.getNumber();
+        }
+    }
+
+    public static class SortByNumberDesc implements Comparator<Room> {
+        @Override
+        public int compare(Room r1, Room r2) {
+            return r2.getNumber()-r1.getNumber();
         }
     }
 
@@ -54,7 +65,7 @@ public class Rooms extends ArrayList<Room> {
         return rooms;
     }
 
-    public Rooms filterByFloor(int[] floorList){
+    /*public Rooms filterByFloor(int[] floorList){
         Rooms rooms = new Rooms();
         for(Room room: this){
             boolean isValid = false;
@@ -69,7 +80,7 @@ public class Rooms extends ArrayList<Room> {
         }
 
         return rooms;
-    }
+    }*/
 
     public Rooms filterByRoomType(int[] typeList){
         Rooms rooms = new Rooms();
@@ -79,6 +90,21 @@ public class Rooms extends ArrayList<Room> {
                 if(room.getIdRoomType() == type){
                     isValid = true;
                 }
+            }
+            if(isValid){
+                rooms.add(room);
+            }
+        }
+
+        return rooms;
+    }
+
+    public Rooms filterByAssignment(int assignment){
+        Rooms rooms = new Rooms();
+        for(Room room: this){
+            boolean isValid = false;
+            if(room.getIdStaff() == assignment){
+                isValid = true;
             }
             if(isValid){
                 rooms.add(room);

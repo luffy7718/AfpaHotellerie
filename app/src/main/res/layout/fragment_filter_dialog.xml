@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
+    android:id="@+id/mainLayout"
     android:layout_gravity="center">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,28 +49,32 @@
             android:text="Filtrer les résultats"
             android:textColor="#fff"
             android:textSize="18sp" />
-
-
-
-
     </LinearLayout>
-
-        <!--<TextView
-            android:id="@+id/txtAbbreviation"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="28dp"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="#FFF" />-->
-
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDelFilter"
+                android:layout_width="175dp"
+                android:layout_height="34dp"
+                android:textSize="12sp"
+                android:textColor="@color/colorTextBtn"
+                android:background="@drawable/btn_shape1"
+                android:layout_marginRight="15dp"
+                android:text="Supprimer les filtres"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 
 
@@ -82,137 +87,196 @@
     <ScrollView
         android:fadeScrollbars="false"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="62dp"
         android:layout_height="wrap_content">
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="15dp"
-            android:paddingTop="10dp">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="2dp">
 
-            <TextView
-                android:id="@+id/lblStatus"
+            <com.example.a77011_40_08.afpahotellerie.views.SectionView
+                android:id="@+id/svStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Status"
-                android:layout_marginLeft="7dp"
-                android:layout_marginBottom="5dp"
-                android:textColor="@color/colorTxtLight" />
+                android:layout_marginBottom="15dp"
+                app:headIcon="@drawable/ic_arrow_down_24dp"
+                app:headSize="50dp"
+                app:headText="Status"
+                app:isCollapse="true">
 
-            <LinearLayout
-                android:id="@+id/llFilterStatus"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-            </LinearLayout>
 
-            <!--<CheckBox
-                android:id="@+id/cbLP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:tag=""
-                android:text="LP" />
+                <LinearLayout
+                    android:layout_marginTop="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/cbLS"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="LS" />
+                    <Button
+                        android:id="@+id/btnSelectAllStatus"
+                        android:layout_width="110dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_height="34dp"
+                        android:textSize="12sp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/colorTextBtn"
+                        android:background="@drawable/btn_shape1"
+                        android:text="Tout cocher" />
 
-            <CheckBox
-                android:id="@+id/cbOP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="OP" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/cbOS"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="OS" />
+                        <Button
+                            android:id="@+id/btnDelStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextBtn"
+                            android:background="@drawable/btn_shape1"
+                            android:layout_marginRight="17dp"
+                            android:text="Effacer"/>
+                    </LinearLayout>
+                </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/cbDA"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="DA" />-->
+                <LinearLayout
+                    android:id="@+id/llFilterStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="12dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </com.example.a77011_40_08.afpahotellerie.views.SectionView>
 
-            <TextView
-                android:id="@+id/lblFloor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Étage"
-                android:layout_marginLeft="7dp"
-                android:layout_marginBottom="5dp"
 
-                android:layout_marginTop="20dp"
-                android:textColor="@color/colorTxtLight" />
-
-            <Spinner
-                android:id="@+id/spFloor"
-                android:layout_width="150dp"
-                android:layout_marginBottom="20dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/lblRoomType"
+            <com.example.a77011_40_08.afpahotellerie.views.SectionView
+                android:id="@+id/svFloor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Type de chambre"
-                android:layout_marginLeft="7dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="15dp"
+                app:headIcon="@drawable/ic_arrow_down_24dp"
+                app:headSize="50dp"
+                app:headText="Étage"
+                app:isCollapse="true">
+                <LinearLayout
+                    android:id="@+id/llFilterFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="vertical">
+                <Spinner
+                    android:id="@+id/spFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="15dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorTxtLight"
+                    android:background="@drawable/custom_spinner_background"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1" />
+                </LinearLayout>
+            </com.example.a77011_40_08.afpahotellerie.views.SectionView>
 
-                android:layout_marginTop="20dp"
-                android:textColor="@color/colorTxtLight" />
-
-            <LinearLayout
-                android:id="@+id/llFilterRoomType"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-            </LinearLayout>
-
-
-            <!--<TextView
-                android:id="@+id/txtRoomType"
-                style="@style/MarginDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorTxtLight" />
-
-            <TextView
-                android:id="@+id/txtRoomBeds"
-                style="@style/MarginDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorTxtLight" />
-
-            <TextView
-                android:id="@+id/txtFloor"
-                style="@style/MarginDetail"
+            <com.example.a77011_40_08.afpahotellerie.views.SectionView
+                android:id="@+id/svRoomType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="@color/colorTxtLight" />
 
-            <ImageView
-                android:id="@+id/imgDetailPhoto"
+                android:layout_marginBottom="15dp"
+                app:headIcon="@drawable/ic_arrow_down_24dp"
+                app:headSize="50dp"
+                app:headText="Type de chambre"
+                app:isCollapse="true">
+
+                <LinearLayout
+                    android:layout_marginTop="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSelectAllRoomType"
+                        android:layout_width="110dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_height="34dp"
+                        android:textSize="12sp"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/colorTextBtn"
+                        android:background="@drawable/btn_shape1"
+                        android:text="Tout cocher" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnDelRoomType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:textSize="12sp"
+                            android:textColor="@color/colorTextBtn"
+                            android:background="@drawable/btn_shape1"
+                            android:layout_marginRight="17dp"
+                            android:text="Effacer"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llFilterRoomType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="12dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </com.example.a77011_40_08.afpahotellerie.views.SectionView>
+
+            <com.example.a77011_40_08.afpahotellerie.views.SectionView
+                android:id="@+id/svAssignment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ritz" />
-            <ImageView
-                android:id="@+id/imgDetailPhoto2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:src="@drawable/bath" />-->
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                app:headIcon="@drawable/ic_arrow_down_24dp"
+                app:headSize="50dp"
+                app:headText="Affectation"
+                app:isCollapse="true">
+                <LinearLayout
+                    android:id="@+id/llFilterAssignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="15dp"
+                    android:orientation="vertical">
+                    <Spinner
+                        android:id="@+id/spStaff"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_margin="15dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/colorTxtLight"
+                        android:background="@drawable/custom_spinner_background"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+            </com.example.a77011_40_08.afpahotellerie.views.SectionView>
 
 
         </LinearLayout>
@@ -224,11 +288,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="90dp"
+        android:layout_marginRight="90dp"
         android:layout_alignParentBottom="true">
+
         <Button
             android:id="@+id/btnFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:textColor="@color/colorTextBtn"
+            android:background="@drawable/btn_shape1"
             android:text="Filtrer"/>
     </LinearLayout>
 
