@@ -1,7 +1,5 @@
 package com.example.a77011_40_08.afpahotellerie.models;
 
-
-
 public class Room {
     private int idRoom;
     private int number;
@@ -10,6 +8,7 @@ public class Room {
     private String date;
     private int idRoomType;
     private int idStaff;
+    private int idAssigned;
 
     public Room(int n, int idr, int idf) {
         this.number=n;
@@ -68,4 +67,8 @@ public class Room {
     public int getIdStaff() { return idStaff; }
 
     public void setIdStaff(int idStaff) { this.idStaff = idStaff; }
+
+    public int getIdAssigned() { return idAssigned; }
+
+    public void setIdAssigned(int idAssigned) { this.idAssigned = idAssigned; }
 }

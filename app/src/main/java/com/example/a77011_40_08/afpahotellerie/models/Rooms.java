@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +31,12 @@ public class Rooms extends ArrayList<Room> {
         @Override
         public int compare(Room r1, Room r2) {
             return r2.getNumber()-r1.getNumber();
+        }
+    }
+    public static class SortByStatusOrderAsc implements Comparator<Room> {
+        @Override
+        public int compare(Room r1, Room r2) {
+            return Functions.getStatusOrderByIdRoomStatus(r1.getIdRoomStatus())-Functions.getStatusOrderByIdRoomStatus(r2.getIdRoomStatus());
         }
     }
 

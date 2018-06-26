@@ -49,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         context = this;
         swInterface = RetrofitApi.getInterface();
 
+        getSupportActionBar().hide();
+
         intent = new Intent();
 
 

@@ -10,12 +10,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.RoomsToCleanAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
@@ -26,6 +29,9 @@ import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,9 +42,12 @@ public class RoomsToCleanFragment extends Fragment {
 
     Context context;
     RecyclerView rvwListRooms;
-    TextView txtRoomsCount;
+    TextView txtResultInfo;
     RoomsToCleanAdapter roomsToCleanAdapter;
     SWInterface swInterface;
+    Gson gson;
+    Rooms roomsFromDB;
+    Rooms rooms;
 
     public RoomsToCleanFragment() {
         // Required empty public constructor
@@ -87,14 +96,18 @@ public class RoomsToCleanFragment extends Fragment {
         getRoomsToClean();
     }
 
+    public void callRefreshRoomView() {
+        roomsToCleanAdapter.refreshRoomsView();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rooms_to_clean, container, false);
 
-        txtRoomsCount = view.findViewById(R.id.txtRoomsCount);
-        roomsToCleanAdapter.setRoomsCountDisplay(txtRoomsCount);
-        txtRoomsCount.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        gson = new Gson();
+
+        txtResultInfo = view.findViewById(R.id.txtResultInfo);
 
         rvwListRooms = view.findViewById(R.id.rvwListRooms);
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context,
@@ -119,11 +132,10 @@ public class RoomsToCleanFragment extends Fragment {
                     Log.e(Constants._TAG_LOG, response.body().toString());
                     Push push = response.body();
                     if (push.getStatus() == 1) {
-                        Gson gson = new Gson();
-                        Rooms rooms = gson.fromJson(push.getData(), Rooms.class);
-                        txtRoomsCount.setText(rooms.size() + "");
-                        roomsToCleanAdapter.loadRoom(rooms);
-                        roomsToCleanAdapter.notifyDataSetChanged();
+                        roomsFromDB = gson.fromJson(push.getData(),Rooms.class);
+                        roomsToCleanAdapter.loadRoom(roomsFromDB);
+                        String[] strArr = Functions.singlePlural(roomsFromDB.size(), " chambre affectée", " chambres affectées", "Aucune");
+                        Functions.setBiColorString(strArr[0], strArr[1], txtResultInfo, App.getColors().get("colorNext"), true);
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
                     }
                 } else {
@@ -137,6 +149,5 @@ public class RoomsToCleanFragment extends Fragment {
             }
         });
     }
-
 
 }

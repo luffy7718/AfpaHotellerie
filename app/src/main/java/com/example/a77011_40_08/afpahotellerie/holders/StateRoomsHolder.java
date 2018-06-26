@@ -58,7 +58,7 @@ public class StateRoomsHolder extends RecyclerView.ViewHolder {
 
         for(User user : App.getStaff()) {
             Log.e(Constants._TAG_LOG, "idStaff : " + user.getIdStaff());
-            if(user.getIdStaff() == room.getIdStaff()) {
+            if(user.getIdStaff() == room.getIdAssigned()) {
                 Log.e(Constants._TAG_LOG, "idStaff Success");
                 this.staff = user;
                 staffName = user.getFullName();

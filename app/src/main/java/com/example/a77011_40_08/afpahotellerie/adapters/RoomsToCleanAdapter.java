@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
+import com.example.a77011_40_08.afpahotellerie.fragments.RoomsToCleanFragment;
 import com.example.a77011_40_08.afpahotellerie.holders.RoomsToCleanHolder;
 import com.example.a77011_40_08.afpahotellerie.models.Room;
 import com.example.a77011_40_08.afpahotellerie.models.Rooms;
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
+
+import java.util.Collections;
 
 
 /**
@@ -24,10 +28,11 @@ public class RoomsToCleanAdapter extends RecyclerView.Adapter<RoomsToCleanHolder
     Rooms rooms;
     Activity activity;
     TextView roomCount = null;
+    //RoomsToCleanFragment roomsToCleanFragment;
 
     public RoomsToCleanAdapter(Activity activity) {
         this.activity = activity;
-        this.rooms = new Rooms();
+        //this.roomsToCleanFragment = roomsToCleanFragment;
     }
 
     public void setRoomsCountDisplay(TextView txt){
@@ -44,7 +49,13 @@ public class RoomsToCleanAdapter extends RecyclerView.Adapter<RoomsToCleanHolder
     @Override
     public void onBindViewHolder(RoomsToCleanHolder holder, int position) {
         Room room = rooms.get(position);
-        holder.setRooms(room,position,activity,this);
+
+        HomeActivity home = (HomeActivity) activity;
+
+        RoomsToCleanFragment frag = (RoomsToCleanFragment) home.getLastFragment();
+
+
+        holder.setRooms(room, position, activity,this);
     }
 
     @Override
@@ -69,14 +80,20 @@ public class RoomsToCleanAdapter extends RecyclerView.Adapter<RoomsToCleanHolder
         }
     }
 
-    public  void loadRoom(Rooms rooms)
-    {
-      this.rooms = rooms;
+    public  void loadRoom(Rooms rooms) {
+        this.rooms = rooms;
+        refreshRoomsView();
+
     }
 
-    public void removeRoom(int position) {
-        rooms.remove(position);
+    public void refreshRoomsView() {
+
+        Log.e(Constants._TAG_LOG,"RefreshView");
+
+        Collections.sort(rooms, new Rooms.SortByNumberAsc());
+        Collections.sort(rooms, new Rooms.SortByStatusOrderAsc());
         notifyDataSetChanged();
+
     }
 
 }

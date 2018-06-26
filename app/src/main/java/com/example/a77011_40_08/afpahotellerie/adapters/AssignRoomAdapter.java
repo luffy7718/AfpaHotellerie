@@ -81,7 +81,7 @@ public class AssignRoomAdapter extends RecyclerView.Adapter<AssignRoomHolder> {
         rooms.remove(position);
         HomeActivity home= (HomeActivity) activity;
         AssignRoomFragment frag = (AssignRoomFragment) home.getLastFragment();
-        frag.transfert(deletedRoom, isAssigned);
+        frag.transfert(deletedRoom, isAssigned, getItemCount());
     }
 
     public void addRoom(Room room) {

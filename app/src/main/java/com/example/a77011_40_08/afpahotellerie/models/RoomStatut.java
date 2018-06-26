@@ -5,9 +5,7 @@ public class RoomStatut {
     private int idRoomStatus;
     private String name;
     private String abbreviation;
-
-
-
+    private int statusOrder;
 
     public int getIdRoomStatus() {
         return idRoomStatus;
@@ -31,5 +29,13 @@ public class RoomStatut {
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    public int getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(int statusOrder) {
+        this.statusOrder = statusOrder;
     }
 }

@@ -76,13 +76,9 @@
         </LinearLayout>
     </RelativeLayout>
 
-
-
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
     <ScrollView
         android:fadeScrollbars="false"
@@ -90,9 +86,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="62dp"
         android:layout_height="wrap_content">
-
-
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,7 +105,6 @@
                 app:headSize="50dp"
                 app:headText="Status"
                 app:isCollapse="true">
-
 
                 <LinearLayout
                     android:layout_marginTop="0dp"
@@ -302,10 +294,6 @@
             android:text="Filtrer"/>
     </LinearLayout>
 
-
-
     </RelativeLayout>
-
-
 
 </LinearLayout>

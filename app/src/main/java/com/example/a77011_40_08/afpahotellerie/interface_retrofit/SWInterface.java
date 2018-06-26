@@ -28,7 +28,7 @@ public interface SWInterface {
 
     @FormUrlEncoded
     @POST("/afpa_hotellerie/forceLogin.php")
-    //@POST("/afpa_hotellerie/login.php")
+    //@POST("/afpa_hotellerie/Login.php")
     Call<Push> login(
             @Header("Authorization") String authorization,
             @Field("login") String login,
@@ -46,6 +46,15 @@ public interface SWInterface {
     Call<Push> sendMessage(
             @Header("Authorization") String authorization,
             @Field("to") int to,
+            @Field("from") int from,
+            @Field("type") String type,
+            @Field("body") String body);
+
+    @FormUrlEncoded
+    @POST("/afpa_hotellerie/sendMessageToTopic.php")
+    Call<Push> sendMessageToTopic(
+            @Header("Authorization") String authorization,
+            @Field("topic") String to,
             @Field("from") int from,
             @Field("type") String type,
             @Field("body") String body);
@@ -134,6 +143,11 @@ public interface SWInterface {
             @Header("Authorization") String authorization,
             @Field("idRoom") int idRoom,
             @Field("idStaff") int idStaff);
+
+    @POST("/afpa_hotellerie/deleteAllAssignment.php")
+    Call<Push> deleteAllAssignment(
+            @Header("Authorization") String authorization);
+
 
     /******************************************
      * OBSERVABLE

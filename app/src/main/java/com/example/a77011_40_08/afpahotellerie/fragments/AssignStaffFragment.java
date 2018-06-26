@@ -11,8 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
+import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.AssignStaffAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
@@ -33,7 +37,8 @@ public class AssignStaffFragment extends Fragment {
     Context context;
     RecyclerView rvwListStaff;
     TextView txtAvailable;
-    TextView txtUnaffected;
+    TextView txtResultInfo;
+    Button btnUnassignment;
     AssignStaffFragment assignStaffFragment;
     AssignStaffAdapter assignStaffAdapter;
     SWInterface swInterface;
@@ -61,8 +66,8 @@ public class AssignStaffFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_assign_staff, container, false);
         rvwListStaff = view.findViewById(R.id.rvwListStaff);
         getSubordinates();
-        //txtAvailable = view.findViewById(R.id.txtAvailable);
-        //txtUnaffected = view.findViewById(R.id.txtUnaffected);
+        txtResultInfo = view.findViewById(R.id.txtResultInfo);
+        btnUnassignment = view.findViewById(R.id.btnUnassignment);
 
         RecyclerView.LayoutManager layoutManagerR = new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false);
@@ -71,13 +76,14 @@ public class AssignStaffFragment extends Fragment {
 
         rvwListStaff.setAdapter(assignStaffAdapter);
 
-
-        //  txtAvailable.setText("agents disponibles");
-        // txtUnaffected.setText("sans affectations");
-
+        btnUnassignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAllAssignment();
+            }
+        });
 
         return view;
-
     }
 
 
@@ -96,6 +102,8 @@ public class AssignStaffFragment extends Fragment {
                         Gson gson = new Gson();
                         Users users = gson.fromJson(push.getData(), Users.class);
                         assignStaffAdapter.loadStaff(users);
+                        String[] strArr = Functions.singlePlural(assignStaffAdapter.getItemCount(), " agent disponible", " agents disponibles", "Aucun");
+                        Functions.setBiColorString(strArr[0], strArr[1], txtResultInfo, App.getColors().get("colorNext"), true);
                         assignStaffAdapter.notifyDataSetChanged();
                         Log.e(Constants._TAG_LOG, "DATA RECIEVE");
                     }
@@ -110,6 +118,32 @@ public class AssignStaffFragment extends Fragment {
             }
         });
 
+    }
+
+    private void deleteAllAssignment() {
+        Call<Push> call = swInterface.deleteAllAssignment(Functions.getAuth());
+
+        call.enqueue(new Callback<Push>() {
+            @Override
+            public void onResponse(Call<Push> call, Response<Push> response) {
+
+                if (response.isSuccessful()) {
+                    Log.e(Constants._TAG_LOG, response.body().toString());
+                    Push push = response.body();
+                    if (push.getStatus() == 1) {
+                        Toast.makeText(getActivity(), "Désaffectation complète effectuée avec succès", Toast.LENGTH_LONG).show();
+                        getSubordinates();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Erreur lors de la désaffectation complète, veuillez réessayer.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Push> call, Throwable t) {
+
+            }
+        });
 
     }
 

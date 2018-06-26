@@ -2,11 +2,16 @@ package com.example.a77011_40_08.afpahotellerie.fragments;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +24,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a77011_40_08.afpahotellerie.R;
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
+import com.example.a77011_40_08.afpahotellerie.activities.MainActivity;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.StateRoomsAdapter;
 import com.example.a77011_40_08.afpahotellerie.interface_retrofit.SWInterface;
@@ -32,6 +39,9 @@ import com.example.a77011_40_08.afpahotellerie.utils.App;
 import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -43,8 +53,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StateRoomsFragment extends Fragment {
+public class StateRoomsFragment extends Fragment implements OnCompleteListener<Void> {
 
+    public StateRoomsAdapter stateRoomsAdapter;
     Context context;
     RecyclerView rvwStateRooms;
     ImageButton btnSwitchView;
@@ -58,9 +69,38 @@ public class StateRoomsFragment extends Fragment {
     Gson gson;
     TextView txtResultInfo;
     String[] strArr;
-
-    public StateRoomsAdapter stateRoomsAdapter;
     SWInterface swInterface;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(Constants._TAG_LOG, "BroadcastReceiver topic");
+            String topic = intent.getStringExtra("topic");
+            Log.e(Constants._TAG_LOG, "Var topic : " + topic);
+            if (topic != "") {
+                if (topic.equals("roomState")) {
+                    Log.e(Constants._TAG_LOG, "RoomsState: " + topic);
+                    getRooms();
+                }
+            } else {
+                Log.e(Constants._TAG_LOG, "RoomState: pas de topic");
+            }
+        }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(context).registerReceiver((mMessageReceiver),
+                new IntentFilter("TopicReceive")
+        );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mMessageReceiver);
+    }
 
     public StateRoomsFragment() {
     }
@@ -326,4 +366,8 @@ public class StateRoomsFragment extends Fragment {
         stateRoomsAdapter.loadRoom(rooms);
     }
 
+    @Override
+    public void onComplete(@NonNull Task<Void> task) {
+
+    }
 }

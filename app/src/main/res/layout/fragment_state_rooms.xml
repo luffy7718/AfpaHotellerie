@@ -9,9 +9,7 @@
     android:paddingTop="5dp"
     android:paddingBottom="10dp"
     android:id="@+id/frlState"
-    tools:context=".fragments.RoomsToCleanFragment">
-
-
+    >
 
     <LinearLayout
         android:layout_width="match_parent"

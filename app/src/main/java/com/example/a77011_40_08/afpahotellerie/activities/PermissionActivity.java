@@ -25,8 +25,9 @@ public class PermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-
+        getSupportActionBar().hide();
         askForPermission();
+
     }
 
     @Override

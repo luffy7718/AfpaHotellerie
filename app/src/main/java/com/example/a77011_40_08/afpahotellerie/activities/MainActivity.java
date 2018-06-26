@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e(Constants._TAG_LOG,"token: "+Functions.getPreferenceString(this, "token"));
         checkVersion();
         loadColors();
+        getSupportActionBar().hide();
     }
 
     private void goToLogin() {
@@ -210,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         colors.put("OP",getResources().getColor(R.color.colorStatusOP));
         colors.put("OS",getResources().getColor(R.color.colorStatusOS));
         colors.put("DA",getResources().getColor(R.color.colorStatusDA));
-        colors.put("colorNext",getResources().getColor(R.color.colorPrimaryDark));
+        colors.put("colorNext",getResources().getColor(R.color.colorPrimary));
 
         App.setColors(colors);
     }

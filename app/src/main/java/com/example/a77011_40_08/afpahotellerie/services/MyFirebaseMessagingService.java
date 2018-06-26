@@ -18,10 +18,10 @@ import org.parceler.Parcels;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private LocalBroadcastManager broadcaster;
+
     public MyFirebaseMessagingService() {
     }
-
-    private LocalBroadcastManager broadcaster;
 
     @Override
     public void onCreate() {
@@ -36,8 +36,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(Constants._TAG_LOG, "From: " + remoteMessage.getFrom());
-        Log.d(Constants._TAG_LOG, remoteMessage.toString());
+        Log.e(Constants._TAG_LOG, "From: " + remoteMessage.getFrom());
+        Log.e(Constants._TAG_LOG, remoteMessage.toString());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
@@ -51,12 +51,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     if (json.has("title") && json.has("text")) {
                         Functions.createNotification(getApplicationContext(), json.get("title")
                                 .getAsString(), json.get("text").getAsString());
-                        if (json.has("update")) {
-                            int idFragment = Integer.parseInt(json.get("update").getAsString());
-                            broadcastToActivities(idFragment);
-                        }
                     } else {
-                        Log.e(Constants._TAG_LOG, "Body mal formé: " + json);
+                        Log.e(Constants._TAG_LOG, "Données insuffisantes pour la notification: " + json);
+                    }
+                    if (json.has("update")) {
+                        int idFragment = Integer.parseInt(json.get("update").getAsString());
+                        broadcastToActivities(idFragment);
+                    } else {
+                        Log.e(Constants._TAG_LOG, "Données insuffisantes pour l'update: " + json);
+                    }
+                    if (json.has("topic")) {
+                        String topic = json.get("topic").getAsString();
+                        broadcastTopicToActivities(topic);
+                        Log.e(Constants._TAG_LOG, "Topic: " + json);
+                    } else {
+                        Log.e(Constants._TAG_LOG, "Données insuffisantes pour le topic: " + json);
                     }
                     break;
                 case "message":
@@ -87,7 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(Constants._TAG_LOG, "Message Notification Body: " + remoteMessage
+            Log.e(Constants._TAG_LOG, "Message Notification Body: " + remoteMessage
                     .getNotification().getBody());
         }
 
@@ -95,12 +104,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    public int broadcastToActivities(int idFragment) {
-
+    public void broadcastToActivities(int idFragment) {
         Intent intent = new Intent("MessageReceive");
         intent.putExtra("idFragment", idFragment);
         broadcaster.sendBroadcast(intent);
-        //intent.putExtra("chatMessage", Parcels.wrap(ChatMessage));
-        return idFragment;
+    }
+
+    public void broadcastTopicToActivities(String topic) {
+        Intent intent = new Intent("TopicReceive");
+        intent.putExtra("topic", topic);
+        broadcaster.sendBroadcast(intent);
     }
 }

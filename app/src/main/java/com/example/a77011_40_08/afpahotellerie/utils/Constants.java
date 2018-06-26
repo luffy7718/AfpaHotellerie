@@ -23,8 +23,11 @@ public class Constants {
     public final static int FRAG_ASSIGNED_ROOM = 4;
     public final static int FRAG_CHAT = 5;
     public final static int FRAG_CHAT_PRIVATE = 6;
+    public final static int FRAG_HOME2 = 7;
 
     public static final String APP_NAME = "AfpaHotellerie";
-    public static final String _URL_WEBSERVICE =  "http://10.75.25.69:8080/afpa_hotellerie/";
+    public static final String _URL_WEBSERVICE =  "http://10.75.25.52:8080/afpa_hotellerie/";
+    //public static final String _URL_WEBSERVICE =  "http://10.75.25.101:8080/afpa_hotellerie/";
+    //public static final String _URL_WEBSERVICE =  "http://10.75.25.4:8080/afpa_hotellerie/";
     //public static final String _URL_WEBSERVICE =  "https://afpa-hotellerie.000webhostapp.com";
 }

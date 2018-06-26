@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.a77011_40_08.afpahotellerie.activities.HomeActivity;
+import com.example.a77011_40_08.afpahotellerie.utils.App;
+import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.adapters.AssignStaffAdapter;
 import com.example.a77011_40_08.afpahotellerie.fragments.AssignStaffFragment;
@@ -27,19 +29,19 @@ public class AssignStaffHolder extends RecyclerView.ViewHolder {
     User user;
     int position;
     AssignStaffAdapter parent;
-    public final CardView cv;
+    CardView cv;
     AssignStaffFragment assignStaffFragment;
     Gson gson;
     AssignStaffAdapter assignStaffAdapter;
 
     public AssignStaffHolder(View view) {
         super(view);
-        Context context = (Activity) view.getContext();
+        Context context = view.getContext();
         swInterface = RetrofitApi.getInterface();
-        txtName = (TextView) view.findViewById(R.id.txtName);
-        txtFirstName = (TextView) view.findViewById(R.id.txtFirstName);
-        txtAssign = (TextView) view.findViewById(R.id.txtAssign);
-        cv = (CardView) view.findViewById(R.id.cv);
+        txtName = view.findViewById(R.id.txtName);
+        txtFirstName = view.findViewById(R.id.txtFirstName);
+        txtAssign = view.findViewById(R.id.txtAssign);
+        cv = view.findViewById(R.id.cv);
         gson = new Gson();
         assignStaffAdapter = new AssignStaffAdapter(assignStaffFragment);
 
@@ -63,7 +65,8 @@ public class AssignStaffHolder extends RecyclerView.ViewHolder {
         this.position = position;
         txtName.setText(user.getName());
         txtFirstName.setText(user.getFirstname());
-        txtAssign.setText("" + user.getRoomsAssigned());
+        String[] strArr = Functions.singlePlural(user.getRoomsAssigned(), " chambre", " chambres", "Aucune");
+        Functions.setBiColorString(strArr[0], strArr[1], txtAssign, App.getColors().get("colorNext"), true);
     }
 
 

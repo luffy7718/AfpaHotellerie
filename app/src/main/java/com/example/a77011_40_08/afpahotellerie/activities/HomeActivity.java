@@ -43,6 +43,7 @@ import com.example.a77011_40_08.afpahotellerie.utils.Constants;
 import com.example.a77011_40_08.afpahotellerie.utils.Functions;
 import com.example.a77011_40_08.afpahotellerie.utils.RetrofitApi;
 import com.example.a77011_40_08.afpahotellerie.utils.Session;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 
@@ -52,6 +53,9 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    int defaultFragment = -1;
+
     Context context;
     Fragment currentFragment;
     FragmentManager fragmentManager;
@@ -75,6 +79,7 @@ public class HomeActivity extends AppCompatActivity
 
         fragmentManager = getFragmentManager();
         changeFragment(Constants._FRAG_HOME,null);
+
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,10 +236,17 @@ public class HomeActivity extends AppCompatActivity
         //Log.e(Constants._TAG_LOG,"Finish "+fragmentManager.getBackStackEntryCount());
     }
     public void changeFragment(int code, Bundle params){
+        Boolean needToSubscribe = false;
         Fragment frag = null;
         switch (code){
             case Constants._FRAG_HOME:
-                frag = new HomeFragment();
+                //frag = new HomeFragment();
+                if(Session.getMyUser().getIdJob() != 5){
+                    frag = new StateRoomsFragment();
+                    needToSubscribe = true;
+                }else{
+                    frag = new RoomsToCleanFragment();
+                }
                 break;
             case Constants.FRAG_ROOMS_CLEAN:
                 frag = new RoomsToCleanFragment();
@@ -244,9 +256,11 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case Constants.FRAG_SATEROOMS:
                 frag = new StateRoomsFragment();
+                needToSubscribe = true;
                 break;
             case Constants.FRAG_ASSIGNED_ROOM:
                 frag = AssignRoomFragment.newInstance(params);
+                needToSubscribe = true;
                 break;
             case Constants.FRAG_CHAT:
                 frag =  new ChatFragment();
@@ -254,11 +268,15 @@ public class HomeActivity extends AppCompatActivity
             case Constants.FRAG_CHAT_PRIVATE:
                 frag =  new ChatPrivateMessagesFragment();
                 break;
-
-
             default:
                 Log.e("[ERROR]","changeFragment: code invalide "+code);
                 break;
+        }
+
+        if (needToSubscribe) {
+            FirebaseMessaging.getInstance().subscribeToTopic("roomState");
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("roomState");
         }
 
         if(frag !=null){
